@@ -3,9 +3,9 @@ TEST_DIR    = test
 
 .PHONY: all test lib clean
 
-all: test
+all: check
 
-test: lib
+check: lib
 	$(MAKE) -C $(TEST_DIR)
 
 lib:
