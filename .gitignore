@@ -1,0 +1,17 @@
+build
+*.pbxuser
+*.mode1v3
+.DS_Store
+xcuserdata
+*.svn
+pulse.xml
+ivy.xml
+build.properties
+Version.txt
+build.xml
+.fseventsd
+.TemporaryItems
+*.o
+*.so
+*.so.1
+*.d
