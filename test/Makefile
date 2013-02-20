@@ -1,18 +1,20 @@
 SRC      = $(wildcard *.cpp)
-OBJ      = $(SRC:.c=.o)
+TESTS    = $(SRC:.cpp=_test)
 CPPFLAGS = -Wall
 CXXFLAGS = -isystem $(BOOST_HOME)
 
 
 .PHONY: all clean
 
-all: test
+all: check
 
-test: $(SRC)
+%_test: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(addsuffix _tests,$(subst .,_,$<)) $<
 
+test: $(TESTS)
+
 check: test
-	./$^
+	for test in *_tests; do "./$${test}"; done
 
 clean:
 	rm -f *_tests
