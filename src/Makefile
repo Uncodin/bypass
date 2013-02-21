@@ -1,12 +1,21 @@
-.PHONY: all test lib clean
+LIBSRC   = $(wildcard *.cpp)
+LIBOBJ   = $(LIBSRC:.cpp=.o)
+CXXFLAGS = -I../deps/libsoldout -std=c++0x -fcolor-diagnostics -g -O3 -Wno-unknown-pragmas
+CPPFLAGS = -Wall
+LDLIBS   = -lc
+LDFLAGS  = -shared -Wl,-install_name,@rpath/libbypass.so
 
-all: dummy
+.PHONY: all clean
 
-dummy:
-	echo "Awaiting content..."
+all: libbypass.so
+
+%.o: %.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
+
+libbypass.so: $(LIBOBJ)
+	$(CXX) $(LDFLAGS) -o libbypass.so $(LIBOBJ) $(LDLIBS)
 
 clean:
-	rm -f *_tests
 	rm -f *.o
 	rm -f *.so
 	rm -rf *.dSYM
