@@ -1,9 +1,9 @@
 LIBSRC   = $(wildcard *.cpp)
 LIBOBJ   = $(LIBSRC:.cpp=.o)
-CXXFLAGS = -I../dep/libsoldout -std=c++0x -g -O3 -Wno-unknown-pragmas
+CXXFLAGS = -I../dep/libsoldout -std=c++0x -g -O3 -Wno-unknown-pragmas -fPIC
 CPPFLAGS = -Wall
 LDLIBS   = -lc
-LDFLAGS  = -shared -Wl,-install_name,@rpath/libbypass.so
+LDFLAGS  = -shared -Wl -install_name
 
 .PHONY: all clean
 
