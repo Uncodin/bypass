@@ -1,26 +1,27 @@
 SRC      = $(wildcard *.cpp)
 OBJ		 = $(SRC:.cpp=.o)
-TESTS    = $(SRC:.cpp=_tests)
+TESTS    = $(SRC:.cpp=.tst)
 CPPFLAGS = -Wall
 CXXFLAGS = -isystem $(BOOST_HOME) -I../src -std=c++0x -g -O3 -Wno-unknown-pragmas
-LDFLAGS  = -L../src -Wl,-rpath,../src
+LDFLAGS  = -L../src
 LDLIBS   = -lbypass
 
-.PHONY: all clean
+.PHONY: all clean check test
 
 all: check
 
 %.o: %.cpp
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
-%_tests: %.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(addsuffix _tests,$(subst .,_,$<)) $< $(LDFLAGS) $(LDLIBS)
+%.tst: %.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(addsuffix .tst,$(basename $<)) $< $(LDFLAGS) $(LDLIBS)
 
 test: $(TESTS)
 
 check: test
-	for test in *_tests; do echo "• $${test}" && "./$${test}"; done
+	for test in *.tst; do echo "• $${test}" && "./$${test}"; done
 
 clean:
-	rm -f *_tests
+	rm -f *.o
+	rm -f *.tst
 	rm -rf *.dSYM
