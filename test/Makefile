@@ -7,6 +7,7 @@ LDFLAGS  = -L../src
 LDLIBS   = -lbypass
 
 .PHONY: all clean check test
+.SECONDARY:
 
 all: check
 
@@ -14,7 +15,7 @@ all: check
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 %.tst: %.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(addsuffix .tst,$(basename $<)) $< $(LDFLAGS) $(LDLIBS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(addsuffix .tst,$(basename $<)) $^ $(LDFLAGS) $(LDLIBS)
 
 test: $(TESTS)
 
