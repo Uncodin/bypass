@@ -11,13 +11,16 @@ using namespace std;
 void
 BypassParser::parse(string markdown)
 {
+	//parse
+	//markdown(ob, ib, &to_spannable);
 
+	//We have finished parsing, move any data left in the temp string to the main string
 }
 
 void
 BypassParser::parse(const char *markdown)
 {
-
+	
 }
 
 struct mkd_renderer to_spannable = {
@@ -29,11 +32,11 @@ struct mkd_renderer to_spannable = {
 	NULL, // BlockCode
 	NULL, // blockQuote
 	NULL, // block html
-	NULL, // header
+	rndr_header, // header
 	NULL, // hrule
 	NULL, // list
 	NULL, // listitem
-	NULL, // paragraph
+	rndr_paragraph, // paragraph
 	NULL, // table
 	NULL, // table cell
 	NULL, // table row
@@ -51,7 +54,7 @@ struct mkd_renderer to_spannable = {
 
 	/* low-level callbacks */
 	NULL, // entity
-	NULL, // normal text
+	rndr_normal_text, // normal text
 
 	/* renderer data */
 	64, // max stack
@@ -59,3 +62,26 @@ struct mkd_renderer to_spannable = {
 	NULL // opaque
 };
 
+//Call this from block level elements to see if we need to move the
+//Buffered data to the main string
+static void checkDataMove(struct buf *ob, void *opaque) {
+	if (ob->size == 0) {
+		//move data off temp string and onto main
+	}
+}
+
+static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaque) {
+	//check if the text contains a hash from the last block level
+	//if it exists make a new container level and stick the old temp string into it	
+
+	//if there is no hash
+	checkDataMove(ob);
+}
+
+static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque) {
+	checkDataMove(ob);
+}
+
+static void rndr_normal_text(struct buf *ob, struct buf *text, void *opaque) {
+
+}
