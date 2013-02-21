@@ -74,27 +74,31 @@ static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque) {
 }
 
 static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque) {
-
+	return 0;
 }
 
 static int rndr_double_emphasis(struct buf *ob, struct buf *text, char c,
 		void *opaque) {
+	return 0;
 }
 
 static int rndr_emphasis(struct buf *ob, struct buf *text, char c,
 		void *opaque) {
+	return 0;
 }
 
 static int rndr_triple_emphasis(struct buf *ob, struct buf *text, char c,
 		void *opaque) {
+	return 0;
 }
 
 static int rndr_linebreak(struct buf *ob, void *opaque) {
-
+	return 0;
 }
 
 static int rndr_link(struct buf *ob, struct buf *link, struct buf *title,
 			struct buf *content, void *opaque) {
+	return 0;
 }
 
 static void rndr_normal_text(struct buf *ob, struct buf *text, void *opaque) {
