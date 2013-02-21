@@ -15,4 +15,8 @@ build.xml
 *.so
 *.so.1
 deps/libsoldout*/*.d
+deps/libsoldout-1.3/depends
+deps/libsoldout-1.3/mkd2html
+deps/libsoldout-1.3/mkd2latex
+deps/libsoldout-1.3/mkd2man
 test/*_tests
