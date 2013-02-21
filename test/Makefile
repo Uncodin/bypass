@@ -15,10 +15,8 @@ all: check
 test: $(TESTS)
 
 check: test
-	for test in *_tests; do "./$${test}"; done
+	for test in *_tests; do echo "• $${test}" && "./$${test}"; done
 
 clean:
 	rm -f *_tests
-	rm -f *.o
-	rm -f *.so
 	rm -rf *.dSYM
