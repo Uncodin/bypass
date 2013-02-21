@@ -8,8 +8,18 @@ extern "C" {
 
 using namespace std;
 
+BypassParser::BypassParser()
+{
+
+}
+
+BypassParser::~BypassParser()
+{
+
+}
+
 void
-BypassParser::parse(string markdown)
+BypassParser::parse(const string &markdown)
 {
 
 }

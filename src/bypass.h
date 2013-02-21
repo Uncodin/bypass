@@ -11,7 +11,7 @@ public:
 	~BypassParser();
 
 	void parse(const char *markdown);
-	void parse(std::string markdown);
+	void parse(const std::string &markdown);
 
 };
 
