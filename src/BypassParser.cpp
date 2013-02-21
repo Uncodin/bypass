@@ -4,7 +4,7 @@ extern "C" {
 #include "markdown.h"
 }
 
-#include "bypass.h"
+#include "BypassParser.h"
 
 using namespace std;
 
@@ -18,16 +18,23 @@ BypassParser::~BypassParser()
 
 }
 
-void
-BypassParser::parse(const string &markdown)
-{
-
-}
-
-void
+MOMTree
 BypassParser::parse(const char *markdown)
 {
+	if (!markdown)
+	{
+		return BypassParser::parse(string());
+	}
 
+	return BypassParser::parse(string(markdown));
+}
+
+MOMTree
+BypassParser::parse(const string &markdown)
+{
+	MOMTree mom;
+
+	return mom;
 }
 
 struct mkd_renderer to_spannable = {
