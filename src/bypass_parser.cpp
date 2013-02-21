@@ -50,6 +50,9 @@ static void checkDataMove(struct buf *ob) {
 	}
 }
 
+static void rndr_blockcode(struct buf *ob, struct buf *text, void *opaque) {
+}
+
 static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaque) {
 	//check if the text contains a hash from the last block level
 	//if it exists make a new container level and stick the old temp string into it
@@ -58,8 +61,40 @@ static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaqu
 	checkDataMove(ob);
 }
 
+static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque) {
+
+}
+
+static void rndr_listitem(struct buf *ob, struct buf *text, int flags, void *opaque) {
+
+}
+
 static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque) {
 	checkDataMove(ob);
+}
+
+static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque) {
+
+}
+
+static int rndr_double_emphasis(struct buf *ob, struct buf *text, char c,
+		void *opaque) {
+}
+
+static int rndr_emphasis(struct buf *ob, struct buf *text, char c,
+		void *opaque) {
+}
+
+static int rndr_triple_emphasis(struct buf *ob, struct buf *text, char c,
+		void *opaque) {
+}
+
+static int rndr_linebreak(struct buf *ob, void *opaque) {
+
+}
+
+static int rndr_link(struct buf *ob, struct buf *link, struct buf *title,
+			struct buf *content, void *opaque) {
 }
 
 static void rndr_normal_text(struct buf *ob, struct buf *text, void *opaque) {
@@ -72,13 +107,13 @@ struct mkd_renderer to_spannable = {
 	NULL, // epilogue
 
 	/* block-level callbacks */
-	NULL, // BlockCode
+	rndr_blockcode, // BlockCode
 	NULL, // blockQuote
 	NULL, // block html
 	rndr_header, // header
 	NULL, // hrule
-	NULL, // list
-	NULL, // listitem
+	rndr_list, // list
+	rndr_listitem, // listitem
 	rndr_paragraph, // paragraph
 	NULL, // table
 	NULL, // table cell
@@ -86,14 +121,14 @@ struct mkd_renderer to_spannable = {
 
 	/* span-level callbacks */
 	NULL, // autolink
-	NULL, // codespan
-	NULL, // double_emphasis
-	NULL, // emphasis
+	rndr_codespan, // codespan
+	rndr_double_emphasis, // double_emphasis
+	rndr_emphasis, // emphasis
 	NULL, // image
-	NULL, // line break
-	NULL, // link
+	rndr_linebreak, // line break
+	rndr_link, // link
 	NULL, // raw html tag
-	NULL, // triple emphasis
+	rndr_triple_emphasis, // triple emphasis
 
 	/* low-level callbacks */
 	NULL, // entity
