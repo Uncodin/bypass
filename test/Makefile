@@ -1,9 +1,10 @@
+DEPOBJ   = $(wildcard ../dep/libsoldout/*.o)
 SUTOBJ   = $(wildcard ../src/*.o)
 SRC      = $(wildcard *.cpp)
 OBJ		 = $(SRC:.cpp=.o)
 TESTS    = $(SRC:.cpp=.tst)
 CPPFLAGS = -Wall
-CXXFLAGS = -I../src -std=c++0x -g -O3 -Wno-unknown-pragmas
+CXXFLAGS = -I../src -I../dep/libsoldout -std=c++0x -g -O3 -Wno-unknown-pragmas
 
 .PHONY: all clean check test
 .SECONDARY:
@@ -14,7 +15,7 @@ all: check
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 %.tst: %.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(addsuffix .tst,$(basename $<)) $(SUTOBJ) $^
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(addsuffix .tst,$(basename $<)) $(DEPOBJ) $(SUTOBJ) $^
 
 test: $(TESTS)
 

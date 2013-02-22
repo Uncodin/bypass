@@ -1,14 +1,13 @@
 #include "block_element.h"
 
-namespace Bypass
-{
-	BlockElement::BlockElement()
-	{
+namespace Bypass {
+
+	BlockElement::BlockElement() {
 
 	}
 
-	BlockElement::~BlockElement()
-	{
+	BlockElement::~BlockElement() {
 
 	}
+
 }
