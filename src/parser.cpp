@@ -92,8 +92,9 @@ namespace Bypass {
 	}
 
 	Document
-	Parser::parse(const char *str) {
-		Document document;
+	Parser::parse(const char *str)
+	{
+		this->document = new Document();
 
 		if (str) {
 			struct buf *ib, *ob;
@@ -108,13 +109,16 @@ namespace Bypass {
 			markdown(ob, ib, &mkd_callbacks);
 
 			// We have finished parsing, move any data left in the temp string to the main string
+			if (tempBlockElement != NULL) {
+				moveTempToDocument();
+			}
 
 			/* cleanup */
 			bufrelease(ib);
 			bufrelease(ob);
 		}
 
-		return document;
+		return *document;
 	}
 
 	Document
@@ -122,13 +126,25 @@ namespace Bypass {
 		return Parser::parse(str.c_str());
 	}
 
+	void 
+	Parser::moveTempToDocument()
+	{
+		this->document->append(tempBlockElement);
+		tempBlockElement = NULL;
+	}
+}
+
+static Bypass::Parser* getParserFromOpaque(void *opaque)
+{
+	return (Bypass::Parser*) opaque;
 }
 
 //Call this from block level elements to see if we need to move the
 //Buffered data to the main string
-static void checkDataMove(struct buf *ob) {
+static void checkDataMove(struct buf *ob, void *opaque) {
 	if (ob->size == 0) {
-		//move data off temp string and onto main
+		Bypass::Parser* parser = getParserFromOpaque(opaque);
+		parser->moveTempToDocument();
 	}
 }
 
@@ -138,7 +154,7 @@ static void checkDataMove(struct buf *ob) {
 
 static void rndr_blockcode(struct buf *ob, struct buf *text, void *opaque) {
 
-	checkDataMove(ob);
+	checkDataMove(ob, opaque);
 }
 
 static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaque) {
@@ -146,22 +162,22 @@ static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaqu
 	//if it exists make a new container level and stick the old temp string into it
 
 	//if there is no hash
-	checkDataMove(ob);
+	checkDataMove(ob, opaque);
 }
 
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque) {
 
-	checkDataMove(ob);
+	checkDataMove(ob, opaque);
 }
 
 static void rndr_listitem(struct buf *ob, struct buf *text, int flags, void *opaque) {
 
-	checkDataMove(ob);
+	checkDataMove(ob, opaque);
 }
 
 static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque) {
 
-	checkDataMove(ob);
+	checkDataMove(ob, opaque);
 }
 
 /*

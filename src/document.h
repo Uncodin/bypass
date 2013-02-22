@@ -1,14 +1,18 @@
 #ifndef _BYPASS_DOCUMENT_H_
 #define _BYPASS_DOCUMENT_H_
 
-namespace Bypass {
+#include "block_element.h"
 
-	class Document {
+namespace Bypass
+{
+	class Document
+	{
 	private:
 
 	public:
 		Document();
 		~Document();
+		void append(BlockElement* blockElement);
 	};
 
 }

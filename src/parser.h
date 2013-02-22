@@ -8,6 +8,7 @@ extern "C" {
 }
 
 #include "document.h"
+#include "block_element.h"
 
 #define INPUT_UNIT 1024
 #define OUTPUT_UNIT 64
@@ -20,6 +21,10 @@ namespace Bypass {
 		~Parser();
 		Document parse(const char *markdown);
 		Document parse(const std::string &markdown);
+		void moveTempToDocument();
+	private:
+		Document* document;
+		BlockElement* tempBlockElement;
 	};
 
 }

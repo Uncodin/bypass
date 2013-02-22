@@ -9,4 +9,10 @@ namespace Bypass {
 	Document::~Document() {
 
 	}
+
+	void
+	Document::append(BlockElement* blockElement)
+	{
+		
+	}
 }
