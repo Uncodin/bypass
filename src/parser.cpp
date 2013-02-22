@@ -92,8 +92,7 @@ namespace Bypass {
 	}
 
 	Document
-	Parser::parse(const char *str)
-	{
+	Parser::parse(const char *str) {
 		this->document = new Document();
 
 		if (str) {
@@ -127,10 +126,16 @@ namespace Bypass {
 	}
 
 	void 
-	Parser::moveTempToDocument()
-	{
+	Parser::moveTempToDocument() {
 		this->document->append(tempBlockElement);
 		tempBlockElement = NULL;
+	}
+
+	void Parser::stackTempElement(BlockElement* blockElement) {
+		if (tempBlockElement != NULL) {
+			blockElement->append(this->tempBlockElement);
+		}
+		this->tempBlockElement = blockElement;
 	}
 }
 
@@ -148,6 +153,11 @@ static void checkDataMove(struct buf *ob, void *opaque) {
 	}
 }
 
+static void stackTempElement(Bypass::BlockElement* blockElement, void *opaque) {
+	Bypass::Parser* parser = getParserFromOpaque(opaque);
+	parser->stackTempElement(blockElement);
+}
+
 /*
  *	Block Element callbacks
  */
@@ -163,6 +173,9 @@ static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaqu
 
 	//if there is no hash
 	checkDataMove(ob, opaque);
+
+	Bypass::BlockElement* element = new Bypass::BlockElement(text->data);
+	stackTempElement(element, opaque);
 }
 
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque) {

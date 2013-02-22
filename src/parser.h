@@ -22,6 +22,7 @@ namespace Bypass {
 		Document parse(const char *markdown);
 		Document parse(const std::string &markdown);
 		void moveTempToDocument();
+		void stackTempElement(BlockElement* blockElement);
 	private:
 		Document* document;
 		BlockElement* tempBlockElement;
