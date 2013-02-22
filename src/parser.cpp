@@ -174,8 +174,9 @@ static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaqu
 	//if there is no hash
 	checkDataMove(ob, opaque);
 
-	Bypass::BlockElement* element = new Bypass::BlockElement(text->data);
-	stackTempElement(element, opaque);
+	Bypass::BlockElement element;
+	element.setText(text->data);
+	stackTempElement(&element, opaque);
 }
 
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque) {

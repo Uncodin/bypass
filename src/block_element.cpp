@@ -2,12 +2,16 @@
 
 namespace Bypass {
 
-	BlockElement::BlockElement(std::string text) {
-		this->text = text;
+	BlockElement::BlockElement() {
+
 	}
 
 	BlockElement::~BlockElement() {
 
+	}
+
+	void BlockElement::setText(std::string text) {
+		this->text = text;
 	}
 
 	void 
