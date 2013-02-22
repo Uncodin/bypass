@@ -11,7 +11,6 @@ CXXFLAGS = -I../src -std=c++0x -g -O3 -Wno-unknown-pragmas
 all: check
 
 %.o: %.cpp
-	pwd
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 %.tst: %.o
