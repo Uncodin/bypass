@@ -13,6 +13,6 @@ namespace Bypass {
 	void
 	Document::append(BlockElement* blockElement)
 	{
-		
+		this->blockElements.push_back(blockElement);	
 	}
 }
