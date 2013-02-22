@@ -1,11 +1,14 @@
 #include "document.h"
 
-Document::Document()
+namespace Bypass
 {
+	Document::Document()
+	{
 
-}
+	}
 
-Document::~Document()
-{
+	Document::~Document()
+	{
 
+	}
 }

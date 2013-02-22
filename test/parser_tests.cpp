@@ -2,7 +2,9 @@
 
 #include <boost/test/included/unit_test.hpp>
 #include <string>
-#include <bypass_parser.h>
+#include <parser.h>
+
+using namespace Bypass;
 
 struct F
 {
@@ -16,7 +18,7 @@ struct F
 		BOOST_TEST_MESSAGE( "teardown fixture" );
 	}
 
-	BypassParser parser;
+	Parser parser;
 };
 
 BOOST_FIXTURE_TEST_CASE(parse_with_null_input, F)
