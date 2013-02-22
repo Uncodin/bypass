@@ -1,9 +1,3 @@
-#include <string>
-
-extern "C" {
-#include "markdown.h"
-}
-
 #include "parser.h"
 
 using namespace std;
@@ -22,27 +16,34 @@ namespace Bypass
 	}
 
 	Document
-	Parser::parse(const char *markdown)
-	{
-		if (!markdown)
-		{
-			return Parser::parse(string());
-		}
-
-		return Parser::parse(string(markdown));
-	}
-
-	Document
-	Parser::parse(const string &markdown)
+	Parser::parse(const char *str)
 	{
 		Document document;
 
+		struct buf *ib, *ob;
+
+		ib = bufnew(INPUT_UNIT);
+		bufputs(ib, str);
+
+		ob = bufnew(OUTPUT_UNIT);
+
+		mkd_callbacks.opaque = this;
 		//parse and assemble document
-		//markdown(ob, ib, &to_spannable);
+		markdown(ob, ib, &mkd_callbacks);
 
 		// We have finished parsing, move any data left in the temp string to the main string
 
+		/* cleanup */
+		bufrelease(ib);
+		bufrelease(ob);
+
 		return document;
+	}
+
+	Document
+	Parser::parse(const string &str)
+	{
+		return Parser::parse(str.c_str());
 	}
 
 }
@@ -55,7 +56,13 @@ static void checkDataMove(struct buf *ob) {
 	}
 }
 
+/*
+ *	Block Element callbacks
+ */
+
 static void rndr_blockcode(struct buf *ob, struct buf *text, void *opaque) {
+
+	checkDataMove(ob);
 }
 
 static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaque) {
@@ -68,15 +75,22 @@ static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaqu
 
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque) {
 
+	checkDataMove(ob);
 }
 
 static void rndr_listitem(struct buf *ob, struct buf *text, int flags, void *opaque) {
 
+	checkDataMove(ob);
 }
 
 static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque) {
+
 	checkDataMove(ob);
 }
+
+/*
+ *	Span Element callbacks
+ */
 
 static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque) {
 	return 0;
@@ -106,45 +120,11 @@ static int rndr_link(struct buf *ob, struct buf *link, struct buf *title,
 	return 0;
 }
 
+/*
+ *	Low Level Callbacks
+ */
+
 static void rndr_normal_text(struct buf *ob, struct buf *text, void *opaque) {
 
 }
 
-struct mkd_renderer to_spannable = {
-	/* document-level callbacks */
-	NULL, // prolog
-	NULL, // epilogue
-
-	/* block-level callbacks */
-	rndr_blockcode, // BlockCode
-	NULL, // blockQuote
-	NULL, // block html
-	rndr_header, // header
-	NULL, // hrule
-	rndr_list, // list
-	rndr_listitem, // listitem
-	rndr_paragraph, // paragraph
-	NULL, // table
-	NULL, // table cell
-	NULL, // table row
-
-	/* span-level callbacks */
-	NULL, // autolink
-	rndr_codespan, // codespan
-	rndr_double_emphasis, // double_emphasis
-	rndr_emphasis, // emphasis
-	NULL, // image
-	rndr_linebreak, // line break
-	rndr_link, // link
-	NULL, // raw html tag
-	rndr_triple_emphasis, // triple emphasis
-
-	/* low-level callbacks */
-	NULL, // entity
-	rndr_normal_text, // normal text
-
-	/* renderer data */
-	64, // max stack
-	"*_",
-	NULL // opaque
-};
