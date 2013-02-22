@@ -10,4 +10,13 @@ namespace Bypass {
 
 	}
 
+	void 
+	SpanElement::setText(std::string text) {
+		this->text = text;
+	}
+
+	void
+	SpanElement::setExtra(std::string extra) {
+		this->extra = extra;
+	}
 }

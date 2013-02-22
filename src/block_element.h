@@ -13,8 +13,9 @@ namespace Bypass {
 		std::vector<BlockElement*> blockElements;
 		std::vector<SpanElement*> spanElements;
 	public:
-		BlockElement(std::string text);
+		BlockElement();
 		~BlockElement();
+		void setText(std::string text);
 		void append(BlockElement* blockElement);
 		void append(SpanElement* spanElement);
 	};
