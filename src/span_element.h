@@ -12,6 +12,8 @@ namespace Bypass {
 	public:
 		SpanElement();
 		~SpanElement();
+		void setText(std::string text);
+		void setExtra(std::string extra);
 	};
 
 }
