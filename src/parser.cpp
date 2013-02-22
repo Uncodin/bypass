@@ -7,13 +7,10 @@ using namespace std;
  */
 
 static void rndr_blockcode(struct buf *ob, struct buf *text, void *opaque);
-
+static void rndr_blockquote(struct buf *ob, struct buf *text, void *opaque);
 static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaque);
-
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque);
-
 static void rndr_listitem(struct buf *ob, struct buf *text, int flags, void *opaque);
-
 static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque);
 
 /*
@@ -21,20 +18,11 @@ static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque);
  */
 
 static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque);
-
-static int rndr_double_emphasis(struct buf *ob, struct buf *text, char c,
-		void *opaque);
-
-static int rndr_emphasis(struct buf *ob, struct buf *text, char c,
-		void *opaque);
-
-static int rndr_triple_emphasis(struct buf *ob, struct buf *text, char c,
-		void *opaque);
-
+static int rndr_double_emphasis(struct buf *ob, struct buf *text, char c, void *opaque);
+static int rndr_emphasis(struct buf *ob, struct buf *text, char c, void *opaque);
+static int rndr_triple_emphasis(struct buf *ob, struct buf *text, char c, void *opaque);
 static int rndr_linebreak(struct buf *ob, void *opaque);
-
-static int rndr_link(struct buf *ob, struct buf *link, struct buf *title,
-			struct buf *content, void *opaque);
+static int rndr_link(struct buf *ob, struct buf *link, struct buf *title, struct buf *content, void *opaque);
 
 /*
  *	Low Level Callbacks
@@ -49,7 +37,7 @@ struct mkd_renderer mkd_callbacks = {
 
 	/* block-level callbacks */
 	rndr_blockcode, // BlockCode
-	NULL, // blockQuote
+	rndr_blockquote, // blockQuote
 	NULL, // block html
 	rndr_header, // header
 	NULL, // hrule
@@ -120,13 +108,11 @@ namespace Bypass {
 		return *document;
 	}
 
-	Document
-	Parser::parse(const string &str) {
+	Document Parser::parse(const string &str) {
 		return Parser::parse(str.c_str());
 	}
 
-	void 
-	Parser::moveTempToDocument() {
+	void Parser::moveTempToDocument() {
 		this->document->append(tempBlockElement);
 		tempBlockElement = NULL;
 	}
@@ -137,25 +123,75 @@ namespace Bypass {
 		}
 		this->tempBlockElement = blockElement;
 	}
-}
 
-static Bypass::Parser* getParserFromOpaque(void *opaque)
-{
-	return (Bypass::Parser*) opaque;
-}
+	// Block Element Callbacks
 
-//Call this from block level elements to see if we need to move the
-//Buffered data to the main string
-static void checkDataMove(struct buf *ob, void *opaque) {
-	if (ob->size == 0) {
-		Bypass::Parser* parser = getParserFromOpaque(opaque);
-		parser->moveTempToDocument();
+	void Parser::parsedBlockcode(struct buf *ob, struct buf *text) {
+
 	}
-}
 
-static void stackTempElement(Bypass::BlockElement* blockElement, void *opaque) {
-	Bypass::Parser* parser = getParserFromOpaque(opaque);
-	parser->stackTempElement(blockElement);
+	void Parser::parsedBlockquote(struct buf *ob, struct buf *text) {
+
+	}
+
+	void Parser::parsedHeader(struct buf *ob, struct buf *text, int level) {
+		//check if the text contains a hash from the last block level
+		//if it exists make a new container level and stick the old temp string into it
+
+		//if there is no hash
+		if (ob->size == 0) {
+			moveTempToDocument();
+		}
+
+		Bypass::BlockElement element;
+		element.setText(text->data);
+		stackTempElement(&element);
+	}
+
+	void Parser::parsedList(struct buf *ob, struct buf *text, int flags) {
+
+	}
+
+	void Parser::parsedListItem(struct buf *ob, struct buf *text, int flags) {
+
+	}
+
+	void Parser::parsedParagraph(struct buf *ob, struct buf *text) {
+
+	}
+
+	// Span Element Callbacks
+
+	int Parser::parsedCodeSpan(struct buf *ob, struct buf *text) {
+		return 0;
+	}
+
+	int Parser::parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c) {
+		return 0;
+	}
+
+	int Parser::parsedEmphasis(struct buf *ob, struct buf *text, char c) {
+		return 0;
+	}
+
+	int Parser::parsedTripleEmphasis(struct buf *ob, struct buf *text, char c) {
+		return 0;
+	}
+
+	int Parser::parsedLinebreak(struct buf *ob) {
+		return 0;
+	}
+
+	int Parser::parsedLink(struct buf *ob, struct buf *link, struct buf *title, struct buf *content) {
+		return 0;
+	}
+
+	// Low Level Callbacks
+
+	void Parser::parsedNormalText(struct buf *ob, struct buf *text) {
+
+	}
+
 }
 
 /*
@@ -163,35 +199,27 @@ static void stackTempElement(Bypass::BlockElement* blockElement, void *opaque) {
  */
 
 static void rndr_blockcode(struct buf *ob, struct buf *text, void *opaque) {
+	((Bypass::Parser*) opaque)->parsedBlockcode(ob, text);
+}
 
-	checkDataMove(ob, opaque);
+static void rndr_blockquote(struct buf *ob, struct buf *text, void *opaque) {
+	((Bypass::Parser*) opaque)->parsedBlockquote(ob, text);
 }
 
 static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaque) {
-	//check if the text contains a hash from the last block level
-	//if it exists make a new container level and stick the old temp string into it
-
-	//if there is no hash
-	checkDataMove(ob, opaque);
-
-	Bypass::BlockElement* element = new Bypass::BlockElement();
-	element->setText(text->data);
-	stackTempElement(element, opaque);
+	((Bypass::Parser*) opaque)->parsedHeader(ob, text, level);
 }
 
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque) {
-
-	checkDataMove(ob, opaque);
+	((Bypass::Parser*) opaque)->parsedList(ob, text, flags);
 }
 
 static void rndr_listitem(struct buf *ob, struct buf *text, int flags, void *opaque) {
-
-	checkDataMove(ob, opaque);
+	((Bypass::Parser*) opaque)->parsedListItem(ob, text, flags);
 }
 
 static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque) {
-
-	checkDataMove(ob, opaque);
+	((Bypass::Parser*) opaque)->parsedParagraph(ob, text);
 }
 
 /*
@@ -199,31 +227,27 @@ static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque) {
  */
 
 static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque) {
-	return 0;
+	return ((Bypass::Parser*) opaque)->parsedCodeSpan(ob, text);
 }
 
-static int rndr_double_emphasis(struct buf *ob, struct buf *text, char c,
-		void *opaque) {
-	return 0;
+static int rndr_double_emphasis(struct buf *ob, struct buf *text, char c, void *opaque) {
+	return ((Bypass::Parser*) opaque)->parsedDoubleEmphasis(ob, text, c);
 }
 
-static int rndr_emphasis(struct buf *ob, struct buf *text, char c,
-		void *opaque) {
-	return 0;
+static int rndr_emphasis(struct buf *ob, struct buf *text, char c, void *opaque) {
+	return ((Bypass::Parser*) opaque)->parsedEmphasis(ob, text, c);
 }
 
-static int rndr_triple_emphasis(struct buf *ob, struct buf *text, char c,
-		void *opaque) {
-	return 0;
+static int rndr_triple_emphasis(struct buf *ob, struct buf *text, char c, void *opaque) {
+	return ((Bypass::Parser*) opaque)->parsedTripleEmphasis(ob, text, c);
 }
 
 static int rndr_linebreak(struct buf *ob, void *opaque) {
-	return 0;
+	return ((Bypass::Parser*) opaque)->parsedLinebreak(ob);
 }
 
-static int rndr_link(struct buf *ob, struct buf *link, struct buf *title,
-			struct buf *content, void *opaque) {
-	return 0;
+static int rndr_link(struct buf *ob, struct buf *link, struct buf *title, struct buf *content, void *opaque) {
+	return ((Bypass::Parser*) opaque)->parsedLink(ob, link, title, content);
 }
 
 /*
@@ -231,6 +255,6 @@ static int rndr_link(struct buf *ob, struct buf *link, struct buf *title,
  */
 
 static void rndr_normal_text(struct buf *ob, struct buf *text, void *opaque) {
-
+	return ((Bypass::Parser*) opaque)->parsedNormalText(ob, text);
 }
 
