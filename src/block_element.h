@@ -1,19 +1,20 @@
-#ifndef _BLOCK_ELEMENT_H_
-#define _BLOCK_ELEMENT_H_
+#ifndef _BYPASS_BLOCK_ELEMENT_H_
+#define _BYPASS_BLOCK_ELEMENT_H_
 
 #include <vector>
 #include "span_element.h"
 
-class BlockElement
+namespace Bypass
 {
-private:
-	std::vector<BlockElement> blockElements;
-	std::vector<SpanElement> spanElements;
-public:
+	class BlockElement
+	{
+	private:
+		std::vector<BlockElement> blockElements;
+		std::vector<SpanElement> spanElements;
+	public:
+		BlockElement();
+		~BlockElement();
+	};
+}
 
-	BlockElement();
-	~BlockElement();
-
-};
-
-#endif // _BLOCK_ELEMENT_H_
+#endif // _BYPASS_BLOCK_ELEMENT_H_

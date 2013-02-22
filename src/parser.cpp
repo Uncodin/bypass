@@ -4,42 +4,47 @@ extern "C" {
 #include "markdown.h"
 }
 
-#include "bypass_parser.h"
+#include "parser.h"
 
 using namespace std;
 
-BypassParser::BypassParser()
+namespace Bypass
 {
 
-}
-
-BypassParser::~BypassParser()
-{
-
-}
-
-Document
-BypassParser::parse(const char *markdown)
-{
-	if (!markdown)
+	Parser::Parser()
 	{
-		return BypassParser::parse(string());
+
 	}
 
-	return BypassParser::parse(string(markdown));
-}
+	Parser::~Parser()
+	{
 
-Document
-BypassParser::parse(const string &markdown)
-{
-	Document document;
+	}
 
-	//parse and assemble document
-	//markdown(ob, ib, &to_spannable);
+	Document
+	Parser::parse(const char *markdown)
+	{
+		if (!markdown)
+		{
+			return Parser::parse(string());
+		}
 
-	// We have finished parsing, move any data left in the temp string to the main string
+		return Parser::parse(string(markdown));
+	}
 
-	return document;
+	Document
+	Parser::parse(const string &markdown)
+	{
+		Document document;
+
+		//parse and assemble document
+		//markdown(ob, ib, &to_spannable);
+
+		// We have finished parsing, move any data left in the temp string to the main string
+
+		return document;
+	}
+
 }
 
 //Call this from block level elements to see if we need to move the

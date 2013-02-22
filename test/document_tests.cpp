@@ -4,6 +4,8 @@
 #include <string>
 #include <document.h>
 
+using namespace Bypass;
+
 BOOST_AUTO_TEST_CASE(parse_with_null_input)
 {
 	Document document;

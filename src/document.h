@@ -1,13 +1,16 @@
-#ifndef _DOCUMENT_H_
-#define _DOCUMENT_H_
+#ifndef _BYPASS_DOCUMENT_H_
+#define _BYPASS_DOCUMENT_H_
 
-class Document
+namespace Bypass
 {
-private:
+	class Document
+	{
+	private:
 
-public:
-	Document();
-	~Document();
-};
+	public:
+		Document();
+		~Document();
+	};
+}
 
-#endif // _DOCUMENT_H_
+#endif // _BYPASS_DOCUMENT_H_
