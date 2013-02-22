@@ -3,7 +3,7 @@ SRC      = $(wildcard *.cpp)
 OBJ		 = $(SRC:.cpp=.o)
 TESTS    = $(SRC:.cpp=.tst)
 CPPFLAGS = -Wall
-CXXFLAGS = -isystem $(BOOST_HOME) -I../src -std=c++0x -g -O3 -Wno-unknown-pragmas
+CXXFLAGS = -I../src -std=c++0x -g -O3 -Wno-unknown-pragmas
 
 .PHONY: all clean check test
 .SECONDARY:
@@ -11,6 +11,7 @@ CXXFLAGS = -isystem $(BOOST_HOME) -I../src -std=c++0x -g -O3 -Wno-unknown-pragma
 all: check
 
 %.o: %.cpp
+	pwd
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 %.tst: %.o
