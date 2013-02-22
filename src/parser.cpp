@@ -81,47 +81,44 @@ struct mkd_renderer mkd_callbacks = {
 	NULL // opaque
 };
 
-namespace Bypass
-{
+namespace Bypass {
 
-	Parser::Parser()
-	{
+	Parser::Parser() {
 
 	}
 
-	Parser::~Parser()
-	{
+	Parser::~Parser() {
 
 	}
 
 	Document
-	Parser::parse(const char *str)
-	{
+	Parser::parse(const char *str) {
 		Document document;
 
-		struct buf *ib, *ob;
+		if (str) {
+			struct buf *ib, *ob;
 
-		ib = bufnew(INPUT_UNIT);
-		bufputs(ib, str);
+			ib = bufnew(INPUT_UNIT);
+			bufputs(ib, str);
 
-		ob = bufnew(OUTPUT_UNIT);
+			ob = bufnew(OUTPUT_UNIT);
 
-		mkd_callbacks.opaque = this;
-		//parse and assemble document
-		markdown(ob, ib, &mkd_callbacks);
+			mkd_callbacks.opaque = this;
+			//parse and assemble document
+			markdown(ob, ib, &mkd_callbacks);
 
-		// We have finished parsing, move any data left in the temp string to the main string
+			// We have finished parsing, move any data left in the temp string to the main string
 
-		/* cleanup */
-		bufrelease(ib);
-		bufrelease(ob);
+			/* cleanup */
+			bufrelease(ib);
+			bufrelease(ob);
+		}
 
 		return document;
 	}
 
 	Document
-	Parser::parse(const string &str)
-	{
+	Parser::parse(const string &str) {
 		return Parser::parse(str.c_str());
 	}
 

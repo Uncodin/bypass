@@ -3,11 +3,9 @@
 
 #include <string>
 
-namespace Bypass
-{
+namespace Bypass {
 
-	class SpanElement
-	{
+	class SpanElement {
 	private:
 		std::string text;
 		std::string extra;

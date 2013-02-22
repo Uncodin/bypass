@@ -12,11 +12,9 @@ extern "C" {
 #define INPUT_UNIT 1024
 #define OUTPUT_UNIT 64
 
-namespace Bypass
-{
+namespace Bypass {
 
-	class Parser
-	{
+	class Parser {
 	public:
 		Parser();
 		~Parser();

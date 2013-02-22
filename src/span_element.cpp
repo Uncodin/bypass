@@ -1,15 +1,12 @@
 #include "span_element.h"
 
-namespace Bypass
-{
+namespace Bypass {
 
-	SpanElement::SpanElement()
-	{
+	SpanElement::SpanElement() {
 
 	}
 
-	SpanElement::~SpanElement()
-	{
+	SpanElement::~SpanElement() {
 
 	}
 
