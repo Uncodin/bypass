@@ -79,8 +79,7 @@ namespace Bypass {
 
 	}
 
-	Document
-	Parser::parse(const char *str) {
+	Document Parser::parse(const char *str) {
 		this->document = new Document();
 
 		if (str) {
@@ -113,8 +112,8 @@ namespace Bypass {
 	}
 
 	void Parser::moveTempToDocument() {
-		this->document->append(tempBlockElement);
-		tempBlockElement = NULL;
+// 		this->document->append(tempBlockElement);
+// 		tempBlockElement = NULL;
 	}
 
 	void Parser::stackTempElement(BlockElement* blockElement) {

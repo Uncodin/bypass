@@ -1,7 +1,7 @@
 SRC      = $(wildcard *.cpp)
 OBJ      = $(SRC:.cpp=.o)
-CXXFLAGS = -I../dep/libsoldout -std=c++0x -g -O3 -fPIC
 CPPFLAGS = -Wall
+CXXFLAGS = -I../dep/libsoldout -g -O3 -fPIC
 
 .PHONY: all clean
 

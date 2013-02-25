@@ -14,13 +14,15 @@ namespace Bypass {
 		this->text = text;
 	}
 
-	void 
-	BlockElement::append(BlockElement* blockElement) {
+	std::string BlockElement::getText() {
+		return this->text;
+	}
+
+	void  BlockElement::append(BlockElement* blockElement) {
 		this->blockElements.push_back(blockElement);
 	}
 
-	void
-	BlockElement::append(SpanElement* spanElement) {
+	void BlockElement::append(SpanElement* spanElement) {
 		this->spanElements.push_back(spanElement);
 	}
 }
