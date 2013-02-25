@@ -37,8 +37,20 @@ namespace Bypass {
 		this->type = type;
 	}
 
-	Element::Type Element::getType() {
+	Type Element::getType() {
 		return type;
+	}
+
+	bool Element::isBlockElement() {
+		return (type & 0x100) == 0x000;
+	}
+
+	bool Element::isSpanElement() {
+		return (type & 0x100) == 0x100;
+	}
+
+	size_t Element::size() {
+		return children.size();
 	}
 
 }
