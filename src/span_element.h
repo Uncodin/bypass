@@ -9,11 +9,13 @@ namespace Bypass {
 	private:
 		std::string text;
 		std::string extra;
+		std::string type;
 	public:
 		SpanElement();
 		~SpanElement();
 		void setText(std::string text);
 		void setExtra(std::string extra);
+		void setType(std::string type);
 	};
 
 }

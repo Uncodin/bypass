@@ -19,4 +19,9 @@ namespace Bypass {
 	SpanElement::setExtra(std::string extra) {
 		this->extra = extra;
 	}
+
+	void
+	SpanElement::setType(std::string type) {
+		this->type = type;
+	}
 }

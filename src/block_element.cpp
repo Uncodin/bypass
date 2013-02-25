@@ -23,4 +23,9 @@ namespace Bypass {
 	BlockElement::append(SpanElement* spanElement) {
 		this->spanElements.push_back(spanElement);
 	}
+
+	void
+	BlockElement::setSpanElements(std::vector<SpanElement*> elements) {
+		spanElements = elements;
+	}
 }

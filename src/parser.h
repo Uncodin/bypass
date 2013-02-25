@@ -2,6 +2,7 @@
 #define _BYPASS_PARSER_H_
 
 #include <string>
+#include <vector>
 
 extern "C" {
 #include "markdown.h"
@@ -22,11 +23,6 @@ namespace Bypass {
 
 		Document parse(const char *markdown);
 		Document parse(const std::string &markdown);
-
-		// Parsing Internals
-
-		void moveTempToDocument();
-		void stackTempElement(BlockElement* blockElement);
 
 		// Block Element Callbacks
 
@@ -53,6 +49,12 @@ namespace Bypass {
 	private:
 		Document* document;
 		BlockElement* tempBlockElement;
+		std::vector<SpanElement*> tempSpanElements;
+
+		// Parsing Internals
+		void moveTempToDocument();
+		void stackTempElement(BlockElement* blockElement);
+		void appendSpanElement(SpanElement* spanElement);
 	};
 
 }

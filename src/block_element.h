@@ -18,6 +18,7 @@ namespace Bypass {
 		void setText(std::string text);
 		void append(BlockElement* blockElement);
 		void append(SpanElement* spanElement);
+		void setSpanElements(std::vector<SpanElement*> elements);
 	};
 
 }
