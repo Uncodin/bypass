@@ -36,8 +36,6 @@ namespace Bypass {
 
 	void
 	BlockElement::setSpanElements(std::vector<SpanElement*> elements) {
-		for (std::vector<SpanElement*>::iterator it = elements.begin(); it!=elements.end(); ++it) {
-		    spanElements.push_back(new SpanElement(**it));
-		}
+
 	}
 }

@@ -81,7 +81,9 @@ namespace Bypass {
 			tempSpanElements.pop_back();
 		}
 
-		delete tempBlockElement;
+		if (tempBlockElement != NULL) {
+			delete tempBlockElement;
+		}
 	}
 
 	Document
@@ -115,19 +117,22 @@ namespace Bypass {
 		return result;
 	}
 
-	Document Parser::parse(const string &str) {
-		return Parser::parse(str.c_str());
+	Document Parser::parse(const std::string &str) {
+		return parse(str.c_str());
 	}
 
 	void Parser::moveTempToDocument() {
- 		this->document->append(*tempBlockElement);
- 		delete tempBlockElement;
- 		tempBlockElement = NULL;
+		if (tempBlockElement != NULL) {
+			this->document->append(*tempBlockElement);
+			delete tempBlockElement;
+			tempBlockElement = NULL;
+		}
 	}
 
 	void Parser::stackTempElement(BlockElement* blockElement) {
 		if (tempBlockElement != NULL) {
 			blockElement->append(*tempBlockElement);
+			delete tempBlockElement;
 		}
 		this->tempBlockElement = blockElement;
 	}
@@ -181,7 +186,9 @@ namespace Bypass {
 		}
 
 		Bypass::BlockElement* element = new BlockElement();
-		element->setText(text->data);
+		if (text->size) {
+			element->setText(text->data);
+		}
 		element->setSpanElements(tempSpanElements);
 		clearSpanElements();
 		stackTempElement(element);
