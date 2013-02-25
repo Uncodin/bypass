@@ -14,7 +14,6 @@ namespace Bypass
 		Document();
 		~Document();
 		void append(const BlockElement& blockElement);
-		void operator+=(const BlockElement& blockElement);
 		BlockElement* operator[](size_t i);
 		size_t size();
 	};

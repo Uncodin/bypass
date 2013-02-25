@@ -30,6 +30,10 @@ namespace Bypass {
 		this->blockElements.push_back(new BlockElement(blockElement));
 	}
 
+	BlockElement* BlockElement::getBlockElementAtIndex(size_t i) {
+		return blockElements[i];
+	}
+
 	void BlockElement::append(const SpanElement& spanElement) {
 		this->spanElements.push_back(new SpanElement(spanElement));
 	}
@@ -38,6 +42,10 @@ namespace Bypass {
 		for (std::vector<SpanElement*>::iterator it = elements.begin(); it!=elements.end(); ++it) {
 		    spanElements.push_back(new SpanElement(**it));
 		}
+	}
+
+	SpanElement* BlockElement::getSpanElementAtIndex(size_t i) {
+		return spanElements[i];
 	}
 
 	void BlockElement::setType(Type type) {
