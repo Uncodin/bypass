@@ -9,7 +9,7 @@ extern "C" {
 }
 
 #include "document.h"
-#include "block_element.h"
+#include "element.h"
 
 #define INPUT_UNIT 1024
 #define OUTPUT_UNIT 64
@@ -48,13 +48,13 @@ namespace Bypass {
 
 	private:
 		Document* document;
-		BlockElement* tempBlockElement;
-		std::vector<SpanElement*> tempSpanElements;
+		Element* tempElement;
+		std::vector<Element*> tempSpanElements;
 
 		// Parsing Internals
 		void moveTempToDocument();
-		void stackTempElement(BlockElement* blockElement);
-		void appendSpanElement(SpanElement* spanElement);
+		void stackTempElement(Element* element);
+		void appendSpanElement(Element* element);
 		void clearSpanElements();
 	};
 

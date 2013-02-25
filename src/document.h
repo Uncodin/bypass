@@ -2,19 +2,19 @@
 #define _BYPASS_DOCUMENT_H_
 
 #include <vector>
-#include "block_element.h"
+#include "element.h"
 
 namespace Bypass
 {
 	class Document
 	{
 	private:
-		std::vector<BlockElement*> blockElements;
+		std::vector<Element*> elements;
 	public:
 		Document();
 		~Document();
-		void append(const BlockElement& blockElement);
-		BlockElement* operator[](size_t i);
+		void append(const Element& elements);
+		Element* operator[](size_t i);
 		size_t size();
 	};
 }

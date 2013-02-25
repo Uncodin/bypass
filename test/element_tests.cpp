@@ -169,3 +169,43 @@ BOOST_FIXTURE_TEST_CASE(element_text_type, F) {
 	BOOST_REQUIRE(!element.isBlockElement());
 	BOOST_REQUIRE(element.isSpanElement());
 }
+
+BOOST_FIXTURE_TEST_CASE(element_append_single, F) {
+	Element child;
+	element.append(child);
+
+	BOOST_REQUIRE(element.size() == 1);
+}
+
+BOOST_FIXTURE_TEST_CASE(element_access_single, F) {
+	std::string expected = "child";
+
+	Element child;
+	child.setText(expected);
+
+	BOOST_REQUIRE(child.getText() == expected);
+
+	element.append(child);
+
+	BOOST_REQUIRE(element[0]->getText() == expected);
+}
+
+BOOST_FIXTURE_TEST_CASE(document_access_with_multiple_members, F) {
+	int i, count = 3;
+
+	for (i = 0; i < count; i++) {
+		Element child;
+
+		char str[10];
+		sprintf(str, "%d", i);
+
+		const std::string value = std::string(str);
+
+		child.setText(value);
+		element.append(child);
+	}
+
+	BOOST_REQUIRE(element[0]->getText() == "0");
+	BOOST_REQUIRE(element[1]->getText() == "1");
+	BOOST_REQUIRE(element[2]->getText() == "2");
+}

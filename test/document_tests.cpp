@@ -24,10 +24,9 @@ BOOST_FIXTURE_TEST_CASE(document_initial_size, F) {
 }
 
 BOOST_FIXTURE_TEST_CASE(document_append_once, F) {
-	BlockElement blockElement;
-	blockElement.setText("block");
+	Element element;
 
-	document.append(blockElement);
+	document.append(element);
 	BOOST_REQUIRE(document.size() == 1);
 }
 
@@ -35,38 +34,40 @@ BOOST_FIXTURE_TEST_CASE(document_append_multiple, F) {
 	int i, count = 3;
 
 	for (i = 0; i < count; i++) {
-		BlockElement blockElement;
+		Element element;
 		char str[10];
 		sprintf(str, "%d", i);
-		blockElement.setText(std::string(str));
-		document.append(blockElement);
+		element.setText(std::string(str));
+		document.append(element);
 	}
 
 	BOOST_REQUIRE(document.size() == 3);
 }
 
 BOOST_FIXTURE_TEST_CASE(document_access_with_single_member, F) {
-	BlockElement blockElement;
-	blockElement.setText("block");
+	std::string expected = "expected";
 
-	document.append(blockElement);
+	Element element;
+	element.setText(expected);
 
-	BOOST_REQUIRE(document[0]->getText() == "block");
+	document.append(element);
+
+	BOOST_REQUIRE(document[0]->getText() == expected);
 }
 
 BOOST_FIXTURE_TEST_CASE(document_access_with_multiple_members, F) {
 	int i, count = 3;
 
 	for (i = 0; i < count; i++) {
-		BlockElement blockElement;
+		Element element;
 
 		char str[10];
 		sprintf(str, "%d", i);
 
 		const std::string value = std::string(str);
 
-		blockElement.setText(value);
-		document.append(blockElement);
+		element.setText(value);
+		document.append(element);
 	}
 
 	BOOST_REQUIRE(document[0]->getText() == "0");

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "element.h"
 
 namespace Bypass {
@@ -44,6 +45,8 @@ namespace Bypass {
 		~Element();
 		void setText(std::string text);
 		std::string getText();
+		void addAttribute(std::string name, std::string value);
+		std::string getAttribute(std::string name);
 		void append(const Element& blockElement);
 		Element* getChild(size_t i);
 		Element* operator[](size_t i);
@@ -55,10 +58,11 @@ namespace Bypass {
 		size_t size();
 	private:
 		std::string text;
+		std::map<std::string, std::string> attributes;
 		std::vector<Element*> children;
 		Type type;
 	};
 
 }
 
-#endif // _BYPASS_BLOCK_ELEMENT_H_
+#endif // _BYPASS_ELEMENT_H_

@@ -3,11 +3,13 @@
 namespace Bypass {
 
 	Element::Element() {
-		type = PARAGRAPH;
+		type = TEXT;
+		children = std::vector<Element*>();
+		attributes = std::map<std::string, std::string>();
 	}
 
 	Element::~Element() {
-		while(!children.empty()) {
+		while (!children.empty()) {
 			delete children.back();
 			children.pop_back();
 		}
@@ -21,8 +23,16 @@ namespace Bypass {
 		return this->text;
 	}
 
+	void Element::addAttribute(std::string name, std::string value) {
+		attributes[name] = value;
+	}
+
+	std::string Element::getAttribute(std::string name) {
+		return attributes[name];
+	}
+
 	void  Element::append(const Element& child) {
-		this->children.push_back(new Element(child));
+		children.push_back(new Element(child));
 	}
 
 	Element* Element::operator[](size_t i) {
