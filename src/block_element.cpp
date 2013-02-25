@@ -26,16 +26,18 @@ namespace Bypass {
 		return this->text;
 	}
 
-	void  BlockElement::append(BlockElement* blockElement) {
-		this->blockElements.push_back(blockElement);
+	void  BlockElement::append(const BlockElement& blockElement) {
+		this->blockElements.push_back(new BlockElement(blockElement));
 	}
 
-	void BlockElement::append(SpanElement* spanElement) {
-		this->spanElements.push_back(spanElement);
+	void BlockElement::append(const SpanElement& spanElement) {
+		this->spanElements.push_back(new SpanElement(spanElement));
 	}
 
 	void
 	BlockElement::setSpanElements(std::vector<SpanElement*> elements) {
-		spanElements = elements;
+		for (std::vector<SpanElement*>::iterator it = elements.begin(); it!=elements.end(); ++it) {
+		    spanElements.push_back(new SpanElement(**it));
+		}
 	}
 }

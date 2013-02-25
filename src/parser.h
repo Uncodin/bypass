@@ -55,6 +55,7 @@ namespace Bypass {
 		void moveTempToDocument();
 		void stackTempElement(BlockElement* blockElement);
 		void appendSpanElement(SpanElement* spanElement);
+		void clearSpanElements();
 	};
 
 }

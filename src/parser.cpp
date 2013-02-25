@@ -76,7 +76,12 @@ namespace Bypass {
 	}
 
 	Parser::~Parser() {
+		while(!tempSpanElements.empty()) {
+			delete tempSpanElements.back();
+			tempSpanElements.pop_back();
+		}
 
+		delete tempBlockElement;
 	}
 
 	Document
@@ -115,15 +120,23 @@ namespace Bypass {
 	}
 
 	void Parser::moveTempToDocument() {
-// 		this->document->append(tempBlockElement);
-// 		tempBlockElement = NULL;
+ 		this->document->append(*tempBlockElement);
+ 		delete tempBlockElement;
+ 		tempBlockElement = NULL;
 	}
 
 	void Parser::stackTempElement(BlockElement* blockElement) {
 		if (tempBlockElement != NULL) {
-			blockElement->append(this->tempBlockElement);
+			blockElement->append(*tempBlockElement);
 		}
 		this->tempBlockElement = blockElement;
+	}
+
+	void Parser::clearSpanElements() {
+		while(!tempSpanElements.empty()) {
+			delete tempSpanElements.back();
+			tempSpanElements.pop_back();
+		}
 	}
 
 	// Block Element Callbacks
@@ -170,7 +183,7 @@ namespace Bypass {
 		Bypass::BlockElement* element = new BlockElement();
 		element->setText(text->data);
 		element->setSpanElements(tempSpanElements);
-		tempSpanElements.clear();
+		clearSpanElements();
 		stackTempElement(element);
 	}
 
