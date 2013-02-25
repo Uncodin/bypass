@@ -131,17 +131,13 @@ namespace Bypass {
 
 	void Parser::stackTempElement(BlockElement* blockElement) {
 		if (tempBlockElement != NULL) {
-			blockElement->append(*tempBlockElement);
-			delete tempBlockElement;
+			blockElement->append(tempBlockElement);
 		}
 		this->tempBlockElement = blockElement;
 	}
 
 	void Parser::clearSpanElements() {
-		while(!tempSpanElements.empty()) {
-			delete tempSpanElements.back();
-			tempSpanElements.pop_back();
-		}
+		tempSpanElements.clear();
 	}
 
 	// Block Element Callbacks
