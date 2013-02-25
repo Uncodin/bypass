@@ -7,7 +7,15 @@ namespace Bypass {
 	}
 
 	BlockElement::~BlockElement() {
+		while(!spanElements.empty()) {
+			delete spanElements.back();
+			spanElements.pop_back();
+		}
 
+		while(!blockElements.empty()) {
+			delete blockElements.back();
+			blockElements.pop_back();
+		}
 	}
 
 	void BlockElement::setText(std::string text) {

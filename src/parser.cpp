@@ -81,7 +81,8 @@ namespace Bypass {
 
 	Document
 	Parser::parse(const char *str) {
-		this->document = new Document();
+		Document result;
+		this->document = &result;
 
 		if (str) {
 			struct buf *ib, *ob;
@@ -105,7 +106,8 @@ namespace Bypass {
 			bufrelease(ob);
 		}
 
-		return *document;
+		this->document = NULL;
+		return result;
 	}
 
 	Document Parser::parse(const string &str) {
@@ -143,9 +145,9 @@ namespace Bypass {
 			moveTempToDocument();
 		}
 
-		Bypass::BlockElement element;
-		element.setText(text->data);
-		stackTempElement(&element);
+		Bypass::BlockElement* element = new BlockElement();
+		element->setText(text->data);
+		stackTempElement(element);
 	}
 
 	void Parser::parsedList(struct buf *ob, struct buf *text, int flags) {
@@ -165,11 +167,11 @@ namespace Bypass {
 			moveTempToDocument();
 		}
 
-		Bypass::BlockElement element;
-		element.setText(text->data);
-		element.setSpanElements(tempSpanElements);
+		Bypass::BlockElement* element = new BlockElement();
+		element->setText(text->data);
+		element->setSpanElements(tempSpanElements);
 		tempSpanElements.clear();
-		stackTempElement(&element);
+		stackTempElement(element);
 	}
 
 	// Span Element Callbacks

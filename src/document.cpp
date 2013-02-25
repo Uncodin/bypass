@@ -7,7 +7,10 @@ namespace Bypass {
 	}
 
 	Document::~Document() {
-
+		 while(!blockElements.empty()) {
+			delete blockElements.back();
+			blockElements.pop_back();
+		}
 	}
 
 	void
