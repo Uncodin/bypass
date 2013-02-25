@@ -76,12 +76,18 @@ namespace Bypass {
 	}
 
 	Parser::~Parser() {
+		while(!tempSpanElements.empty()) {
+			delete tempSpanElements.back();
+			tempSpanElements.pop_back();
+		}
 
+		delete tempBlockElement;
 	}
 
 	Document
 	Parser::parse(const char *str) {
-		this->document = new Document();
+		Document result;
+		this->document = &result;
 
 		if (str) {
 			struct buf *ib, *ob;
@@ -105,7 +111,8 @@ namespace Bypass {
 			bufrelease(ob);
 		}
 
-		return *document;
+		this->document = NULL;
+		return result;
 	}
 
 	Document Parser::parse(const string &str) {
@@ -113,15 +120,23 @@ namespace Bypass {
 	}
 
 	void Parser::moveTempToDocument() {
-		this->document->append(tempBlockElement);
-		tempBlockElement = NULL;
+ 		this->document->append(*tempBlockElement);
+ 		delete tempBlockElement;
+ 		tempBlockElement = NULL;
 	}
 
 	void Parser::stackTempElement(BlockElement* blockElement) {
 		if (tempBlockElement != NULL) {
-			blockElement->append(this->tempBlockElement);
+			blockElement->append(*tempBlockElement);
 		}
 		this->tempBlockElement = blockElement;
+	}
+
+	void Parser::clearSpanElements() {
+		while(!tempSpanElements.empty()) {
+			delete tempSpanElements.back();
+			tempSpanElements.pop_back();
+		}
 	}
 
 	// Block Element Callbacks
@@ -143,9 +158,9 @@ namespace Bypass {
 			moveTempToDocument();
 		}
 
-		Bypass::BlockElement element;
-		element.setText(text->data);
-		stackTempElement(&element);
+		Bypass::BlockElement* element = new BlockElement();
+		element->setText(text->data);
+		stackTempElement(element);
 	}
 
 	void Parser::parsedList(struct buf *ob, struct buf *text, int flags) {
@@ -157,7 +172,19 @@ namespace Bypass {
 	}
 
 	void Parser::parsedParagraph(struct buf *ob, struct buf *text) {
+		//check if the text contains a hash from the last block level
+		//if it exists make a new container level and stick the old temp string into it
 
+		//if there is no hash
+		if (ob->size == 0) {
+			moveTempToDocument();
+		}
+
+		Bypass::BlockElement* element = new BlockElement();
+		element->setText(text->data);
+		element->setSpanElements(tempSpanElements);
+		clearSpanElements();
+		stackTempElement(element);
 	}
 
 	// Span Element Callbacks
@@ -167,15 +194,30 @@ namespace Bypass {
 	}
 
 	int Parser::parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c) {
-		return 0;
+		SpanElement* element = new SpanElement();
+		element->setText(text->data);
+		element->setType("bold");
+		tempSpanElements.push_back(element);
+
+		return 1;
 	}
 
 	int Parser::parsedEmphasis(struct buf *ob, struct buf *text, char c) {
-		return 0;
+		SpanElement* element = new SpanElement();
+		element->setText(text->data);
+		element->setType("italic");
+		tempSpanElements.push_back(element);
+
+		return 1;
 	}
 
 	int Parser::parsedTripleEmphasis(struct buf *ob, struct buf *text, char c) {
-		return 0;
+		SpanElement* element = new SpanElement();
+		element->setText(text->data);
+		element->setType("bolditalic");
+		tempSpanElements.push_back(element);
+
+		return 1;
 	}
 
 	int Parser::parsedLinebreak(struct buf *ob) {
@@ -183,13 +225,22 @@ namespace Bypass {
 	}
 
 	int Parser::parsedLink(struct buf *ob, struct buf *link, struct buf *title, struct buf *content) {
-		return 0;
+		SpanElement* element = new SpanElement();
+		element->setText(content->data);
+		element->setExtra(link->data);
+		element->setType("href");
+		tempSpanElements.push_back(element);
+
+		return 1;
 	}
 
 	// Low Level Callbacks
 
 	void Parser::parsedNormalText(struct buf *ob, struct buf *text) {
-
+		SpanElement* element = new SpanElement();
+		element->setText(text->data);
+		element->setType("text");
+		tempSpanElements.push_back(element);
 	}
 
 }
