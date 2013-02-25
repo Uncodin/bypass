@@ -23,12 +23,13 @@ namespace Bypass {
 			TABLE_ROW
 		};
 		BlockElement();
+		BlockElement(const BlockElement& element);
 		~BlockElement();
 		void setText(std::string text);
 		std::string getText();
-		void append(const BlockElement& blockElement);
+		void append(BlockElement* blockElement);
 		BlockElement* getBlockElementAtIndex(size_t i);
-		void append(const SpanElement& spanElement);
+		void append(SpanElement* spanElement);
 		void setSpanElements(std::vector<SpanElement*> elements);
 		SpanElement* getSpanElementAtIndex(size_t i);
 		void setType(Type type);
