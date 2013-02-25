@@ -13,7 +13,12 @@ namespace Bypass
 	public:
 		Document();
 		~Document();
-		void append(BlockElement* blockElement);
+
+		void append(const BlockElement& blockElement);
+
+		size_t size();
+
+		BlockElement* operator[](size_t i);
 	};
 
 }

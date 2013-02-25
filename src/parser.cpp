@@ -115,8 +115,8 @@ namespace Bypass {
 	}
 
 	void Parser::moveTempToDocument() {
-		this->document->append(tempBlockElement);
-		tempBlockElement = NULL;
+// 		this->document->append(tempBlockElement);
+// 		tempBlockElement = NULL;
 	}
 
 	void Parser::stackTempElement(BlockElement* blockElement) {

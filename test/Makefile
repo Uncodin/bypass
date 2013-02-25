@@ -4,7 +4,7 @@ SRC      = $(wildcard *.cpp)
 OBJ		 = $(SRC:.cpp=.o)
 TESTS    = $(SRC:.cpp=.tst)
 CPPFLAGS = -Wall
-CXXFLAGS = -I../src -I../dep/libsoldout -std=c++0x -g -O3 -Wno-unknown-pragmas
+CXXFLAGS = -I../src -I../dep/libsoldout -g -O3 -Wno-unknown-pragmas
 
 .PHONY: all clean check test
 .SECONDARY:
