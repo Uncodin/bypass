@@ -22,7 +22,6 @@ namespace Bypass {
 			TABLE_CELL,
 			TABLE_ROW
 		};
-
 		BlockElement();
 		~BlockElement();
 		void setText(std::string text);

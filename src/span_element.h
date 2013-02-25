@@ -6,16 +6,29 @@
 namespace Bypass {
 
 	class SpanElement {
-	private:
-		std::string text;
-		std::string extra;
-		std::string type;
 	public:
+		enum Type {
+			AUTOLINK,
+			CODE_SPAN,
+			DOUBLE_EMPHASIS,
+			EMPHASIS,
+			IMAGE,
+			LINEBREAK,
+			LINK,
+			RAW_HTML_TAG,
+			TRIPLE_EMPHASIS,
+			TEXT
+		};
 		SpanElement();
 		~SpanElement();
 		void setText(std::string text);
 		void setExtra(std::string extra);
-		void setType(std::string type);
+		void setType(Type type);
+		Type getType();
+	private:
+		std::string text;
+		std::string extra;
+		Type type;
 	};
 
 }

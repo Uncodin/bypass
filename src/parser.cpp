@@ -195,7 +195,7 @@ namespace Bypass {
 	int Parser::parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c) {
 		SpanElement* element = new SpanElement();
 		element->setText(text->data);
-		element->setType("bold");
+		element->setType(SpanElement::DOUBLE_EMPHASIS);
 		tempSpanElements.push_back(element);
 
 		return 1;
@@ -204,7 +204,7 @@ namespace Bypass {
 	int Parser::parsedEmphasis(struct buf *ob, struct buf *text, char c) {
 		SpanElement* element = new SpanElement();
 		element->setText(text->data);
-		element->setType("italic");
+		element->setType(SpanElement::EMPHASIS);
 		tempSpanElements.push_back(element);
 
 		return 1;
@@ -213,7 +213,7 @@ namespace Bypass {
 	int Parser::parsedTripleEmphasis(struct buf *ob, struct buf *text, char c) {
 		SpanElement* element = new SpanElement();
 		element->setText(text->data);
-		element->setType("bolditalic");
+		element->setType(SpanElement::TRIPLE_EMPHASIS);
 		tempSpanElements.push_back(element);
 
 		return 1;
@@ -227,7 +227,7 @@ namespace Bypass {
 		SpanElement* element = new SpanElement();
 		element->setText(content->data);
 		element->setExtra(link->data);
-		element->setType("href");
+		element->setType(SpanElement::LINK);
 		tempSpanElements.push_back(element);
 
 		return 1;
@@ -238,7 +238,7 @@ namespace Bypass {
 	void Parser::parsedNormalText(struct buf *ob, struct buf *text) {
 		SpanElement* element = new SpanElement();
 		element->setText(text->data);
-		element->setType("text");
+		element->setType(SpanElement::TEXT);
 		tempSpanElements.push_back(element);
 	}
 

@@ -3,7 +3,7 @@
 namespace Bypass {
 
 	BlockElement::BlockElement() {
-
+		type = PARAGRAPH;
 	}
 
 	BlockElement::~BlockElement() {
