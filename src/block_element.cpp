@@ -34,10 +34,17 @@ namespace Bypass {
 		this->spanElements.push_back(new SpanElement(spanElement));
 	}
 
-	void
-	BlockElement::setSpanElements(std::vector<SpanElement*> elements) {
+	void BlockElement::setSpanElements(std::vector<SpanElement*> elements) {
 		for (std::vector<SpanElement*>::iterator it = elements.begin(); it!=elements.end(); ++it) {
 		    spanElements.push_back(new SpanElement(**it));
 		}
+	}
+
+	void BlockElement::setType(Type type) {
+
+	}
+
+	BlockElement::Type BlockElement::getType() {
+		return type;
 	}
 }

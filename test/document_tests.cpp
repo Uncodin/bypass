@@ -50,9 +50,8 @@ BOOST_FIXTURE_TEST_CASE(document_access_with_single_member, F) {
 	blockElement.setText("block");
 
 	document.append(blockElement);
-	BlockElement *expected = document[0];
 
-	BOOST_REQUIRE(expected->getText() == "block");
+	BOOST_REQUIRE(document[0]->getText() == "block");
 }
 
 BOOST_FIXTURE_TEST_CASE(document_access_with_multiple_members, F) {
@@ -70,12 +69,7 @@ BOOST_FIXTURE_TEST_CASE(document_access_with_multiple_members, F) {
 		document.append(blockElement);
 	}
 
-	BOOST_REQUIRE(document[0]->getText().length() == 1);
 	BOOST_REQUIRE(document[0]->getText() == "0");
-
-	BOOST_REQUIRE(document[1]->getText().length() == 1);
 	BOOST_REQUIRE(document[1]->getText() == "1");
-
-	BOOST_REQUIRE(document[2]->getText().length() == 1);
 	BOOST_REQUIRE(document[2]->getText() == "2");
 }

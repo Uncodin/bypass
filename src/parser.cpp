@@ -84,8 +84,7 @@ namespace Bypass {
 		delete tempBlockElement;
 	}
 
-	Document
-	Parser::parse(const char *str) {
+	Document Parser::parse(const char *str) {
 		Document result;
 		this->document = &result;
 
@@ -120,9 +119,9 @@ namespace Bypass {
 	}
 
 	void Parser::moveTempToDocument() {
- 		this->document->append(*tempBlockElement);
- 		delete tempBlockElement;
- 		tempBlockElement = NULL;
+		this->document->append(*tempBlockElement);
+		delete tempBlockElement;
+		tempBlockElement = NULL;
 	}
 
 	void Parser::stackTempElement(BlockElement* blockElement) {

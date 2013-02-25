@@ -13,14 +13,11 @@ namespace Bypass
 	public:
 		Document();
 		~Document();
-
 		void append(const BlockElement& blockElement);
-
-		size_t size();
-
+		void operator+=(const BlockElement& blockElement);
 		BlockElement* operator[](size_t i);
+		size_t size();
 	};
-
 }
 
 #endif // _BYPASS_DOCUMENT_H_

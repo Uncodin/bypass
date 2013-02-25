@@ -29,8 +29,3 @@ struct F {
 BOOST_FIXTURE_TEST_CASE(parse_with_null_input, F) {
 	Document document = parser.parse(NULL);
 }
-
-BOOST_FIXTURE_TEST_CASE(parse_with_empty_string, F) {
-	std::string s = std::string();
-	Document document = parser.parse(s);
-}
