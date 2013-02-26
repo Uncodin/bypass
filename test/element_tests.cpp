@@ -8,7 +8,9 @@
 using namespace Bypass;
 
 struct F {
-	F() : element() {
+	F()
+	: element()
+	{
 		BOOST_TEST_MESSAGE( "setup fixture" );
 	}
 
@@ -163,13 +165,6 @@ BOOST_FIXTURE_TEST_CASE(element_triple_emphasis_type, F) {
 	BOOST_REQUIRE(element.isSpanElement());
 }
 
-BOOST_FIXTURE_TEST_CASE(element_text_type, F) {
-	element.setType(TEXT);
-
-	BOOST_REQUIRE(!element.isBlockElement());
-	BOOST_REQUIRE(element.isSpanElement());
-}
-
 BOOST_FIXTURE_TEST_CASE(element_append_single, F) {
 	Element child;
 	element.append(child);
@@ -187,10 +182,10 @@ BOOST_FIXTURE_TEST_CASE(element_access_single, F) {
 
 	element.append(child);
 
-	BOOST_REQUIRE(element[0]->getText() == expected);
+	BOOST_REQUIRE(element[0].getText() == expected);
 }
 
-BOOST_FIXTURE_TEST_CASE(document_access_with_multiple_members, F) {
+BOOST_FIXTURE_TEST_CASE(element_append_multiple, F) {
 	int i, count = 3;
 
 	for (i = 0; i < count; i++) {
@@ -205,7 +200,7 @@ BOOST_FIXTURE_TEST_CASE(document_access_with_multiple_members, F) {
 		element.append(child);
 	}
 
-	BOOST_REQUIRE(element[0]->getText() == "0");
-	BOOST_REQUIRE(element[1]->getText() == "1");
-	BOOST_REQUIRE(element[2]->getText() == "2");
+	BOOST_REQUIRE(element[0].getText() == "0");
+	BOOST_REQUIRE(element[1].getText() == "1");
+	BOOST_REQUIRE(element[2].getText() == "2");
 }

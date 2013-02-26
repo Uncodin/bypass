@@ -21,7 +21,7 @@ namespace Bypass {
 		Parser();
 		~Parser();
 
-		Document parse(const char *markdown);
+		Document parse(const char* markdown);
 		Document parse(const std::string &markdown);
 
 		// Block Element Callbacks
@@ -46,16 +46,13 @@ namespace Bypass {
 
 		void parsedNormalText(struct buf *ob, struct buf *text);
 
-	private:
-		Document* document;
-		Element* tempElement;
-		std::vector<Element*> tempSpanElements;
+		// Debugging
 
-		// Parsing Internals
-		void moveTempToDocument();
-		void stackTempElement(Element* element);
-		void appendSpanElement(Element* element);
-		void clearSpanElements();
+		void printBuf(struct buf *b);
+
+	private:
+		Document document;
+		Element pendingElement;
 	};
 
 }

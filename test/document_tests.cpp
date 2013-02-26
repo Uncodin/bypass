@@ -8,7 +8,9 @@
 using namespace Bypass;
 
 struct F {
-	F() : document() {
+	F()
+	: document()
+	{
 		BOOST_TEST_MESSAGE( "setup fixture" );
 	}
 
@@ -23,7 +25,7 @@ BOOST_FIXTURE_TEST_CASE(document_initial_size, F) {
 	BOOST_REQUIRE(document.size() == 0);
 }
 
-BOOST_FIXTURE_TEST_CASE(document_append_once, F) {
+BOOST_FIXTURE_TEST_CASE(document_append_single, F) {
 	Element element;
 
 	document.append(element);
@@ -44,7 +46,7 @@ BOOST_FIXTURE_TEST_CASE(document_append_multiple, F) {
 	BOOST_REQUIRE(document.size() == 3);
 }
 
-BOOST_FIXTURE_TEST_CASE(document_access_with_single_member, F) {
+BOOST_FIXTURE_TEST_CASE(document_access_single, F) {
 	std::string expected = "expected";
 
 	Element element;
@@ -52,10 +54,10 @@ BOOST_FIXTURE_TEST_CASE(document_access_with_single_member, F) {
 
 	document.append(element);
 
-	BOOST_REQUIRE(document[0]->getText() == expected);
+	BOOST_REQUIRE(document[0].getText() == expected);
 }
 
-BOOST_FIXTURE_TEST_CASE(document_access_with_multiple_members, F) {
+BOOST_FIXTURE_TEST_CASE(document_access_multiple, F) {
 	int i, count = 3;
 
 	for (i = 0; i < count; i++) {
@@ -70,7 +72,7 @@ BOOST_FIXTURE_TEST_CASE(document_access_with_multiple_members, F) {
 		document.append(element);
 	}
 
-	BOOST_REQUIRE(document[0]->getText() == "0");
-	BOOST_REQUIRE(document[1]->getText() == "1");
-	BOOST_REQUIRE(document[2]->getText() == "2");
+	BOOST_REQUIRE(document[0].getText() == "0");
+	BOOST_REQUIRE(document[1].getText() == "1");
+	BOOST_REQUIRE(document[2].getText() == "2");
 }

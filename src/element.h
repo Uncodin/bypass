@@ -48,9 +48,9 @@ namespace Bypass {
 		void addAttribute(std::string name, std::string value);
 		std::string getAttribute(std::string name);
 		void append(const Element& blockElement);
-		Element* getChild(size_t i);
-		Element* operator[](size_t i);
-		void setChildren(std::vector<Element*> children);
+		Element getChild(size_t i);
+		Element operator[](size_t i);
+		void setChildren(std::vector<Element> children);
 		void setType(Type type);
 		Type getType();
 		bool isBlockElement();
@@ -59,7 +59,7 @@ namespace Bypass {
 	private:
 		std::string text;
 		std::map<std::string, std::string> attributes;
-		std::vector<Element*> children;
+		std::vector<Element> children;
 		Type type;
 	};
 

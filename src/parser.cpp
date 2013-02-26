@@ -1,10 +1,7 @@
+#include <iostream>
 #include "parser.h"
 
 using namespace std;
-
-/*
- *	Block Element callbacks
- */
 
 static void rndr_blockcode(struct buf *ob, struct buf *text, void *opaque);
 static void rndr_blockquote(struct buf *ob, struct buf *text, void *opaque);
@@ -12,22 +9,12 @@ static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaqu
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque);
 static void rndr_listitem(struct buf *ob, struct buf *text, int flags, void *opaque);
 static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque);
-
-/*
- *	Span Element callbacks
- */
-
 static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque);
 static int rndr_double_emphasis(struct buf *ob, struct buf *text, char c, void *opaque);
 static int rndr_emphasis(struct buf *ob, struct buf *text, char c, void *opaque);
 static int rndr_triple_emphasis(struct buf *ob, struct buf *text, char c, void *opaque);
 static int rndr_linebreak(struct buf *ob, void *opaque);
 static int rndr_link(struct buf *ob, struct buf *link, struct buf *title, struct buf *content, void *opaque);
-
-/*
- *	Low Level Callbacks
- */
-
 static void rndr_normal_text(struct buf *ob, struct buf *text, void *opaque);
 
 struct mkd_renderer mkd_callbacks = {
@@ -71,71 +58,41 @@ struct mkd_renderer mkd_callbacks = {
 
 namespace Bypass {
 
-	Parser::Parser() {
+	Parser::Parser()
+	: pendingElement()
+	{
 
 	}
 
 	Parser::~Parser() {
-		while(!tempSpanElements.empty()) {
-			delete tempSpanElements.back();
-			tempSpanElements.pop_back();
-		}
 
-		if (tempElement != NULL) {
-			delete tempElement;
-			tempElement = NULL;
-		}
 	}
 
-	Document Parser::parse(const char *str) {
-		Document result;
-		this->document = &result;
+	Document Parser::parse(const char* mkd) {
+		document = Document();
 
-		if (str) {
+		if (mkd) {
 			struct buf *ib, *ob;
 
 			ib = bufnew(INPUT_UNIT);
-			bufputs(ib, str);
+			bufputs(ib, mkd);
 
 			ob = bufnew(OUTPUT_UNIT);
 
 			mkd_callbacks.opaque = this;
+
 			//parse and assemble document
 			markdown(ob, ib, &mkd_callbacks);
 
-			// We have finished parsing, move any data left in the temp string to the main string
-			if (tempElement != NULL) {
-				moveTempToDocument();
-			}
-
-			/* cleanup */
 			bufrelease(ib);
 			bufrelease(ob);
 		}
 
-		this->document = NULL;
-		return result;
+		return document;
 	}
 
-	Document Parser::parse(const std::string &str) {
-		return parse(str.c_str());
-	}
-
-	void Parser::moveTempToDocument() {
-// 		this->document->append(resolvedElement);
-// 		delete tempElement;
-// 		tempElement = NULL;
-	}
-
-	void Parser::stackTempElement(Element* element) {
-// 		if (tempElement != NULL) {
-// 			element->append(tempElement);
-// 		}
-// 		this->tempElement = element;
-	}
-
-	void Parser::clearSpanElements() {
-		tempSpanElements.clear();
+	Document Parser::parse(const string& markdown) {
+		return parse(markdown.c_str());
 	}
 
 	// Block Element Callbacks
@@ -149,17 +106,7 @@ namespace Bypass {
 	}
 
 	void Parser::parsedHeader(struct buf *ob, struct buf *text, int level) {
-		//check if the text contains a hash from the last block level
-		//if it exists make a new container level and stick the old temp string into it
 
-		//if there is no hash
-		if (ob->size == 0) {
-			moveTempToDocument();
-		}
-//
-// 		Bypass::BlockElement* element = new BlockElement();
-// 		element->setText(text->data);
-// 		stackTempElement(element);
 	}
 
 	void Parser::parsedList(struct buf *ob, struct buf *text, int flags) {
@@ -171,22 +118,10 @@ namespace Bypass {
 	}
 
 	void Parser::parsedParagraph(struct buf *ob, struct buf *text) {
-		//check if the text contains a hash from the last block level
-		//if it exists make a new container level and stick the old temp string into it
-
-		//if there is no hash
-		if (ob->size == 0) {
-			moveTempToDocument();
-		}
-
-		Element* element = new Element();
-		if (text->size) {
-			element->setText(text->data);
-		}
-
-// 		element->setSpanElements(tempSpanElements);
-// 		clearSpanElements();
-// 		stackTempElement(element);
+		Element paragraph;
+		paragraph.setType(PARAGRAPH);
+		paragraph.append(pendingElement);
+		document.append(paragraph);
 	}
 
 	// Span Element Callbacks
@@ -196,29 +131,15 @@ namespace Bypass {
 	}
 
 	int Parser::parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c) {
-		Element* element = new Element();
-		element->setText(text->data);
-		element->setType(DOUBLE_EMPHASIS);
-		tempSpanElements.push_back(element);
-
+		pendingElement.setType(DOUBLE_EMPHASIS);
 		return 1;
 	}
 
 	int Parser::parsedEmphasis(struct buf *ob, struct buf *text, char c) {
-		Element* element = new Element();
-		element->setText(text->data);
-		element->setType(EMPHASIS);
-		tempSpanElements.push_back(element);
-
 		return 1;
 	}
 
 	int Parser::parsedTripleEmphasis(struct buf *ob, struct buf *text, char c) {
-		Element* element = new Element();
-		element->setText(text->data);
-		element->setType(TRIPLE_EMPHASIS);
-		tempSpanElements.push_back(element);
-
 		return 1;
 	}
 
@@ -227,29 +148,32 @@ namespace Bypass {
 	}
 
 	int Parser::parsedLink(struct buf *ob, struct buf *link, struct buf *title, struct buf *content) {
-		Element* element = new Element();
-		element->setText(content->data);
-		element->addAttribute("extra", link->data);
-		element->setType(LINK);
-		tempSpanElements.push_back(element);
-
 		return 1;
 	}
 
 	// Low Level Callbacks
 
 	void Parser::parsedNormalText(struct buf *ob, struct buf *text) {
-		Element* element = new Element();
-		element->setText(text->data);
-		element->setType(TEXT);
-		tempSpanElements.push_back(element);
+		Element normalText;
+		normalText.setType(TEXT);
+		normalText.setText(std::string(text->data).substr(0, text->size));
+		pendingElement = normalText;
+	}
+
+	void Parser::printBuf(struct buf *b) {
+		if (b != NULL) {
+			std::cerr << "buf {" << std::endl;
+			std::cerr << "  data:  " << ((b->data == NULL) ? "NULL" : b->data) << "," << std::endl;
+			std::cerr << "  size:  " << b->size  << "," << std::endl;
+			std::cerr << "  asize: " << b->asize << "," << std::endl;
+			std::cerr << "  unit:  " << b->unit  << "," << std::endl;
+			std::cerr << "}" << std::endl;
+		}
 	}
 
 }
 
-/*
- *	Block Element callbacks
- */
+// Block Element callbacks
 
 static void rndr_blockcode(struct buf *ob, struct buf *text, void *opaque) {
 	((Bypass::Parser*) opaque)->parsedBlockcode(ob, text);
@@ -275,9 +199,7 @@ static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque) {
 	((Bypass::Parser*) opaque)->parsedParagraph(ob, text);
 }
 
-/*
- *	Span Element callbacks
- */
+// Span Element callbacks
 
 static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque) {
 	return ((Bypass::Parser*) opaque)->parsedCodeSpan(ob, text);
@@ -303,9 +225,7 @@ static int rndr_link(struct buf *ob, struct buf *link, struct buf *title, struct
 	return ((Bypass::Parser*) opaque)->parsedLink(ob, link, title, content);
 }
 
-/*
- *	Low Level Callbacks
- */
+//	Low Level Callbacks
 
 static void rndr_normal_text(struct buf *ob, struct buf *text, void *opaque) {
 	return ((Bypass::Parser*) opaque)->parsedNormalText(ob, text);
