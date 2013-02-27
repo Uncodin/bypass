@@ -149,6 +149,19 @@ namespace Bypass {
 
 	int Parser::parsedLink(struct buf *ob, struct buf *link, struct buf *title, struct buf *content) {
 		pendingSpanElements.back().setType(LINK);
+
+		if (link && link->size > 0) {
+			pendingSpanElements.back().addAttribute("link", std::string(link->data).substr(0, link->size));
+		}
+
+		if (title && title->size > 0) {
+			pendingSpanElements.back().addAttribute("title", std::string(title->data).substr(0, title->size));
+		}
+
+		if (content && content->size) {
+			pendingSpanElements.back().addAttribute("content", std::string(content->data).substr(0, content->size));
+		}
+
 		return 1;
 	}
 

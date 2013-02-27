@@ -208,6 +208,23 @@ BOOST_FIXTURE_TEST_CASE(parse_link_with_simple_example, F) {
 	BOOST_REQUIRE(document[0].size() == 1);
 	BOOST_REQUIRE(document[0][0].getType() == LINK);
 	BOOST_REQUIRE(document[0][0].getText() == "one");
+	BOOST_REQUIRE(document[0][0].getAttribute("link") == "http://example.net/");
+	BOOST_REQUIRE(document[0][0].getAttributeNames().size() == 1);
+	BOOST_REQUIRE(document[0][0].size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_link_with_simple_titled_example, F) {
+	Document document = parser.parse("[one](http://example.net/ \"One\")");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == LINK);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+	BOOST_REQUIRE(document[0][0].getAttribute("link") == "http://example.net/");
+	BOOST_REQUIRE(document[0][0].getAttribute("title") == "One");
+	BOOST_REQUIRE(document[0][0].getAttributeNames().size() == 2);
 	BOOST_REQUIRE(document[0][0].size() == 0);
 }
 
@@ -223,6 +240,29 @@ BOOST_FIXTURE_TEST_CASE(parse_link_with_single_interspersed_simple_example, F) {
 	BOOST_REQUIRE(document[0][0].size() == 0);
 	BOOST_REQUIRE(document[0][1].getType() == LINK);
 	BOOST_REQUIRE(document[0][1].getText() == "two");
+	BOOST_REQUIRE(document[0][1].getAttribute("link") == "http://example.net/");
+	BOOST_REQUIRE(document[0][1].getAttributeNames().size() == 1);
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == TEXT);
+	BOOST_REQUIRE(document[0][2].getText() == " three");
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_link_with_single_interspersed_simple_titled_example, F) {
+	Document document = parser.parse("one [two](http://example.net/ \"Two\") three");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "one ");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == LINK);
+	BOOST_REQUIRE(document[0][1].getText() == "two");
+	BOOST_REQUIRE(document[0][1].getAttribute("link") == "http://example.net/");
+	BOOST_REQUIRE(document[0][1].getAttribute("title") == "Two");
+	BOOST_REQUIRE(document[0][1].getAttributeNames().size() == 2);
 	BOOST_REQUIRE(document[0][1].size() == 0);
 	BOOST_REQUIRE(document[0][2].getType() == TEXT);
 	BOOST_REQUIRE(document[0][2].getText() == " three");
@@ -238,12 +278,40 @@ BOOST_FIXTURE_TEST_CASE(parse_link_with_multiple_interspersed_simple_example, F)
 	BOOST_REQUIRE(document[0].size() == 3);
 	BOOST_REQUIRE(document[0][0].getType() == LINK);
 	BOOST_REQUIRE(document[0][0].getText() == "one");
+	BOOST_REQUIRE(document[0][0].getAttribute("link") == "http://example.net/");
+	BOOST_REQUIRE(document[0][0].getAttributeNames().size() == 1);
 	BOOST_REQUIRE(document[0][0].size() == 0);
 	BOOST_REQUIRE(document[0][1].getType() == TEXT);
 	BOOST_REQUIRE(document[0][1].getText() == " two ");
 	BOOST_REQUIRE(document[0][1].size() == 0);
 	BOOST_REQUIRE(document[0][2].getType() == LINK);
 	BOOST_REQUIRE(document[0][2].getText() == "three");
+	BOOST_REQUIRE(document[0][2].getAttribute("link") == "http://example.net/");
+	BOOST_REQUIRE(document[0][2].getAttributeNames().size() == 1);
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_link_with_multiple_interspersed_simple_titled_example, F) {
+	Document document = parser.parse("[one](http://example.net/ \"One\") two [three](http://example.net/ \"Three\")");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == LINK);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+	BOOST_REQUIRE(document[0][0].getAttribute("link") == "http://example.net/");
+	BOOST_REQUIRE(document[0][0].getAttribute("title") == "One");
+	BOOST_REQUIRE(document[0][0].getAttributeNames().size() == 2);
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == TEXT);
+	BOOST_REQUIRE(document[0][1].getText() == " two ");
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == LINK);
+	BOOST_REQUIRE(document[0][2].getText() == "three");
+	BOOST_REQUIRE(document[0][2].getAttribute("link") == "http://example.net/");
+	BOOST_REQUIRE(document[0][2].getAttribute("title") == "Three");
+	BOOST_REQUIRE(document[0][2].getAttributeNames().size() == 2);
 	BOOST_REQUIRE(document[0][2].size() == 0);
 }
 
