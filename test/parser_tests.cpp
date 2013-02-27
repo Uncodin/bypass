@@ -20,8 +20,6 @@ struct F {
 	Parser parser;
 };
 
-/*
-
 // Edge Cases ------------------------------------------------------------------
 
 BOOST_FIXTURE_TEST_CASE(parse_null, F) {
@@ -198,8 +196,6 @@ BOOST_FIXTURE_TEST_CASE(parse_multiple_interspersed_triple_emphasis, F) {
 	BOOST_REQUIRE(document[0][2].getText() == "three");
 	BOOST_REQUIRE(document[0][2].size() == 0);
 }
-
-*/
 
 // Link ------------------------------------------------------------------------
 

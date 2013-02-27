@@ -172,7 +172,7 @@ namespace Bypass {
 // 		pendingSpanElements.push_back(lineBreak);
 // 		return 1;
 
-		return 0
+		return 0;
 	}
 
 	// Low Level Callbacks
@@ -181,8 +181,6 @@ namespace Bypass {
 
 		// The parser will spuriously emit a text callback for an empty string
 		// that butts up against a span-level element. This will ignore it.
-
-		std::cerr << "text->data: " << std::string(text->data).substr(0, text->size) << std::endl;
 
 		if (text && text->size > 0) {
 			Element normalText;
