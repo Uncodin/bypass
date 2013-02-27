@@ -366,18 +366,22 @@ BOOST_FIXTURE_TEST_CASE(parse_multiple_interspersed_code_span, F) {
 }
 
 // Line Break ------------------------------------------------------------------
-//
-// BOOST_FIXTURE_TEST_CASE(parse_simple_linebreak, F) {
-// 	Document document = parser.parse("linebreak  \n");
-//
-// 	BOOST_REQUIRE(document.size() == 1);
-// 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
-// 	BOOST_REQUIRE(document[0].getText().length() == 0);
-// 	BOOST_REQUIRE(document[0].size() == 2);
-// 	BOOST_REQUIRE(document[0][0].getType() == TEXT);
-// 	BOOST_REQUIRE(document[0][0].getText() == "linebreak");
-// 	BOOST_REQUIRE(document[0][0].size() == 0);
-// 	BOOST_REQUIRE(document[0][1].getType() == LINEBREAK);
-// 	BOOST_REQUIRE(document[0][1].getText() == "");
-// 	BOOST_REQUIRE(document[0][1].size() == 0);
-// }
+
+BOOST_FIXTURE_TEST_CASE(parse_simple_linebreak, F) {
+	Document document = parser.parse("one  \ntwo");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+// 	BOOST_REQUIRE(document[0][0].getText() == "one");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == LINEBREAK);
+	BOOST_REQUIRE(document[0][1].getText() == "");
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == TEXT);
+// 	BOOST_REQUIRE(document[0][2].getText() == "two");
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}

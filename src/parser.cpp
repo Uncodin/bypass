@@ -177,16 +177,10 @@ namespace Bypass {
 	}
 
 	int Parser::parsedLinebreak(struct buf *ob) {
-
-//		Not sure how to trigger this -- I thought it was "  \n" but that didn't
-//		seem to do anything.
-
-// 		Element lineBreak;
-// 		lineBreak.setType(LINEBREAK);
-// 		pendingSpanElements.push_back(lineBreak);
-// 		return 1;
-
-		return 0;
+		Element lineBreak;
+		lineBreak.setType(LINEBREAK);
+		pendingSpanElements.push_back(lineBreak);
+		return 1;
 	}
 
 	// Low Level Callbacks
