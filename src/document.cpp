@@ -2,27 +2,26 @@
 
 namespace Bypass {
 
-	Document::Document() {
-		blockElements = std::vector<BlockElement*>();
+	Document::Document()
+	: elements()
+	{
+
 	}
 
 	Document::~Document() {
-		while(!blockElements.empty()) {
-			delete blockElements.back();
-			blockElements.pop_back();
-		}
+
 	}
 
-	void Document::append(const BlockElement& blockElement) {
-		blockElements.push_back(new BlockElement(blockElement));
+	void Document::append(const Element& element) {
+		elements.push_back(Element(element));
 	}
 
 	size_t Document::size() {
-		return blockElements.size();
+		return elements.size();
 	}
 
-	BlockElement* Document::operator[](size_t i) {
-		return blockElements[i];
+	Element Document::operator[](size_t i) {
+		return elements[i];
 	}
 
 }

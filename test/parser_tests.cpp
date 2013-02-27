@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE BypassParserTests
+#define BOOST_TEST_MODULE ParserTests
 
 #include <boost/test/included/unit_test.hpp>
 #include <string>
@@ -7,30 +7,284 @@
 using namespace Bypass;
 
 struct F {
-	F() :
-		parser(),
-		p("A paragraph is simply one or more consecutive lines of text, "
-		  " separated by one or more blank lines. (A blank line is any line"
-		  " that looks like a blank line — a line containing nothing but spaces"
-		  " or tabs is considered blank.) Normal paragraphs should not be "
-		  " indented with spaces or tabs.")
+	F()
+	: parser()
 	{
-		BOOST_TEST_MESSAGE( "setup fixture" );
+
 	}
 
 	~F() {
-		BOOST_TEST_MESSAGE( "teardown fixture" );
+
 	}
 
 	Parser parser;
-	std::string p;
 };
 
-BOOST_FIXTURE_TEST_CASE(parse_with_null_input, F) {
+// Edge Cases ------------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_null, F) {
 	Document document = parser.parse(NULL);
+	BOOST_REQUIRE(document.size() == 0);
 }
 
-BOOST_FIXTURE_TEST_CASE(parse_with_empty_string, F) {
-	std::string s = std::string();
-	Document document = parser.parse(s);
+BOOST_FIXTURE_TEST_CASE(parse_empty, F) {
+	Document document = parser.parse(std::string(""));
+	BOOST_REQUIRE(document.size() == 0);
 }
+
+// Text ------------------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_text, F) {
+	Document document = parser.parse("hello world");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "hello world");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+}
+
+// Emphasis --------------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_emphasis_with_simple_example, F) {
+	Document document = parser.parse("*hello world*");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == EMPHASIS);
+	BOOST_REQUIRE(document[0][0].getText() == "hello world");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_single_interspersed_emphasis, F) {
+	Document document = parser.parse("one *two* three");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "one ");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == EMPHASIS);
+	BOOST_REQUIRE(document[0][1].getText() == "two");
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == TEXT);
+	BOOST_REQUIRE(document[0][2].getText() == " three");
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_multiple_interspersed_emphasis, F) {
+	Document document = parser.parse("*one* two *three*");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == EMPHASIS);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == TEXT);
+	BOOST_REQUIRE(document[0][1].getText() == " two ");
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == EMPHASIS);
+	BOOST_REQUIRE(document[0][2].getText() == "three");
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}
+
+// Double Emphasis -------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_double_emphasis_with_simple_example, F) {
+	Document document = parser.parse("**hello world**");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == DOUBLE_EMPHASIS);
+	BOOST_REQUIRE(document[0][0].getText() == "hello world");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_single_interspersed_double_emphasis, F) {
+	Document document = parser.parse("one **two** three");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "one ");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == DOUBLE_EMPHASIS);
+	BOOST_REQUIRE(document[0][1].getText() == "two");
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == TEXT);
+	BOOST_REQUIRE(document[0][2].getText() == " three");
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_multiple_interspersed_double_emphasis, F) {
+	Document document = parser.parse("**one** two **three**");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == DOUBLE_EMPHASIS);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == TEXT);
+	BOOST_REQUIRE(document[0][1].getText() == " two ");
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == DOUBLE_EMPHASIS);
+	BOOST_REQUIRE(document[0][2].getText() == "three");
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}
+
+// Triple Emphasis -------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_triple_emphasis_with_simple_example, F) {
+	Document document = parser.parse("***hello world***");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TRIPLE_EMPHASIS);
+	BOOST_REQUIRE(document[0][0].getText() == "hello world");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_single_interspersed_triple_emphasis, F) {
+	Document document = parser.parse("one ***two*** three");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "one ");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == TRIPLE_EMPHASIS);
+	BOOST_REQUIRE(document[0][1].getText() == "two");
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == TEXT);
+	BOOST_REQUIRE(document[0][2].getText() == " three");
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_multiple_interspersed_triple_emphasis, F) {
+	Document document = parser.parse("***one*** two ***three***");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == TRIPLE_EMPHASIS);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == TEXT);
+	BOOST_REQUIRE(document[0][1].getText() == " two ");
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == TRIPLE_EMPHASIS);
+	BOOST_REQUIRE(document[0][2].getText() == "three");
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}
+
+// Link ------------------------------------------------------------------------
+
+// BOOST_FIXTURE_TEST_CASE(parse_link_with_simple_example, F) {
+// 	Document document = parser.parse("[an example](http://example.com/ \"Title\")");
+//
+// 	BOOST_REQUIRE(document.size() == 1);
+// 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+// 	BOOST_REQUIRE(document[0].getText().length() == 0);
+// 	BOOST_REQUIRE(document[0].size() == 1);
+// 	BOOST_REQUIRE(document[0][0].getType() == LINK);
+// 	BOOST_REQUIRE(document[0][0].getText() == "an example");
+// 	BOOST_REQUIRE(document[0][0].size() == 0);
+// }
+
+// Code Span -------------------------------------------------------------------
+
+
+// Code spans are currently returned as plain text surrounded by back ticks with
+// size 0
+
+
+// BOOST_FIXTURE_TEST_CASE(parse_code_span_with_simple_example, F) {
+// 	Document document = parser.parse("one `two` three");
+//
+// 	BOOST_REQUIRE(document.size() == 1);
+// 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+// 	BOOST_REQUIRE(document[0].getText().length() == 0);
+// 	BOOST_REQUIRE(document[0].size() == 3);
+// 	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+// 	BOOST_REQUIRE(document[0][0].getText() == "one ");
+// 	BOOST_REQUIRE(document[0][0].size() == 0);
+// 	BOOST_REQUIRE(document[0][1].getType() == CODE_SPAN);
+// 	BOOST_REQUIRE(document[0][1].getText() == "two");
+// 	BOOST_REQUIRE(document[0][1].size() == 0);
+// 	BOOST_REQUIRE(document[0][2].getType() == TEXT);
+// 	BOOST_REQUIRE(document[0][2].getText() == "three");
+// 	BOOST_REQUIRE(document[0][2].size() == 0);
+// }
+
+// BOOST_FIXTURE_TEST_CASE(parse_single_interspersed_code_span, F) {
+// 	Document document = parser.parse("one `two` three");
+//
+// 	BOOST_REQUIRE(document.size() == 1);
+// 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+// 	BOOST_REQUIRE(document[0].getText().length() == 0);
+// 	BOOST_REQUIRE(document[0].size() == 3);
+// 	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+// 	BOOST_REQUIRE(document[0][0].getText() == "one ");
+// 	BOOST_REQUIRE(document[0][0].size() == 0);
+// 	BOOST_REQUIRE(document[0][1].getType() == CODE_SPAN);
+// 	BOOST_REQUIRE(document[0][1].getText() == "two");
+// 	BOOST_REQUIRE(document[0][1].size() == 0);
+// 	BOOST_REQUIRE(document[0][2].getType() == TEXT);
+// 	BOOST_REQUIRE(document[0][2].getText() == " three");
+// 	BOOST_REQUIRE(document[0][2].size() == 0);
+// }
+//
+// BOOST_FIXTURE_TEST_CASE(parse_multiple_interspersed_code_span, F) {
+// 	Document document = parser.parse("`one` two `three`");
+//
+// 	BOOST_REQUIRE(document.size() == 1);
+// 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+// 	BOOST_REQUIRE(document[0].getText().length() == 0);
+// 	BOOST_REQUIRE(document[0].size() == 3);
+// 	BOOST_REQUIRE(document[0][0].getType() == CODE_SPAN);
+// 	BOOST_REQUIRE(document[0][0].getText() == "one");
+// 	BOOST_REQUIRE(document[0][0].size() == 0);
+// 	BOOST_REQUIRE(document[0][1].getType() == TEXT);
+// 	BOOST_REQUIRE(document[0][1].getText() == " two ");
+// 	BOOST_REQUIRE(document[0][1].size() == 0);
+// 	BOOST_REQUIRE(document[0][2].getType() == CODE_SPAN);
+// 	BOOST_REQUIRE(document[0][2].getText() == "three");
+// 	BOOST_REQUIRE(document[0][2].size() == 0);
+// }
+
+// Line Break ------------------------------------------------------------------
+//
+// BOOST_FIXTURE_TEST_CASE(parse_simple_linebreak, F) {
+// 	Document document = parser.parse("linebreak  \n");
+//
+// 	BOOST_REQUIRE(document.size() == 1);
+// 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+// 	BOOST_REQUIRE(document[0].getText().length() == 0);
+// 	BOOST_REQUIRE(document[0].size() == 2);
+// 	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+// 	BOOST_REQUIRE(document[0][0].getText() == "linebreak");
+// 	BOOST_REQUIRE(document[0][0].size() == 0);
+// 	BOOST_REQUIRE(document[0][1].getType() == LINEBREAK);
+// 	BOOST_REQUIRE(document[0][1].getText() == "");
+// 	BOOST_REQUIRE(document[0][1].size() == 0);
+// }

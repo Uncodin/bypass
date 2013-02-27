@@ -9,7 +9,7 @@ extern "C" {
 }
 
 #include "document.h"
-#include "block_element.h"
+#include "element.h"
 
 #define INPUT_UNIT 1024
 #define OUTPUT_UNIT 64
@@ -21,7 +21,7 @@ namespace Bypass {
 		Parser();
 		~Parser();
 
-		Document parse(const char *markdown);
+		Document parse(const char* markdown);
 		Document parse(const std::string &markdown);
 
 		// Block Element Callbacks
@@ -46,16 +46,13 @@ namespace Bypass {
 
 		void parsedNormalText(struct buf *ob, struct buf *text);
 
-	private:
-		Document* document;
-		BlockElement* tempBlockElement;
-		std::vector<SpanElement*> tempSpanElements;
+		// Debugging
 
-		// Parsing Internals
-		void moveTempToDocument();
-		void stackTempElement(BlockElement* blockElement);
-		void appendSpanElement(SpanElement* spanElement);
-		void clearSpanElements();
+		void printBuf(struct buf *b);
+
+	private:
+		Document document;
+		std::vector<Element> pendingSpanElements;
 	};
 
 }
