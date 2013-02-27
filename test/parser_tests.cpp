@@ -317,64 +317,53 @@ BOOST_FIXTURE_TEST_CASE(parse_link_with_multiple_interspersed_simple_titled_exam
 
 // Code Span -------------------------------------------------------------------
 
+BOOST_FIXTURE_TEST_CASE(parse_code_span_with_simple_example, F) {
+	Document document = parser.parse("`one`");
 
-// Code spans are currently returned as plain text surrounded by back ticks with
-// size 0
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == CODE_SPAN);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+}
 
+BOOST_FIXTURE_TEST_CASE(parse_single_interspersed_code_span, F) {
+	Document document = parser.parse("one `two` three");
 
-// BOOST_FIXTURE_TEST_CASE(parse_code_span_with_simple_example, F) {
-// 	Document document = parser.parse("one `two` three");
-//
-// 	BOOST_REQUIRE(document.size() == 1);
-// 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
-// 	BOOST_REQUIRE(document[0].getText().length() == 0);
-// 	BOOST_REQUIRE(document[0].size() == 3);
-// 	BOOST_REQUIRE(document[0][0].getType() == TEXT);
-// 	BOOST_REQUIRE(document[0][0].getText() == "one ");
-// 	BOOST_REQUIRE(document[0][0].size() == 0);
-// 	BOOST_REQUIRE(document[0][1].getType() == CODE_SPAN);
-// 	BOOST_REQUIRE(document[0][1].getText() == "two");
-// 	BOOST_REQUIRE(document[0][1].size() == 0);
-// 	BOOST_REQUIRE(document[0][2].getType() == TEXT);
-// 	BOOST_REQUIRE(document[0][2].getText() == "three");
-// 	BOOST_REQUIRE(document[0][2].size() == 0);
-// }
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "one ");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == CODE_SPAN);
+	BOOST_REQUIRE(document[0][1].getText() == "two");
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == TEXT);
+	BOOST_REQUIRE(document[0][2].getText() == " three");
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}
 
-// BOOST_FIXTURE_TEST_CASE(parse_single_interspersed_code_span, F) {
-// 	Document document = parser.parse("one `two` three");
-//
-// 	BOOST_REQUIRE(document.size() == 1);
-// 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
-// 	BOOST_REQUIRE(document[0].getText().length() == 0);
-// 	BOOST_REQUIRE(document[0].size() == 3);
-// 	BOOST_REQUIRE(document[0][0].getType() == TEXT);
-// 	BOOST_REQUIRE(document[0][0].getText() == "one ");
-// 	BOOST_REQUIRE(document[0][0].size() == 0);
-// 	BOOST_REQUIRE(document[0][1].getType() == CODE_SPAN);
-// 	BOOST_REQUIRE(document[0][1].getText() == "two");
-// 	BOOST_REQUIRE(document[0][1].size() == 0);
-// 	BOOST_REQUIRE(document[0][2].getType() == TEXT);
-// 	BOOST_REQUIRE(document[0][2].getText() == " three");
-// 	BOOST_REQUIRE(document[0][2].size() == 0);
-// }
-//
-// BOOST_FIXTURE_TEST_CASE(parse_multiple_interspersed_code_span, F) {
-// 	Document document = parser.parse("`one` two `three`");
-//
-// 	BOOST_REQUIRE(document.size() == 1);
-// 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
-// 	BOOST_REQUIRE(document[0].getText().length() == 0);
-// 	BOOST_REQUIRE(document[0].size() == 3);
-// 	BOOST_REQUIRE(document[0][0].getType() == CODE_SPAN);
-// 	BOOST_REQUIRE(document[0][0].getText() == "one");
-// 	BOOST_REQUIRE(document[0][0].size() == 0);
-// 	BOOST_REQUIRE(document[0][1].getType() == TEXT);
-// 	BOOST_REQUIRE(document[0][1].getText() == " two ");
-// 	BOOST_REQUIRE(document[0][1].size() == 0);
-// 	BOOST_REQUIRE(document[0][2].getType() == CODE_SPAN);
-// 	BOOST_REQUIRE(document[0][2].getText() == "three");
-// 	BOOST_REQUIRE(document[0][2].size() == 0);
-// }
+BOOST_FIXTURE_TEST_CASE(parse_multiple_interspersed_code_span, F) {
+	Document document = parser.parse("`one` two `three`");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == CODE_SPAN);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == TEXT);
+	BOOST_REQUIRE(document[0][1].getText() == " two ");
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == CODE_SPAN);
+	BOOST_REQUIRE(document[0][2].getText() == "three");
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}
 
 // Line Break ------------------------------------------------------------------
 //

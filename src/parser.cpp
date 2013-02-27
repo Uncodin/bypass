@@ -166,13 +166,14 @@ namespace Bypass {
 	}
 
 	int Parser::parsedCodeSpan(struct buf *ob, struct buf *text) {
+		if (text && text->size > 0) {
+			Element codeSpan;
+			codeSpan.setType(CODE_SPAN);
+			codeSpan.setText(std::string(text->data).substr(0, text->size));
+			pendingSpanElements.push_back(codeSpan);
+		}
 
-// 		This doesn't work -- I believe libsoldout is incorrect in its treatment of codespans
-
-// 		pendingSpanElements.back().setType(CODE_SPAN);
-// 		return 1;
-
-		return 0;
+		return 1;
 	}
 
 	int Parser::parsedLinebreak(struct buf *ob) {
