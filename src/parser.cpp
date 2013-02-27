@@ -19,36 +19,36 @@ static void rndr_normal_text(struct buf *ob, struct buf *text, void *opaque);
 
 struct mkd_renderer mkd_callbacks = {
 	/* document-level callbacks */
-	NULL, // prolog
-	NULL, // epilogue
+	NULL,                 // prolog
+	NULL,                 // epilogue
 
 	/* block-level callbacks */
-	rndr_blockcode, // BlockCode
-	rndr_blockquote, // blockQuote
-	NULL, // block html
-	rndr_header, // header
-	NULL, // hrule
-	rndr_list, // list
-	rndr_listitem, // listitem
-	rndr_paragraph, // paragraph
-	NULL, // table
-	NULL, // table cell
-	NULL, // table row
+	rndr_blockcode,       // block code
+	rndr_blockquote,      // block quote
+	NULL,                 // block html
+	rndr_header,          // header
+	NULL,                 // hrule
+	rndr_list,            // list
+	rndr_listitem,        // listitem
+	rndr_paragraph,       // paragraph
+	NULL,                 // table
+	NULL,                 // table cell
+	NULL,                 // table row
 
 	/* span-level callbacks */
-	NULL, // autolink
-	rndr_codespan, // codespan
-	rndr_double_emphasis, // double_emphasis
-	rndr_emphasis, // emphasis
-	NULL, // image
-	rndr_linebreak, // line break
-	rndr_link, // link
-	NULL, // raw html tag
+	NULL,                 // autolink
+	rndr_codespan,        // codespan
+	rndr_double_emphasis, // double emphasis
+	rndr_emphasis,        // emphasis
+	NULL,                 // image
+	rndr_linebreak,       // line break
+	rndr_link,            // link
+	NULL,                 // raw html tag
 	rndr_triple_emphasis, // triple emphasis
 
 	/* low-level callbacks */
-	NULL, // entity
-	rndr_normal_text, // normal text
+	NULL,                 // entity
+	rndr_normal_text,     // normal text
 
 	/* renderer data */
 	64, // max stack
@@ -83,6 +83,10 @@ namespace Bypass {
 
 			//parse and assemble document
 			markdown(ob, ib, &mkd_callbacks);
+
+			if (pendingSpanElements.size() > 0) {
+				parsedParagraph(NULL, NULL);
+			}
 
 			bufrelease(ib);
 			bufrelease(ob);
@@ -128,11 +132,6 @@ namespace Bypass {
 
 	// Span Element Callbacks
 
-	int Parser::parsedCodeSpan(struct buf *ob, struct buf *text) {
-		pendingSpanElements.back().setType(CODE_SPAN);
-		return 1;
-	}
-
 	int Parser::parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c) {
 		pendingSpanElements.back().setType(DOUBLE_EMPHASIS);
 		return 1;
@@ -148,12 +147,32 @@ namespace Bypass {
 		return 1;
 	}
 
-	int Parser::parsedLinebreak(struct buf *ob) {
+	int Parser::parsedLink(struct buf *ob, struct buf *link, struct buf *title, struct buf *content) {
+		pendingSpanElements.back().setType(LINK);
+		return 1;
+	}
+
+	int Parser::parsedCodeSpan(struct buf *ob, struct buf *text) {
+
+// 		This doesn't work -- I believe libsoldout is incorrect in its treatment of codespans
+
+// 		pendingSpanElements.back().setType(CODE_SPAN);
+// 		return 1;
+
 		return 0;
 	}
 
-	int Parser::parsedLink(struct buf *ob, struct buf *link, struct buf *title, struct buf *content) {
-		return 1;
+	int Parser::parsedLinebreak(struct buf *ob) {
+
+//		Not sure how to trigger this -- I thought it was "  \n" but that didn't
+//		seem to do anything.
+
+// 		Element lineBreak;
+// 		lineBreak.setType(LINEBREAK);
+// 		pendingSpanElements.push_back(lineBreak);
+// 		return 1;
+
+		return 0
 	}
 
 	// Low Level Callbacks
@@ -162,6 +181,8 @@ namespace Bypass {
 
 		// The parser will spuriously emit a text callback for an empty string
 		// that butts up against a span-level element. This will ignore it.
+
+		std::cerr << "text->data: " << std::string(text->data).substr(0, text->size) << std::endl;
 
 		if (text && text->size > 0) {
 			Element normalText;
