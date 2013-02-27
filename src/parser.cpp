@@ -1,4 +1,3 @@
-#include <iostream>
 #include "parser.h"
 
 using namespace std;
@@ -61,9 +60,9 @@ namespace Bypass {
 	const static std::string TWO_SPACES = "  ";
 
 	Parser::Parser()
-	: pendingSpanElements()
+	: elementSoup()
 	{
-
+		elementCount = 1;
 	}
 
 	Parser::~Parser() {
@@ -86,8 +85,8 @@ namespace Bypass {
 			//parse and assemble document
 			markdown(ob, ib, &mkd_callbacks);
 
-			if (pendingSpanElements.size() > 0) {
-				parsedParagraph(NULL, NULL);
+			for (boost::unordered_map<std::string, Element>::iterator it = elementSoup.begin(); it != elementSoup.end(); ++it) {
+				document.append(it->second);
 			}
 
 			bufrelease(ib);
@@ -102,6 +101,29 @@ namespace Bypass {
 	}
 
 	// Block Element Callbacks
+
+	void Parser::handleBlock(Type type, struct buf *ob, struct buf *text) {
+		Element block;
+		block.setType(type);
+
+		std::vector<std::string> strs;
+		boost::split(strs, text->data, boost::is_any_of("|"));
+
+		for(vector<std::string>::iterator it = strs.begin(); it != strs.end(); it++) {
+			if (elementSoup.count(*it) > 0) {
+				block.append(elementSoup.at(*it));
+				elementSoup.erase(*it);
+			}
+		}
+
+		elementCount++;
+
+		std::ostringstream oss;
+		oss << elementCount << '|';
+		bufputs(ob, oss.str().c_str());
+
+		elementSoup[oss.str()] = block;
+	}
 
 	void Parser::parsedBlockcode(struct buf *ob, struct buf *text) {
 
@@ -124,46 +146,42 @@ namespace Bypass {
 	}
 
 	void Parser::parsedParagraph(struct buf *ob, struct buf *text) {
-		Element paragraph;
-		paragraph.setType(PARAGRAPH);
-		paragraph.setChildren(pendingSpanElements);
-		document.append(paragraph);
-
-		pendingSpanElements.clear();
+		handleBlock(PARAGRAPH, ob, text);
 	}
 
 	// Span Element Callbacks
 
+	void Parser::handleSpan(Type type, struct buf *ob, struct buf *text, struct buf *extra) {
+
+		std::vector<std::string> strs;
+		boost::split(strs, text->data, boost::is_any_of("|"));
+		if (strs.size() > 0) {
+			Element element = elementSoup.at(strs[0]);
+			element.setType(type);
+			elementSoup.erase(strs[0]);
+			elementSoup[strs[0]] = element;
+
+			bufputs(ob, text->data);
+		}
+	}
+
 	int Parser::parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c) {
-		pendingSpanElements.back().setType(DOUBLE_EMPHASIS);
+		handleSpan(DOUBLE_EMPHASIS, ob, text);
 		return 1;
 	}
 
 	int Parser::parsedEmphasis(struct buf *ob, struct buf *text, char c) {
-		pendingSpanElements.back().setType(EMPHASIS);
+		handleSpan(EMPHASIS, ob, text);
 		return 1;
 	}
 
 	int Parser::parsedTripleEmphasis(struct buf *ob, struct buf *text, char c) {
-		pendingSpanElements.back().setType(TRIPLE_EMPHASIS);
+		handleSpan(TRIPLE_EMPHASIS, ob, text);
 		return 1;
 	}
 
 	int Parser::parsedLink(struct buf *ob, struct buf *link, struct buf *title, struct buf *content) {
-		pendingSpanElements.back().setType(LINK);
-
-		if (link && link->size > 0) {
-			pendingSpanElements.back().addAttribute("link", std::string(link->data).substr(0, link->size));
-		}
-
-		if (title && title->size > 0) {
-			pendingSpanElements.back().addAttribute("title", std::string(title->data).substr(0, title->size));
-		}
-
-		if (content && content->size) {
-			pendingSpanElements.back().addAttribute("content", std::string(content->data).substr(0, content->size));
-		}
-
+		handleSpan(LINK, ob, content, link);
 		return 1;
 	}
 
@@ -210,11 +228,18 @@ namespace Bypass {
 		// The parser will spuriously emit a text callback for an empty string
 		// that butts up against a span-level element. This will ignore it.
 
+		elementCount++;
+
 		if (text && text->size > 0) {
 			Element normalText;
 			normalText.setType(TEXT);
 			normalText.setText(std::string(text->data).substr(0, text->size));
-			pendingSpanElements.push_back(normalText);
+			std::ostringstream oss;
+			oss << elementCount;
+			elementSoup[oss.str()] = normalText;
+			oss.clear();
+			oss << '|' << elementCount << '|';
+			bufputs(ob, oss.str().c_str());
 		}
 	}
 
