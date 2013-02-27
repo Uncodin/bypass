@@ -204,3 +204,28 @@ BOOST_FIXTURE_TEST_CASE(element_append_multiple, F) {
 	BOOST_REQUIRE(element[1].getText() == "1");
 	BOOST_REQUIRE(element[2].getText() == "2");
 }
+
+BOOST_FIXTURE_TEST_CASE(element_add_attribute, F) {
+	element.addAttribute("name", "value");
+}
+
+BOOST_FIXTURE_TEST_CASE(element_get_attribute, F) {
+	element.addAttribute("name", "value");
+	BOOST_REQUIRE(element.getAttribute("name") == "value");
+}
+
+BOOST_FIXTURE_TEST_CASE(element_get_attribute_names_with_no_attributes, F) {
+	BOOST_REQUIRE(element.getAttributeNames().size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(element_get_attribute_names_with_multiple_attributes, F) {
+	element.addAttribute("a", "A");
+	element.addAttribute("b", "B");
+
+	std::set<std::string> ns = element.getAttributeNames();
+
+	BOOST_REQUIRE(ns.size() == 2);
+	BOOST_REQUIRE(std::find(ns.begin(), ns.end(), "a") != ns.end());
+	BOOST_REQUIRE(std::find(ns.begin(), ns.end(), "b") != ns.end());
+}
+
