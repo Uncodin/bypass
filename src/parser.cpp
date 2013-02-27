@@ -154,7 +154,8 @@ namespace Bypass {
 	void Parser::handleSpan(Type type, struct buf *ob, struct buf *text, struct buf *extra) {
 
 		std::vector<std::string> strs;
-		boost::split(strs, text->data, boost::is_any_of("|"));
+		if (text)
+			boost::split(strs, text->data, boost::is_any_of("|"));
 		if (strs.size() > 0) {
 			Element element = elementSoup.at(strs[0]);
 			element.setType(type);
@@ -163,6 +164,22 @@ namespace Bypass {
 
 			bufputs(ob, text->data);
 		}
+		else {
+			Element element;
+			element.setType(type);
+
+			createSpan(element, ob);
+		}
+	}
+
+	void Parser::createSpan(Element element, struct buf *ob) {
+		elementCount++;
+		std::ostringstream oss;
+		oss << elementCount;
+		elementSoup[oss.str()] = element;
+		oss.clear();
+		oss << '|' << elementCount << '|';
+		bufputs(ob, oss.str().c_str());
 	}
 
 	int Parser::parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c) {
@@ -196,28 +213,8 @@ namespace Bypass {
 		return 1;
 	}
 
-	/*!
-	\brief Erases errant control characters when markdown.c encounters a line break.
-
-	markdown.c interprets "  \n" as a line break, however it leaves the trailing
-	spaces associated with the previous span element. This method will erase those
-	control characters from the previous element.
-	 */
-	void Parser::eraseLinebreakControlCharacters() {
-		std::string precedingText = pendingSpanElements.back().getText();
-		if (precedingText.size() > 2) {
-			if (precedingText.substr(precedingText.length() - 2) == TWO_SPACES) {
-				pendingSpanElements.back().setText(precedingText.substr(0, precedingText.length() - 2));
-			}
-		}
-	}
-
 	int Parser::parsedLinebreak(struct buf *ob) {
-		eraseLinebreakControlCharacters();
-
-		Element lineBreak;
-		lineBreak.setType(LINEBREAK);
-		pendingSpanElements.push_back(lineBreak);
+		handleSpan(LINEBREAK, ob, NULL);
 		return 1;
 	}
 
@@ -228,18 +225,11 @@ namespace Bypass {
 		// The parser will spuriously emit a text callback for an empty string
 		// that butts up against a span-level element. This will ignore it.
 
-		elementCount++;
-
 		if (text && text->size > 0) {
 			Element normalText;
 			normalText.setType(TEXT);
 			normalText.setText(std::string(text->data).substr(0, text->size));
-			std::ostringstream oss;
-			oss << elementCount;
-			elementSoup[oss.str()] = normalText;
-			oss.clear();
-			oss << '|' << elementCount << '|';
-			bufputs(ob, oss.str().c_str());
+			createSpan(normalText, ob);
 		}
 	}
 
