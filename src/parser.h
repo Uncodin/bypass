@@ -52,7 +52,7 @@ namespace Bypass {
 
 	private:
 		Document document;
-		Element pendingElement;
+		std::vector<Element> pendingSpanElements;
 	};
 
 }

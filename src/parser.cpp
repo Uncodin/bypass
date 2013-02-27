@@ -59,7 +59,7 @@ struct mkd_renderer mkd_callbacks = {
 namespace Bypass {
 
 	Parser::Parser()
-	: pendingElement()
+	: pendingSpanElements()
 	{
 
 	}
@@ -120,26 +120,31 @@ namespace Bypass {
 	void Parser::parsedParagraph(struct buf *ob, struct buf *text) {
 		Element paragraph;
 		paragraph.setType(PARAGRAPH);
-		paragraph.append(pendingElement);
+		paragraph.setChildren(pendingSpanElements);
 		document.append(paragraph);
+
+		pendingSpanElements.clear();
 	}
 
 	// Span Element Callbacks
 
 	int Parser::parsedCodeSpan(struct buf *ob, struct buf *text) {
-		return 0;
+		pendingSpanElements.back().setType(CODE_SPAN);
+		return 1;
 	}
 
 	int Parser::parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c) {
-		pendingElement.setType(DOUBLE_EMPHASIS);
+		pendingSpanElements.back().setType(DOUBLE_EMPHASIS);
 		return 1;
 	}
 
 	int Parser::parsedEmphasis(struct buf *ob, struct buf *text, char c) {
+		pendingSpanElements.back().setType(EMPHASIS);
 		return 1;
 	}
 
 	int Parser::parsedTripleEmphasis(struct buf *ob, struct buf *text, char c) {
+		pendingSpanElements.back().setType(TRIPLE_EMPHASIS);
 		return 1;
 	}
 
@@ -154,20 +159,15 @@ namespace Bypass {
 	// Low Level Callbacks
 
 	void Parser::parsedNormalText(struct buf *ob, struct buf *text) {
-		Element normalText;
-		normalText.setType(TEXT);
-		normalText.setText(std::string(text->data).substr(0, text->size));
-		pendingElement = normalText;
-	}
 
-	void Parser::printBuf(struct buf *b) {
-		if (b != NULL) {
-			std::cerr << "buf {" << std::endl;
-			std::cerr << "  data:  " << ((b->data == NULL) ? "NULL" : b->data) << "," << std::endl;
-			std::cerr << "  size:  " << b->size  << "," << std::endl;
-			std::cerr << "  asize: " << b->asize << "," << std::endl;
-			std::cerr << "  unit:  " << b->unit  << "," << std::endl;
-			std::cerr << "}" << std::endl;
+		// The parser will spuriously emit a text callback for an empty string
+		// that butts up against a span-level element. This will ignore it.
+
+		if (text && text->size > 0) {
+			Element normalText;
+			normalText.setType(TEXT);
+			normalText.setText(std::string(text->data).substr(0, text->size));
+			pendingSpanElements.push_back(normalText);
 		}
 	}
 

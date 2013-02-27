@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <iostream>
 #include "element.h"
 
 namespace Bypass {
@@ -56,6 +57,7 @@ namespace Bypass {
 		bool isBlockElement();
 		bool isSpanElement();
 		size_t size();
+		friend std::ostream& operator<<(std::ostream& out, const Element& element);
 	private:
 		std::string text;
 		std::map<std::string, std::string> attributes;

@@ -11,11 +11,11 @@ struct F {
 	F()
 	: document()
 	{
-		BOOST_TEST_MESSAGE( "setup fixture" );
+
 	}
 
 	~F() {
-		BOOST_TEST_MESSAGE( "teardown fixture" );
+
 	}
 
 	Document document;
