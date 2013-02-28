@@ -1,5 +1,6 @@
 package in.uncod.android.bypass;
 
+import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 
@@ -8,7 +9,7 @@ public class Bypass {
 		System.loadLibrary("spandown");
 	}
 
-	public SpannableStringBuilder markdownToSpannable(String markdown) {
+	public CharSequence markdownToSpannable(String markdown) {
 		Document document = processMarkdown(markdown);
 		
 		Spannable[] spans = new Spannable[document.getElementCount()];

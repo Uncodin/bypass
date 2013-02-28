@@ -12,5 +12,12 @@ JNIEXPORT jobject JNICALL Java_in_uncod_android_bypass_Bypass_processMarkdown
 
 	env->ReleaseStringUTFChars(markdown, str);
 
+	jclass java_document_class = env->FindClass("in/uncod/android/bypass/Document");
+	jmethodID java_document_init = env->GetMethodID(java_document_class, "<init>", "([Lin/uncod/android/bypass/Element;)V");
+	jclass java_element_class = env->FindClass("in/uncod/android/bypass/Element");
+
+
+
+
 	return NULL;
 }
