@@ -128,23 +128,23 @@ namespace Bypass {
 	}
 
 	void Parser::parsedBlockcode(struct buf *ob, struct buf *text) {
-
+		handleBlock(BLOCK_CODE, ob, text);
 	}
 
 	void Parser::parsedBlockquote(struct buf *ob, struct buf *text) {
-
+		handleBlock(BLOCK_QUOTE, ob, text);
 	}
 
 	void Parser::parsedHeader(struct buf *ob, struct buf *text, int level) {
-
+		handleBlock(HEADER, ob, text);
 	}
 
 	void Parser::parsedList(struct buf *ob, struct buf *text, int flags) {
-
+		handleBlock(LIST, ob, text);
 	}
 
 	void Parser::parsedListItem(struct buf *ob, struct buf *text, int flags) {
-
+		handleBlock(LIST_ITEM, ob, text);
 	}
 
 	void Parser::parsedParagraph(struct buf *ob, struct buf *text) {
@@ -207,13 +207,7 @@ namespace Bypass {
 	}
 
 	int Parser::parsedCodeSpan(struct buf *ob, struct buf *text) {
-		if (text && text->size > 0) {
-			Element codeSpan;
-			codeSpan.setType(CODE_SPAN);
-			codeSpan.setText(std::string(text->data).substr(0, text->size));
-			pendingSpanElements.push_back(codeSpan);
-		}
-
+		handleBlock(CODE_SPAN, ob, text);
 		return 1;
 	}
 
