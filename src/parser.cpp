@@ -58,6 +58,8 @@ struct mkd_renderer mkd_callbacks = {
 
 namespace Bypass {
 
+	const static std::string TWO_SPACES = "  ";
+
 	Parser::Parser()
 	: pendingSpanElements()
 	{
@@ -149,30 +151,56 @@ namespace Bypass {
 
 	int Parser::parsedLink(struct buf *ob, struct buf *link, struct buf *title, struct buf *content) {
 		pendingSpanElements.back().setType(LINK);
+
+		if (link && link->size > 0) {
+			pendingSpanElements.back().addAttribute("link", std::string(link->data).substr(0, link->size));
+		}
+
+		if (title && title->size > 0) {
+			pendingSpanElements.back().addAttribute("title", std::string(title->data).substr(0, title->size));
+		}
+
+		if (content && content->size) {
+			pendingSpanElements.back().addAttribute("content", std::string(content->data).substr(0, content->size));
+		}
+
 		return 1;
 	}
 
 	int Parser::parsedCodeSpan(struct buf *ob, struct buf *text) {
+		if (text && text->size > 0) {
+			Element codeSpan;
+			codeSpan.setType(CODE_SPAN);
+			codeSpan.setText(std::string(text->data).substr(0, text->size));
+			pendingSpanElements.push_back(codeSpan);
+		}
 
-// 		This doesn't work -- I believe libsoldout is incorrect in its treatment of codespans
+		return 1;
+	}
 
-// 		pendingSpanElements.back().setType(CODE_SPAN);
-// 		return 1;
+	/*!
+	\brief Erases errant control characters when markdown.c encounters a line break.
 
-		return 0;
+	markdown.c interprets "  \n" as a line break, however it leaves the trailing
+	spaces associated with the previous span element. This method will erase those
+	control characters from the previous element.
+	 */
+	void Parser::eraseLinebreakControlCharacters() {
+		std::string precedingText = pendingSpanElements.back().getText();
+		if (precedingText.size() > 2) {
+			if (precedingText.substr(precedingText.length() - 2) == TWO_SPACES) {
+				pendingSpanElements.back().setText(precedingText.substr(0, precedingText.length() - 2));
+			}
+		}
 	}
 
 	int Parser::parsedLinebreak(struct buf *ob) {
+		eraseLinebreakControlCharacters();
 
-//		Not sure how to trigger this -- I thought it was "  \n" but that didn't
-//		seem to do anything.
-
-// 		Element lineBreak;
-// 		lineBreak.setType(LINEBREAK);
-// 		pendingSpanElements.push_back(lineBreak);
-// 		return 1;
-
-		return 0;
+		Element lineBreak;
+		lineBreak.setType(LINEBREAK);
+		pendingSpanElements.push_back(lineBreak);
+		return 1;
 	}
 
 	// Low Level Callbacks

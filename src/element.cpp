@@ -29,6 +29,17 @@ namespace Bypass {
 		return attributes[name];
 	}
 
+	std::set<std::string> Element::getAttributeNames() {
+		std::set<std::string> attributeNames;
+		std::map<std::string, std::string>::iterator itr;
+
+		for(itr = attributes.begin(); itr != attributes.end(); itr++) {
+			attributeNames.insert(itr->first);
+		}
+
+		return attributeNames;
+	}
+
 	void  Element::append(const Element& child) {
 		children.push_back(Element(child));
 	}

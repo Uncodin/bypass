@@ -53,6 +53,10 @@ namespace Bypass {
 	private:
 		Document document;
 		std::vector<Element> pendingSpanElements;
+
+		// Parser Internals
+
+		void eraseLinebreakControlCharacters();
 	};
 
 }

@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <iostream>
+#include <set>
 #include "element.h"
 
 namespace Bypass {
@@ -48,6 +49,7 @@ namespace Bypass {
 		std::string getText();
 		void addAttribute(std::string name, std::string value);
 		std::string getAttribute(std::string name);
+		std::set<std::string> getAttributeNames();
 		void append(const Element& blockElement);
 		Element getChild(size_t i);
 		Element operator[](size_t i);
