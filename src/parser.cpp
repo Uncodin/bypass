@@ -86,7 +86,7 @@ namespace Bypass {
 			//parse and assemble document
 			markdown(ob, ib, &mkd_callbacks);
 
-			for (boost::unordered_map<std::string, Element>::iterator it = elementSoup.begin(); it != elementSoup.end(); ++it) {
+			for (std::map<std::string, Element>::iterator it = elementSoup.begin(); it != elementSoup.end(); ++it) {
 				document.append(it->second);
 			}
 
