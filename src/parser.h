@@ -59,6 +59,7 @@ namespace Bypass {
 		Document document;
 		boost::unordered_map<std::string, Element> elementSoup;
 		int elementCount;
+		void eraseLinebreakControlCharacters(Element* element);
 		void handleBlock(Type, struct buf *ob, struct buf *text);
 		void handleSpan(Type, struct buf *ob, struct buf *text, struct buf *extra = NULL, struct buf *extra2 = NULL);
 		void createSpan(Element, struct buf *ob);

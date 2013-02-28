@@ -181,6 +181,13 @@ namespace Bypass {
 			bufputs(ob, textString.c_str());
 		}
 		else {
+			if (type == LINEBREAK) {
+				std::ostringstream oss;
+				oss << elementCount;
+
+				eraseLinebreakControlCharacters(&elementSoup.at(oss.str()));
+			}
+
 			Element element;
 			element.setType(type);
 
@@ -225,6 +232,22 @@ namespace Bypass {
 			createSpan(codeSpan, ob);
 		}
 		return 1;
+	}
+
+	/*!
+	\brief Erases errant control characters when markdown.c encounters a line break.
+
+	markdown.c interprets "  \n" as a line break, however it leaves the trailing
+	spaces associated with the previous span element. This method will erase those
+	control characters from the previous element.
+	 */
+	void Parser::eraseLinebreakControlCharacters(Element* element) {
+		std::string precedingText = element->getText();
+		if (precedingText.size() > 2) {
+			if (precedingText.substr(precedingText.length() - 2) == TWO_SPACES) {
+				element->setText(precedingText.substr(0, precedingText.length() - 2));
+			}
+		}
 	}
 
 	int Parser::parsedLinebreak(struct buf *ob) {
