@@ -58,6 +58,8 @@ struct mkd_renderer mkd_callbacks = {
 
 namespace Bypass {
 
+	const static std::string TWO_SPACES = "  ";
+
 	Parser::Parser()
 	: pendingSpanElements()
 	{
@@ -176,7 +178,25 @@ namespace Bypass {
 		return 1;
 	}
 
+	/*!
+	\brief Erases errant control characters when markdown.c encounters a line break.
+
+	markdown.c interprets "  \n" as a line break, however it leaves the trailing
+	spaces associated with the previous span element. This method will erase those
+	control characters from the previous element.
+	 */
+	void Parser::eraseLinebreakControlCharacters() {
+		std::string precedingText = pendingSpanElements.back().getText();
+		if (precedingText.size() > 2) {
+			if (precedingText.substr(precedingText.length() - 2) == TWO_SPACES) {
+				pendingSpanElements.back().setText(precedingText.substr(0, precedingText.length() - 2));
+			}
+		}
+	}
+
 	int Parser::parsedLinebreak(struct buf *ob) {
+		eraseLinebreakControlCharacters();
+
 		Element lineBreak;
 		lineBreak.setType(LINEBREAK);
 		pendingSpanElements.push_back(lineBreak);
