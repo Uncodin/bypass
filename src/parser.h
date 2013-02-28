@@ -1,8 +1,13 @@
 #ifndef _BYPASS_PARSER_H_
 #define _BYPASS_PARSER_H_
 
+#include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
+#include <cstdio>
+#include <boost/unordered_map.hpp>
+#include <boost/algorithm/string.hpp>
 
 extern "C" {
 #include "markdown.h"
@@ -52,11 +57,11 @@ namespace Bypass {
 
 	private:
 		Document document;
-		std::vector<Element> pendingSpanElements;
-
-		// Parser Internals
-
-		void addElement(Element element);
+		boost::unordered_map<std::string, Element> elementSoup;
+		int elementCount;
+		void handleBlock(Type, struct buf *ob, struct buf *text, int extra = -1);
+		void handleSpan(Type, struct buf *ob, struct buf *text, struct buf *extra = NULL, struct buf *extra2 = NULL);
+		void createSpan(Element, struct buf *ob);
 		void eraseTrailingControlCharacters(std::string controlCharacters);
 	};
 

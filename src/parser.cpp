@@ -1,4 +1,3 @@
-#include <iostream>
 #include "parser.h"
 
 using namespace std;
@@ -62,9 +61,9 @@ namespace Bypass {
 	const static std::string NEWLINE = "\n";
 
 	Parser::Parser()
-	: pendingSpanElements()
+	: elementSoup()
 	{
-
+		elementCount = 1;
 	}
 
 	Parser::~Parser() {
@@ -87,8 +86,8 @@ namespace Bypass {
 			//parse and assemble document
 			markdown(ob, ib, &mkd_callbacks);
 
-			if (pendingSpanElements.size() > 0) {
-				parsedParagraph(NULL, NULL);
+			for (boost::unordered_map<std::string, Element>::iterator it = elementSoup.begin(); it != elementSoup.end(); ++it) {
+				document.append(it->second);
 			}
 
 			bufrelease(ib);
@@ -102,99 +101,150 @@ namespace Bypass {
 		return parse(markdown.c_str());
 	}
 
-	void Parser::addElement(Element element) {
-		document.append(element);
-		pendingSpanElements.clear();
-	}
-
 	void Parser::eraseTrailingControlCharacters(std::string controlCharacters) {
-		std::string precedingText = pendingSpanElements.back().getText();
+		std::ostringstream oss;
+		oss << elementCount;
 
+		Element* element = &(elementSoup.at(oss.str()));
+
+		std::string precedingText = element->getText();
 		size_t ptlen = precedingText.length();
 		size_t cclen = controlCharacters.length();
 
 		if (ptlen > cclen) {
 			if (precedingText.substr(ptlen - cclen) == controlCharacters) {
-				pendingSpanElements.back().setText(precedingText.substr(0, ptlen - cclen));
+				element->setText(precedingText.substr(0, ptlen - cclen));
 			}
 		}
 	}
 
 	// Block Element Callbacks
 
+	void Parser::handleBlock(Type type, struct buf *ob, struct buf *text, int extra) {
+		Element block;
+		block.setType(type);
+
+		if (type == HEADER) {
+			char levelStr[2];
+			snprintf(levelStr, 2, "%d", extra);
+			block.addAttribute("level", levelStr);
+		}
+
+		std::string textString(text->data);
+		textString = textString.substr(0,text->size);
+		std::vector<std::string> strs;
+		boost::split(strs, textString, boost::is_any_of("|"));
+
+		for(vector<std::string>::iterator it = strs.begin(); it != strs.end(); it++) {
+			if (elementSoup.count(*it) > 0) {
+				block.append(elementSoup.at(*it));
+				elementSoup.erase(*it);
+			}
+		}
+
+		elementCount++;
+
+		std::ostringstream oss;
+		oss << elementCount;
+		elementSoup[oss.str()] = block;
+		oss << '|';
+		bufputs(ob, oss.str().c_str());
+	}
+
 	void Parser::parsedBlockCode(struct buf *ob, struct buf *text) {
 		parsedNormalText(ob, text);
 		eraseTrailingControlCharacters(NEWLINE);
 
-		Element blockCode;
-		blockCode.setType(BLOCK_CODE);
-		blockCode.setChildren(pendingSpanElements);
-
-		addElement(blockCode);
+		std::ostringstream oss;
+		oss << elementCount << '|';
+		bufreset(text);
+		bufputs(text, oss.str().c_str());
+		handleBlock(BLOCK_CODE, ob, text);
 	}
 
 	void Parser::parsedBlockQuote(struct buf *ob, struct buf *text) {
-
+		handleBlock(BLOCK_QUOTE, ob, text);
 	}
 
 	void Parser::parsedHeader(struct buf *ob, struct buf *text, int level) {
-		char levelStr[2];
-		snprintf(levelStr, 2, "%d", level);
-
-		Element header;
-		header.setType(HEADER);
-		header.addAttribute("level", levelStr);
-		header.setChildren(pendingSpanElements);
-		addElement(header);
+		handleBlock(HEADER, ob, text, level);
 	}
 
 	void Parser::parsedList(struct buf *ob, struct buf *text, int flags) {
-
+		handleBlock(LIST, ob, text);
 	}
 
 	void Parser::parsedListItem(struct buf *ob, struct buf *text, int flags) {
-
+		handleBlock(LIST_ITEM, ob, text);
 	}
 
 	void Parser::parsedParagraph(struct buf *ob, struct buf *text) {
-		Element paragraph;
-		paragraph.setType(PARAGRAPH);
-		paragraph.setChildren(pendingSpanElements);
-		addElement(paragraph);
+		handleBlock(PARAGRAPH, ob, text);
 	}
 
 	// Span Element Callbacks
 
+	void Parser::handleSpan(Type type, struct buf *ob, struct buf *text, struct buf *extra, struct buf *extra2) {
+
+		std::vector<std::string> strs;
+		std::string textString;
+		if (text) {
+			textString = std::string(text->data).substr(0, text->size);
+			boost::split(strs, textString, boost::is_any_of("|"));
+		}
+		if (strs.size() > 0) {
+			Element element = elementSoup.at(strs[0]);
+			element.setType(type);
+
+			if (extra != NULL && extra->size) {
+				if (element.getType() == LINK)
+					element.addAttribute("link", std::string(extra->data).substr(0, extra->size));
+			}
+
+			if (extra2 != NULL && extra2->size) {
+				if (element.getType() == LINK)
+					element.addAttribute("title", std::string(extra2->data).substr(0, extra2->size));
+			}
+
+			elementSoup.erase(strs[0]);
+			elementSoup[strs[0]] = element;
+
+			bufputs(ob, textString.c_str());
+		}
+		else {
+			Element element;
+			element.setType(type);
+
+			createSpan(element, ob);
+		}
+	}
+
+	void Parser::createSpan(Element element, struct buf *ob) {
+		elementCount++;
+		std::ostringstream oss;
+		oss << elementCount;
+		elementSoup[oss.str()] = element;
+		oss << '|';
+		bufputs(ob, oss.str().c_str());
+	}
+
 	int Parser::parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c) {
-		pendingSpanElements.back().setType(DOUBLE_EMPHASIS);
+		handleSpan(DOUBLE_EMPHASIS, ob, text);
 		return 1;
 	}
 
 	int Parser::parsedEmphasis(struct buf *ob, struct buf *text, char c) {
-		pendingSpanElements.back().setType(EMPHASIS);
+		handleSpan(EMPHASIS, ob, text);
 		return 1;
 	}
 
 	int Parser::parsedTripleEmphasis(struct buf *ob, struct buf *text, char c) {
-		pendingSpanElements.back().setType(TRIPLE_EMPHASIS);
+		handleSpan(TRIPLE_EMPHASIS, ob, text);
 		return 1;
 	}
 
 	int Parser::parsedLink(struct buf *ob, struct buf *link, struct buf *title, struct buf *content) {
-		pendingSpanElements.back().setType(LINK);
-
-		if (link && link->size > 0) {
-			pendingSpanElements.back().addAttribute("link", std::string(link->data).substr(0, link->size));
-		}
-
-		if (title && title->size > 0) {
-			pendingSpanElements.back().addAttribute("title", std::string(title->data).substr(0, title->size));
-		}
-
-		if (content && content->size) {
-			pendingSpanElements.back().addAttribute("content", std::string(content->data).substr(0, content->size));
-		}
-
+		handleSpan(LINK, ob, content, link, title);
 		return 1;
 	}
 
@@ -203,25 +253,20 @@ namespace Bypass {
 			Element codeSpan;
 			codeSpan.setType(CODE_SPAN);
 			codeSpan.setText(std::string(text->data).substr(0, text->size));
-			pendingSpanElements.push_back(codeSpan);
+			createSpan(codeSpan, ob);
 		}
-
 		return 1;
 	}
 
 	int Parser::parsedLinebreak(struct buf *ob) {
 		eraseTrailingControlCharacters(TWO_SPACES);
-
-		Element lineBreak;
-		lineBreak.setType(LINEBREAK);
-		pendingSpanElements.push_back(lineBreak);
+		handleSpan(LINEBREAK, ob, NULL);
 		return 1;
 	}
 
 	// Low Level Callbacks
 
 	void Parser::parsedNormalText(struct buf *ob, struct buf *text) {
-
 		// The parser will spuriously emit a text callback for an empty string
 		// that butts up against a span-level element. This will ignore it.
 
@@ -229,7 +274,7 @@ namespace Bypass {
 			Element normalText;
 			normalText.setType(TEXT);
 			normalText.setText(std::string(text->data).substr(0, text->size));
-			pendingSpanElements.push_back(normalText);
+			createSpan(normalText, ob);
 		}
 	}
 

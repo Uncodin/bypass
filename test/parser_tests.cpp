@@ -7,9 +7,8 @@
 using namespace Bypass;
 
 struct F {
-	F()
-	: parser()
-	{
+	F() :
+			parser() {
 
 	}
 
@@ -249,7 +248,8 @@ BOOST_FIXTURE_TEST_CASE(parse_link_with_single_interspersed_simple_example, F) {
 }
 
 BOOST_FIXTURE_TEST_CASE(parse_link_with_single_interspersed_simple_titled_example, F) {
-	Document document = parser.parse("one [two](http://example.net/ \"Two\") three");
+	Document document = parser.parse(
+			"one [two](http://example.net/ \"Two\") three");
 
 	BOOST_REQUIRE(document.size() == 1);
 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
@@ -270,7 +270,8 @@ BOOST_FIXTURE_TEST_CASE(parse_link_with_single_interspersed_simple_titled_exampl
 }
 
 BOOST_FIXTURE_TEST_CASE(parse_link_with_multiple_interspersed_simple_example, F) {
-	Document document = parser.parse("[one](http://example.net/) two [three](http://example.net/)");
+	Document document = parser.parse(
+			"[one](http://example.net/) two [three](http://example.net/)");
 
 	BOOST_REQUIRE(document.size() == 1);
 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
@@ -292,7 +293,9 @@ BOOST_FIXTURE_TEST_CASE(parse_link_with_multiple_interspersed_simple_example, F)
 }
 
 BOOST_FIXTURE_TEST_CASE(parse_link_with_multiple_interspersed_simple_titled_example, F) {
-	Document document = parser.parse("[one](http://example.net/ \"One\") two [three](http://example.net/ \"Three\")");
+	Document document =
+			parser.parse(
+					"[one](http://example.net/ \"One\") two [three](http://example.net/ \"Three\")");
 
 	BOOST_REQUIRE(document.size() == 1);
 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
@@ -366,7 +369,6 @@ BOOST_FIXTURE_TEST_CASE(parse_multiple_interspersed_code_span, F) {
 }
 
 // Line Break ------------------------------------------------------------------
-
 BOOST_FIXTURE_TEST_CASE(parse_simple_linebreak, F) {
 	Document document = parser.parse("one  \ntwo");
 
@@ -481,8 +483,8 @@ BOOST_FIXTURE_TEST_CASE(parse_header6_atx, F) {
 
 BOOST_FIXTURE_TEST_CASE(parse_block_code_indented_with_spaces, F) {
 	Document document = parser.parse("This is a normal paragraph:\n"
-	                                 "\n"
-	                                 "    This is a code block.");
+			"\n"
+			"    This is a code block.");
 	BOOST_REQUIRE(document.size() == 2);
 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
 	BOOST_REQUIRE(document[0].size() == 1);
@@ -492,4 +494,55 @@ BOOST_FIXTURE_TEST_CASE(parse_block_code_indented_with_spaces, F) {
 	BOOST_REQUIRE(document[1].size() == 1);
 	BOOST_REQUIRE(document[1][0].getType() == TEXT);
 	BOOST_REQUIRE(document[1][0].getText() == "This is a code block.");
+}
+
+// Block Quote ---------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_block_quote, F) {
+	Document document = parser.parse("> ## This is a header.\n"
+			">\n"
+			"> -\tListItem\n"
+			"> -\tListItem2\n"
+			">\n"
+			">More Text!\n");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == BLOCK_QUOTE);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == HEADER);
+	BOOST_REQUIRE(document[0][1].getType() == LIST);
+	BOOST_REQUIRE(document[0][2].getType() == PARAGRAPH);
+}
+
+// Advanced -------------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_text_with_paragraph, F) {
+	Document document =
+			parser.parse(
+					"Credits\n-------\n\n`Sundown` is based on the original Upskirt parser by Natacha Port\u00e9, with many additions\nby Vicent Marti (@vmg) and contributions from the following authors:\n\n\tBen Noordhuis, Bruno Michel, Joseph Koshy, Krzysztof Kowalczyk, Samuel Bronson,\n\tShuhei Tanuma");
+
+	BOOST_REQUIRE(document.size() == 3);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_list, F) {
+	Document document =
+			parser.parse(
+					"*\t**Fully standards compliant**\n\n\t`Sundown` passes out of the box the official Markdown v1.0.0 and v1.0.3\n\ttest suites, and has been extensively tested with additional corner cases\n\tto make sure its output is as sane as possible at all times.\n\n*\t**Massive extension support**\n\n\t`Sundown` has optional support for several (unofficial) Markdown extensions,\n\tsuch as non-strict emphasis, fenced code blocks, tables, autolinks,\n\tstrikethrough and more.");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == LIST);
+	BOOST_REQUIRE(document[0].size() == 2);
+	BOOST_REQUIRE(document[0][0].getType() == LIST_ITEM);
+	BOOST_REQUIRE(document[0][0].size() == 2);
+	BOOST_REQUIRE(document[0][0][0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0][0][0][0].getType() == DOUBLE_EMPHASIS);
+	BOOST_REQUIRE(document[0][0][1].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0][0][1][0].getType() == CODE_SPAN);
+	BOOST_REQUIRE(document[0][1].getType() == LIST_ITEM);
+	BOOST_REQUIRE(document[0][1].size() == 2);
+	BOOST_REQUIRE(document[0][1][0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0][1][0][0].getType() == DOUBLE_EMPHASIS);
+	BOOST_REQUIRE(document[0][1][1].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0][1][1][0].getType() == CODE_SPAN);
 }
