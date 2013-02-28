@@ -106,8 +106,10 @@ namespace Bypass {
 		Element block;
 		block.setType(type);
 
+		std::string textString(text->data);
+		textString = textString.substr(0,text->size);
 		std::vector<std::string> strs;
-		boost::split(strs, text->data, boost::is_any_of("|"));
+		boost::split(strs, textString, boost::is_any_of("|"));
 
 		for(vector<std::string>::iterator it = strs.begin(); it != strs.end(); it++) {
 			if (elementSoup.count(*it) > 0) {
@@ -119,10 +121,10 @@ namespace Bypass {
 		elementCount++;
 
 		std::ostringstream oss;
-		oss << elementCount << '|';
-		bufputs(ob, oss.str().c_str());
-
+		oss << elementCount;
 		elementSoup[oss.str()] = block;
+		oss << '|';
+		bufputs(ob, oss.str().c_str());
 	}
 
 	void Parser::parsedBlockcode(struct buf *ob, struct buf *text) {
@@ -153,16 +155,19 @@ namespace Bypass {
 
 	void Parser::handleSpan(Type type, struct buf *ob, struct buf *text, struct buf *extra) {
 
+
+		std::string textString(text->data);
+		textString = textString.substr(0, text->size);
 		std::vector<std::string> strs;
 		if (text)
-			boost::split(strs, text->data, boost::is_any_of("|"));
+			boost::split(strs, textString, boost::is_any_of("|"));
 		if (strs.size() > 0) {
 			Element element = elementSoup.at(strs[0]);
 			element.setType(type);
 			elementSoup.erase(strs[0]);
 			elementSoup[strs[0]] = element;
 
-			bufputs(ob, text->data);
+			bufputs(ob, textString.c_str());
 		}
 		else {
 			Element element;
@@ -177,8 +182,7 @@ namespace Bypass {
 		std::ostringstream oss;
 		oss << elementCount;
 		elementSoup[oss.str()] = element;
-		oss.clear();
-		oss << '|' << elementCount << '|';
+		oss << '|';
 		bufputs(ob, oss.str().c_str());
 	}
 
@@ -221,7 +225,6 @@ namespace Bypass {
 	// Low Level Callbacks
 
 	void Parser::parsedNormalText(struct buf *ob, struct buf *text) {
-
 		// The parser will spuriously emit a text callback for an empty string
 		// that butts up against a span-level element. This will ignore it.
 

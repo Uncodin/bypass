@@ -366,7 +366,6 @@ BOOST_FIXTURE_TEST_CASE(parse_multiple_interspersed_code_span, F) {
 }
 
 // Line Break ------------------------------------------------------------------
-
 BOOST_FIXTURE_TEST_CASE(parse_simple_linebreak, F) {
 	Document document = parser.parse("one  \ntwo");
 
@@ -384,3 +383,13 @@ BOOST_FIXTURE_TEST_CASE(parse_simple_linebreak, F) {
 	BOOST_REQUIRE(document[0][2].getText() == "two");
 	BOOST_REQUIRE(document[0][2].size() == 0);
 }
+
+/*
+BOOST_FIXTURE_TEST_CASE(parse_text_with_paragraph, F) {
+	Document document = parser.parse("Credits\n-------\n\n`Sundown` is based on the original Upskirt parser by Natacha Port\u00e9, with many additions\nby Vicent Marti (@vmg) and contributions from the following authors:\n\n\tBen Noordhuis, Bruno Michel, Joseph Koshy, Krzysztof Kowalczyk, Samuel Bronson,\n\tShuhei Tanuma");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_list, F) {
+	Document document = parser.parse("*\t**Fully standards compliant**\n\n\t`Sundown` passes out of the box the official Markdown v1.0.0 and v1.0.3\n\ttest suites, and has been extensively tested with additional corner cases\n\tto make sure its output is as sane as possible at all times.\n\n*\t**Massive extension support**\n\n\t`Sundown` has optional support for several (unofficial) Markdown extensions,\n\tsuch as non-strict emphasis, fenced code blocks, tables, autolinks,\n\tstrikethrough and more.");
+}
+*/
