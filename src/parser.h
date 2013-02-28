@@ -31,8 +31,8 @@ namespace Bypass {
 
 		// Block Element Callbacks
 
-		void parsedBlockcode(struct buf *ob, struct buf *text);
-		void parsedBlockquote(struct buf *ob, struct buf *text);
+		void parsedBlockCode(struct buf *ob, struct buf *text);
+		void parsedBlockQuote(struct buf *ob, struct buf *text);
 		void parsedHeader(struct buf *ob, struct buf *text, int level);
 		void parsedList(struct buf *ob, struct buf *text, int flags);
 		void parsedListItem(struct buf *ob, struct buf *text, int flags);
@@ -59,10 +59,10 @@ namespace Bypass {
 		Document document;
 		boost::unordered_map<std::string, Element> elementSoup;
 		int elementCount;
-		void eraseLinebreakControlCharacters(Element* element);
-		void handleBlock(Type, struct buf *ob, struct buf *text);
+		void handleBlock(Type, struct buf *ob, struct buf *text, int extra = -1);
 		void handleSpan(Type, struct buf *ob, struct buf *text, struct buf *extra = NULL, struct buf *extra2 = NULL);
 		void createSpan(Element, struct buf *ob);
+		void eraseTrailingControlCharacters(std::string controlCharacters);
 	};
 
 }

@@ -58,6 +58,7 @@ struct mkd_renderer mkd_callbacks = {
 namespace Bypass {
 
 	const static std::string TWO_SPACES = "  ";
+	const static std::string NEWLINE = "\n";
 
 	Parser::Parser()
 	: elementSoup()
@@ -100,11 +101,34 @@ namespace Bypass {
 		return parse(markdown.c_str());
 	}
 
+	void Parser::eraseTrailingControlCharacters(std::string controlCharacters) {
+		std::ostringstream oss;
+		oss << elementCount;
+
+		Element* element = &(elementSoup.at(oss.str()));
+
+		std::string precedingText = element->getText();
+		size_t ptlen = precedingText.length();
+		size_t cclen = controlCharacters.length();
+
+		if (ptlen > cclen) {
+			if (precedingText.substr(ptlen - cclen) == controlCharacters) {
+				element->setText(precedingText.substr(0, ptlen - cclen));
+			}
+		}
+	}
+
 	// Block Element Callbacks
 
-	void Parser::handleBlock(Type type, struct buf *ob, struct buf *text) {
+	void Parser::handleBlock(Type type, struct buf *ob, struct buf *text, int extra) {
 		Element block;
 		block.setType(type);
+
+		if (type == HEADER) {
+			char levelStr[2];
+			snprintf(levelStr, 2, "%d", extra);
+			block.addAttribute("level", levelStr);
+		}
 
 		std::string textString(text->data);
 		textString = textString.substr(0,text->size);
@@ -127,16 +151,23 @@ namespace Bypass {
 		bufputs(ob, oss.str().c_str());
 	}
 
-	void Parser::parsedBlockcode(struct buf *ob, struct buf *text) {
+	void Parser::parsedBlockCode(struct buf *ob, struct buf *text) {
+		parsedNormalText(ob, text);
+		eraseTrailingControlCharacters(NEWLINE);
+
+		std::ostringstream oss;
+		oss << elementCount << '|';
+		bufreset(text);
+		bufputs(text, oss.str().c_str());
 		handleBlock(BLOCK_CODE, ob, text);
 	}
 
-	void Parser::parsedBlockquote(struct buf *ob, struct buf *text) {
+	void Parser::parsedBlockQuote(struct buf *ob, struct buf *text) {
 		handleBlock(BLOCK_QUOTE, ob, text);
 	}
 
 	void Parser::parsedHeader(struct buf *ob, struct buf *text, int level) {
-		handleBlock(HEADER, ob, text);
+		handleBlock(HEADER, ob, text, level);
 	}
 
 	void Parser::parsedList(struct buf *ob, struct buf *text, int flags) {
@@ -181,13 +212,6 @@ namespace Bypass {
 			bufputs(ob, textString.c_str());
 		}
 		else {
-			if (type == LINEBREAK) {
-				std::ostringstream oss;
-				oss << elementCount;
-
-				eraseLinebreakControlCharacters(&elementSoup.at(oss.str()));
-			}
-
 			Element element;
 			element.setType(type);
 
@@ -234,23 +258,8 @@ namespace Bypass {
 		return 1;
 	}
 
-	/*!
-	\brief Erases errant control characters when markdown.c encounters a line break.
-
-	markdown.c interprets "  \n" as a line break, however it leaves the trailing
-	spaces associated with the previous span element. This method will erase those
-	control characters from the previous element.
-	 */
-	void Parser::eraseLinebreakControlCharacters(Element* element) {
-		std::string precedingText = element->getText();
-		if (precedingText.size() > 2) {
-			if (precedingText.substr(precedingText.length() - 2) == TWO_SPACES) {
-				element->setText(precedingText.substr(0, precedingText.length() - 2));
-			}
-		}
-	}
-
 	int Parser::parsedLinebreak(struct buf *ob) {
+		eraseTrailingControlCharacters(TWO_SPACES);
 		handleSpan(LINEBREAK, ob, NULL);
 		return 1;
 	}
@@ -274,11 +283,11 @@ namespace Bypass {
 // Block Element callbacks
 
 static void rndr_blockcode(struct buf *ob, struct buf *text, void *opaque) {
-	((Bypass::Parser*) opaque)->parsedBlockcode(ob, text);
+	((Bypass::Parser*) opaque)->parsedBlockCode(ob, text);
 }
 
 static void rndr_blockquote(struct buf *ob, struct buf *text, void *opaque) {
-	((Bypass::Parser*) opaque)->parsedBlockquote(ob, text);
+	((Bypass::Parser*) opaque)->parsedBlockQuote(ob, text);
 }
 
 static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaque) {

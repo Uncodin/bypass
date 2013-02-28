@@ -7,9 +7,8 @@
 using namespace Bypass;
 
 struct F {
-	F()
-	: parser()
-	{
+	F() :
+			parser() {
 
 	}
 
@@ -249,7 +248,8 @@ BOOST_FIXTURE_TEST_CASE(parse_link_with_single_interspersed_simple_example, F) {
 }
 
 BOOST_FIXTURE_TEST_CASE(parse_link_with_single_interspersed_simple_titled_example, F) {
-	Document document = parser.parse("one [two](http://example.net/ \"Two\") three");
+	Document document = parser.parse(
+			"one [two](http://example.net/ \"Two\") three");
 
 	BOOST_REQUIRE(document.size() == 1);
 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
@@ -270,7 +270,8 @@ BOOST_FIXTURE_TEST_CASE(parse_link_with_single_interspersed_simple_titled_exampl
 }
 
 BOOST_FIXTURE_TEST_CASE(parse_link_with_multiple_interspersed_simple_example, F) {
-	Document document = parser.parse("[one](http://example.net/) two [three](http://example.net/)");
+	Document document = parser.parse(
+			"[one](http://example.net/) two [three](http://example.net/)");
 
 	BOOST_REQUIRE(document.size() == 1);
 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
@@ -292,7 +293,9 @@ BOOST_FIXTURE_TEST_CASE(parse_link_with_multiple_interspersed_simple_example, F)
 }
 
 BOOST_FIXTURE_TEST_CASE(parse_link_with_multiple_interspersed_simple_titled_example, F) {
-	Document document = parser.parse("[one](http://example.net/ \"One\") two [three](http://example.net/ \"Three\")");
+	Document document =
+			parser.parse(
+					"[one](http://example.net/ \"One\") two [three](http://example.net/ \"Three\")");
 
 	BOOST_REQUIRE(document.size() == 1);
 	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
@@ -384,17 +387,128 @@ BOOST_FIXTURE_TEST_CASE(parse_simple_linebreak, F) {
 	BOOST_REQUIRE(document[0][2].size() == 0);
 }
 
+// Header ----------------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_header1_atx, F) {
+	Document document = parser.parse("# one");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "1");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header1_atx_with_trailing_delim, F) {
+	Document document = parser.parse("# one #");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "1");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header1_setext, F) {
+	Document document = parser.parse("one\n===");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "1");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header2_atx, F) {
+	Document document = parser.parse("## two");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "2");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "two");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header2_setext, F) {
+	Document document = parser.parse("two\n---");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "2");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "two");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header3_atx, F) {
+	Document document = parser.parse("### three");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "3");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "three");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header4_atx, F) {
+	Document document = parser.parse("#### four");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "4");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "four");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header5_atx, F) {
+	Document document = parser.parse("##### five");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "5");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "five");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header6_atx, F) {
+	Document document = parser.parse("###### six");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "6");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "six");
+}
+
+// Block code ------------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_block_code_indented_with_spaces, F) {
+	Document document = parser.parse("This is a normal paragraph:\n"
+			"\n"
+			"    This is a code block.");
+	BOOST_REQUIRE(document.size() == 2);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "This is a normal paragraph:");
+	BOOST_REQUIRE(document[1].getType() == BLOCK_CODE);
+	BOOST_REQUIRE(document[1].size() == 1);
+	BOOST_REQUIRE(document[1][0].getType() == TEXT);
+	BOOST_REQUIRE(document[1][0].getText() == "This is a code block.");
+}
 
 BOOST_FIXTURE_TEST_CASE(parse_text_with_paragraph, F) {
-	Document document = parser.parse("Credits\n-------\n\n`Sundown` is based on the original Upskirt parser by Natacha Port\u00e9, with many additions\nby Vicent Marti (@vmg) and contributions from the following authors:\n\n\tBen Noordhuis, Bruno Michel, Joseph Koshy, Krzysztof Kowalczyk, Samuel Bronson,\n\tShuhei Tanuma");
+	Document document =
+			parser.parse(
+					"Credits\n-------\n\n`Sundown` is based on the original Upskirt parser by Natacha Port\u00e9, with many additions\nby Vicent Marti (@vmg) and contributions from the following authors:\n\n\tBen Noordhuis, Bruno Michel, Joseph Koshy, Krzysztof Kowalczyk, Samuel Bronson,\n\tShuhei Tanuma");
 
 	BOOST_REQUIRE(document.size() == 3);
 	BOOST_REQUIRE(document[0].getType() == HEADER);
 }
 
-
 BOOST_FIXTURE_TEST_CASE(parse_list, F) {
-	Document document = parser.parse("*\t**Fully standards compliant**\n\n\t`Sundown` passes out of the box the official Markdown v1.0.0 and v1.0.3\n\ttest suites, and has been extensively tested with additional corner cases\n\tto make sure its output is as sane as possible at all times.\n\n*\t**Massive extension support**\n\n\t`Sundown` has optional support for several (unofficial) Markdown extensions,\n\tsuch as non-strict emphasis, fenced code blocks, tables, autolinks,\n\tstrikethrough and more.");
+	Document document =
+			parser.parse(
+					"*\t**Fully standards compliant**\n\n\t`Sundown` passes out of the box the official Markdown v1.0.0 and v1.0.3\n\ttest suites, and has been extensively tested with additional corner cases\n\tto make sure its output is as sane as possible at all times.\n\n*\t**Massive extension support**\n\n\t`Sundown` has optional support for several (unofficial) Markdown extensions,\n\tsuch as non-strict emphasis, fenced code blocks, tables, autolinks,\n\tstrikethrough and more.");
 
 	BOOST_REQUIRE(document.size() == 1);
 	BOOST_REQUIRE(document[0].getType() == LIST);
@@ -412,4 +526,3 @@ BOOST_FIXTURE_TEST_CASE(parse_list, F) {
 	BOOST_REQUIRE(document[0][1][1].getType() == PARAGRAPH);
 	BOOST_REQUIRE(document[0][1][1][0].getType() == CODE_SPAN);
 }
-
