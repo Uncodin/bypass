@@ -153,17 +153,28 @@ namespace Bypass {
 
 	// Span Element Callbacks
 
-	void Parser::handleSpan(Type type, struct buf *ob, struct buf *text, struct buf *extra) {
+	void Parser::handleSpan(Type type, struct buf *ob, struct buf *text, struct buf *extra, struct buf *extra2) {
 
-
-		std::string textString(text->data);
-		textString = textString.substr(0, text->size);
 		std::vector<std::string> strs;
-		if (text)
+		std::string textString;
+		if (text) {
+			textString = std::string(text->data).substr(0, text->size);
 			boost::split(strs, textString, boost::is_any_of("|"));
+		}
 		if (strs.size() > 0) {
 			Element element = elementSoup.at(strs[0]);
 			element.setType(type);
+
+			if (extra != NULL && extra->size) {
+				if (element.getType() == LINK)
+					element.addAttribute("link", std::string(extra->data).substr(0, extra->size));
+			}
+
+			if (extra2 != NULL && extra2->size) {
+				if (element.getType() == LINK)
+					element.addAttribute("title", std::string(extra2->data).substr(0, extra2->size));
+			}
+
 			elementSoup.erase(strs[0]);
 			elementSoup[strs[0]] = element;
 
@@ -202,12 +213,17 @@ namespace Bypass {
 	}
 
 	int Parser::parsedLink(struct buf *ob, struct buf *link, struct buf *title, struct buf *content) {
-		handleSpan(LINK, ob, content, link);
+		handleSpan(LINK, ob, content, link, title);
 		return 1;
 	}
 
 	int Parser::parsedCodeSpan(struct buf *ob, struct buf *text) {
-		handleBlock(CODE_SPAN, ob, text);
+		if (text && text->size > 0) {
+			Element codeSpan;
+			codeSpan.setType(CODE_SPAN);
+			codeSpan.setText(std::string(text->data).substr(0, text->size));
+			createSpan(codeSpan, ob);
+		}
 		return 1;
 	}
 
