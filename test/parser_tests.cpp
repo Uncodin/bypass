@@ -496,6 +496,26 @@ BOOST_FIXTURE_TEST_CASE(parse_block_code_indented_with_spaces, F) {
 	BOOST_REQUIRE(document[1][0].getText() == "This is a code block.");
 }
 
+// Block Quote ---------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_block_quote, F) {
+	Document document = parser.parse("> ## This is a header.\n"
+			">\n"
+			"> -\tListItem\n"
+			"> -\tListItem2\n"
+			">\n"
+			">More Text!\n");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == BLOCK_QUOTE);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == HEADER);
+	BOOST_REQUIRE(document[0][1].getType() == LIST);
+	BOOST_REQUIRE(document[0][2].getType() == PARAGRAPH);
+}
+
+// Advanced -------------------------------------------------------------------
+
 BOOST_FIXTURE_TEST_CASE(parse_text_with_paragraph, F) {
 	Document document =
 			parser.parse(
