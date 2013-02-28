@@ -26,8 +26,8 @@ namespace Bypass {
 
 		// Block Element Callbacks
 
-		void parsedBlockcode(struct buf *ob, struct buf *text);
-		void parsedBlockquote(struct buf *ob, struct buf *text);
+		void parsedBlockCode(struct buf *ob, struct buf *text);
+		void parsedBlockQuote(struct buf *ob, struct buf *text);
 		void parsedHeader(struct buf *ob, struct buf *text, int level);
 		void parsedList(struct buf *ob, struct buf *text, int flags);
 		void parsedListItem(struct buf *ob, struct buf *text, int flags);
@@ -57,7 +57,7 @@ namespace Bypass {
 		// Parser Internals
 
 		void addElement(Element element);
-		void eraseLinebreakControlCharacters();
+		void eraseTrailingControlCharacters(std::string controlCharacters);
 	};
 
 }

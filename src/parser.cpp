@@ -59,6 +59,7 @@ struct mkd_renderer mkd_callbacks = {
 namespace Bypass {
 
 	const static std::string TWO_SPACES = "  ";
+	const static std::string NEWLINE = "\n";
 
 	Parser::Parser()
 	: pendingSpanElements()
@@ -106,13 +107,33 @@ namespace Bypass {
 		pendingSpanElements.clear();
 	}
 
-	// Block Element Callbacks
+	void Parser::eraseTrailingControlCharacters(std::string controlCharacters) {
+		std::string precedingText = pendingSpanElements.back().getText();
 
-	void Parser::parsedBlockcode(struct buf *ob, struct buf *text) {
+		size_t ptlen = precedingText.length();
+		size_t cclen = controlCharacters.length();
 
+		if (ptlen > cclen) {
+			if (precedingText.substr(ptlen - cclen) == controlCharacters) {
+				pendingSpanElements.back().setText(precedingText.substr(0, ptlen - cclen));
+			}
+		}
 	}
 
-	void Parser::parsedBlockquote(struct buf *ob, struct buf *text) {
+	// Block Element Callbacks
+
+	void Parser::parsedBlockCode(struct buf *ob, struct buf *text) {
+		parsedNormalText(ob, text);
+		eraseTrailingControlCharacters(NEWLINE);
+
+		Element blockCode;
+		blockCode.setType(BLOCK_CODE);
+		blockCode.setChildren(pendingSpanElements);
+
+		addElement(blockCode);
+	}
+
+	void Parser::parsedBlockQuote(struct buf *ob, struct buf *text) {
 
 	}
 
@@ -188,24 +209,8 @@ namespace Bypass {
 		return 1;
 	}
 
-	/*!
-	\brief Erases errant control characters when markdown.c encounters a line break.
-
-	markdown.c interprets "  \n" as a line break, however it leaves the trailing
-	spaces associated with the previous span element. This method will erase those
-	control characters from the previous element.
-	 */
-	void Parser::eraseLinebreakControlCharacters() {
-		std::string precedingText = pendingSpanElements.back().getText();
-		if (precedingText.size() > 2) {
-			if (precedingText.substr(precedingText.length() - 2) == TWO_SPACES) {
-				pendingSpanElements.back().setText(precedingText.substr(0, precedingText.length() - 2));
-			}
-		}
-	}
-
 	int Parser::parsedLinebreak(struct buf *ob) {
-		eraseLinebreakControlCharacters();
+		eraseTrailingControlCharacters(TWO_SPACES);
 
 		Element lineBreak;
 		lineBreak.setType(LINEBREAK);
@@ -233,11 +238,11 @@ namespace Bypass {
 // Block Element callbacks
 
 static void rndr_blockcode(struct buf *ob, struct buf *text, void *opaque) {
-	((Bypass::Parser*) opaque)->parsedBlockcode(ob, text);
+	((Bypass::Parser*) opaque)->parsedBlockCode(ob, text);
 }
 
 static void rndr_blockquote(struct buf *ob, struct buf *text, void *opaque) {
-	((Bypass::Parser*) opaque)->parsedBlockquote(ob, text);
+	((Bypass::Parser*) opaque)->parsedBlockQuote(ob, text);
 }
 
 static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaque) {

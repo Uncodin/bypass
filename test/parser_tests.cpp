@@ -476,3 +476,20 @@ BOOST_FIXTURE_TEST_CASE(parse_header6_atx, F) {
 	BOOST_REQUIRE(document[0][0].getType() == TEXT);
 	BOOST_REQUIRE(document[0][0].getText() == "six");
 }
+
+// Block code ------------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_block_code_indented_with_spaces, F) {
+	Document document = parser.parse("This is a normal paragraph:\n"
+	                                 "\n"
+	                                 "    This is a code block.");
+	BOOST_REQUIRE(document.size() == 2);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "This is a normal paragraph:");
+	BOOST_REQUIRE(document[1].getType() == BLOCK_CODE);
+	BOOST_REQUIRE(document[1].size() == 1);
+	BOOST_REQUIRE(document[1][0].getType() == TEXT);
+	BOOST_REQUIRE(document[1][0].getText() == "This is a code block.");
+}
