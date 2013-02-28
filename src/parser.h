@@ -56,6 +56,7 @@ namespace Bypass {
 
 		// Parser Internals
 
+		void addElement(Element element);
 		void eraseLinebreakControlCharacters();
 	};
 

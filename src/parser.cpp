@@ -101,6 +101,11 @@ namespace Bypass {
 		return parse(markdown.c_str());
 	}
 
+	void Parser::addElement(Element element) {
+		document.append(element);
+		pendingSpanElements.clear();
+	}
+
 	// Block Element Callbacks
 
 	void Parser::parsedBlockcode(struct buf *ob, struct buf *text) {
@@ -112,7 +117,14 @@ namespace Bypass {
 	}
 
 	void Parser::parsedHeader(struct buf *ob, struct buf *text, int level) {
+		char levelStr[2];
+		snprintf(levelStr, 2, "%d", level);
 
+		Element header;
+		header.setType(HEADER);
+		header.addAttribute("level", levelStr);
+		header.setChildren(pendingSpanElements);
+		addElement(header);
 	}
 
 	void Parser::parsedList(struct buf *ob, struct buf *text, int flags) {
@@ -127,9 +139,7 @@ namespace Bypass {
 		Element paragraph;
 		paragraph.setType(PARAGRAPH);
 		paragraph.setChildren(pendingSpanElements);
-		document.append(paragraph);
-
-		pendingSpanElements.clear();
+		addElement(paragraph);
 	}
 
 	// Span Element Callbacks

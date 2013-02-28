@@ -384,3 +384,95 @@ BOOST_FIXTURE_TEST_CASE(parse_simple_linebreak, F) {
 	BOOST_REQUIRE(document[0][2].getText() == "two");
 	BOOST_REQUIRE(document[0][2].size() == 0);
 }
+
+// Header ----------------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_header1_atx, F) {
+	Document document = parser.parse("# one");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "1");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header1_atx_with_trailing_delim, F) {
+	Document document = parser.parse("# one #");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "1");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header1_setext, F) {
+	Document document = parser.parse("one\n===");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "1");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header2_atx, F) {
+	Document document = parser.parse("## two");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "2");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "two");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header2_setext, F) {
+	Document document = parser.parse("two\n---");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "2");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "two");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header3_atx, F) {
+	Document document = parser.parse("### three");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "3");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "three");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header4_atx, F) {
+	Document document = parser.parse("#### four");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "4");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "four");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header5_atx, F) {
+	Document document = parser.parse("##### five");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "5");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "five");
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_header6_atx, F) {
+	Document document = parser.parse("###### six");
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[0].getAttribute("level") == "6");
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "six");
+}
