@@ -12,6 +12,6 @@ LOCAL_SRC_FILES := \
 	../../../dep/libsoldout/buffer.c \
 	../../../dep/libsoldout/array.c
 	
-LOCAL_C_INCLUDES:= ../../dep/libsoldout ../../src
+LOCAL_C_INCLUDES:= ../../dep/libsoldout ../../src /opt/local/include /usr/local/include
 
 include $(BUILD_SHARED_LIBRARY)
