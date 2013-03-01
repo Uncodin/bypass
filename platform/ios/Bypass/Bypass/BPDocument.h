@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface BPDocument : NSObject
-
+@property (strong, nonatomic, readonly) NSArray *elements;
 @end

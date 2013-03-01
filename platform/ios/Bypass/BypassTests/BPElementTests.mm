@@ -2,7 +2,6 @@
 #import "BPElementPrivate.h"
 
 @interface BPElementTests : SenTestCase
-
 @end
 
 @implementation BPElementTests
