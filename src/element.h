@@ -43,17 +43,26 @@ namespace Bypass {
 
 	class Element {
 	public:
+		typedef std::map<std::string, std::string> AttributeMap;
+
 		Element();
 		~Element();
-		void setText(std::string text);
-		std::string getText();
-		void addAttribute(std::string name, std::string value);
-		std::string getAttribute(std::string name);
-		std::set<std::string> getAttributeNames();
+
+		std::string text;
+
+		void setText(const std::string& text);
+		const std::string& getText();
+
+		void addAttribute(const std::string& name, const std::string& value);
+		std::string getAttribute(const std::string& name);
+
+		AttributeMap::iterator attrBegin();
+		AttributeMap::iterator attrEnd();
+		size_t attrSize() const;
+
 		void append(const Element& blockElement);
 		Element getChild(size_t i);
 		Element operator[](size_t i);
-		void setChildren(std::vector<Element> children);
 		void setType(Type type);
 		Type getType();
 		bool isBlockElement();
@@ -61,8 +70,7 @@ namespace Bypass {
 		size_t size();
 		friend std::ostream& operator<<(std::ostream& out, const Element& element);
 	private:
-		std::string text;
-		std::map<std::string, std::string> attributes;
+		AttributeMap attributes;
 		std::vector<Element> children;
 		Type type;
 	};

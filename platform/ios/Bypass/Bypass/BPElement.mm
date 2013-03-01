@@ -89,27 +89,20 @@ const BPElementType BPText           = Bypass::TEXT;
     using namespace std;
     
     if (_attributes == nil) {
-        set<string> attrNames = _element.getAttributeNames();
-        set<string>::iterator itr;
+		Bypass::AttributeMap::iterator it = _element.attrBegin();
+        NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:_element.attrSize()];
 
-        NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:attrNames.size()];
-        
-        for (itr = attrNames.begin(); itr != attrNames.end(); ++itr) {
-            string n = *itr;
-            string v = _element.getAttribute(n);
-            
-            if (n.length() > 0 && v.length() > 0) {
-                NSString *nn = [NSString stringWithCString:n.c_str() encoding:NSUTF8StringEncoding];
-                NSString *vv = [NSString stringWithCString:v.c_str() encoding:NSUTF8StringEncoding];
-                
-                attributes[nn] = vv;
-            }
-        }
-        
+		for (; it != _element.attrEnd(); ++it) {
+			if (!it->first.empty() && !it->second.empty()) {
+				NSString *nn = [NSString stringWithUTF8String:it->first.c_str()];
+				NSString *vv = [NSString stringWithUTF8String:it->second.c_str()];
+
+				[attributes setObject:vv forKey:nn];
+			}
+		}
+
         _attributes = [NSDictionary dictionaryWithDictionary:attributes];
     }
-    
-    return _attributes;
 }
 
 - (NSArray *)childElements

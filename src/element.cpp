@@ -13,43 +13,40 @@ namespace Bypass {
 
 	}
 
-	void Element::setText(std::string text) {
+	void Element::setText(const std::string& text) {
 		this->text = text;
 	}
 
-	std::string Element::getText() {
+	const std::string& Element::getText() {
 		return text;
 	}
 
-	void Element::addAttribute(std::string name, std::string value) {
-		attributes[name] = value;
+	void Element::addAttribute(const std::string& name, const std::string& value) {
+		attributes.insert(std::make_pair(name, value));
 	}
 
-	std::string Element::getAttribute(std::string name) {
+	std::string Element::getAttribute(const std::string& name) {
 		return attributes[name];
 	}
 
-	std::set<std::string> Element::getAttributeNames() {
-		std::set<std::string> attributeNames;
-		std::map<std::string, std::string>::iterator itr;
-
-		for(itr = attributes.begin(); itr != attributes.end(); itr++) {
-			attributeNames.insert(itr->first);
-		}
-
-		return attributeNames;
+	Element::AttributeMap::iterator Element::attrBegin() {
+		return attributes.begin();
 	}
 
-	void  Element::append(const Element& child) {
+	Element::AttributeMap::iterator Element::attrEnd() {
+		return attributes.end();
+	}
+	
+	size_t Element::attrSize() const {
+		return attributes.size();
+	}
+
+	void Element::append(const Element& child) {
 		children.push_back(Element(child));
 	}
 
 	Element Element::operator[](size_t i) {
 		return children[i];
-	}
-
-	void Element::setChildren(std::vector<Element> children) {
-		this->children.insert(this->children.end(), children.begin(), children.end());
 	}
 
 	void Element::setType(Type type) {
