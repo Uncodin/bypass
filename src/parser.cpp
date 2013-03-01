@@ -131,8 +131,7 @@ namespace Bypass {
 			block.addAttribute("level", levelStr);
 		}
 
-		std::string textString(text->data);
-		textString = textString.substr(0,text->size);
+		std::string textString(text->data, text->data + text->size);
 		std::vector<std::string> strs;
 		boost::split(strs, textString, boost::is_any_of("|"));
 
@@ -193,7 +192,7 @@ namespace Bypass {
 		std::vector<std::string> strs;
 		std::string textString;
 		if (text) {
-			textString = std::string(text->data).substr(0, text->size);
+			textString = std::string(text->data, text->data + text->size);
 			boost::split(strs, textString, boost::is_any_of("|"));
 		}
 		if (strs.size() > 0) {
@@ -204,13 +203,15 @@ namespace Bypass {
 			element.setType(type);
 
 			if (extra != NULL && extra->size) {
-				if (element.getType() == LINK)
-					element.addAttribute("link", std::string(extra->data).substr(0, extra->size));
+				if (element.getType() == LINK) {
+					element.addAttribute("link", std::string(extra->data, extra->data + extra->size));
+				}
 			}
 
 			if (extra2 != NULL && extra2->size) {
-				if (element.getType() == LINK)
-					element.addAttribute("title", std::string(extra2->data).substr(0, extra2->size));
+				if (element.getType() == LINK) {
+					element.addAttribute("title", std::string(extra2->data, extra2->data + extra2->size));
+				}
 			}
 
 			elementSoup.erase(pos);
@@ -259,7 +260,7 @@ namespace Bypass {
 		if (text && text->size > 0) {
 			Element codeSpan;
 			codeSpan.setType(CODE_SPAN);
-			codeSpan.setText(std::string(text->data).substr(0, text->size));
+			codeSpan.setText(std::string(text->data, text->data + text->size));
 			createSpan(codeSpan, ob);
 		}
 		return 1;
@@ -280,7 +281,7 @@ namespace Bypass {
 		if (text && text->size > 0) {
 			Element normalText;
 			normalText.setType(TEXT);
-			normalText.setText(std::string(text->data).substr(0, text->size));
+			normalText.setText(std::string(text->data, text->data + text->size));
 			createSpan(normalText, ob);
 		}
 	}
