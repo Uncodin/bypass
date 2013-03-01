@@ -4,7 +4,6 @@ import in.uncod.android.bypass.Bypass;
 import in.uncod.andrpod.bypass.bypass_test.R;
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Spannable;
 import android.widget.TextView;
 
 public class BenchmarkActivity extends Activity {
@@ -17,8 +16,8 @@ public class BenchmarkActivity extends Activity {
 		
 		TextView text = (TextView) findViewById(R.id.demoText);
 		Bypass bypass = new Bypass();
-		Spannable spannable = (Spannable) bypass.markdownToSpannable("Header!!\n--------");
-		text.setText(spannable);
+		CharSequence string = bypass.markdownToSpannable("Header!!\n--------\nText goes here or something\n*One* **Two** ***Three***\n[Link](https://github.com/Uncodin/bypass)\n\n-\tOne\n-\tTwo\n\n");
+		text.setText(string);
 	}
 
 }
