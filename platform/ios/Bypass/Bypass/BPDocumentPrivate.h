@@ -7,8 +7,8 @@
 //
 
 #import "BPDocument.h"
-#import "document.h"
 #import "BPElementPrivate.h"
+#import "document.h"
 
 @interface BPDocument (Private)
 

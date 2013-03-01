@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class BPDocument;
+
 @interface BPParser : NSObject
+
+- (BPDocument *)parse:(NSString *)markdown;
 
 @end
