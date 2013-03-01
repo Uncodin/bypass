@@ -16,7 +16,7 @@ public class BenchmarkActivity extends Activity {
 		
 		TextView text = (TextView) findViewById(R.id.demoText);
 		Bypass bypass = new Bypass();
-		CharSequence string = bypass.markdownToSpannable("Header!!\n--------\nText goes here or something");
+		CharSequence string = bypass.markdownToSpannable("Header!!\n--------\nText goes here or something\n*One* **Two** ***Three***\n[Link](https://github.com/Uncodin/bypass)\n\n-\tOne\n-\tTwo\n\n");
 		text.setText(string);
 	}
 
