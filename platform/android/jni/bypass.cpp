@@ -8,6 +8,7 @@ namespace boost
 
 jclass java_element_class;
 jmethodID java_element_init;
+jmethodID java_element_addAttr;
 
 jobject recurseElement(JNIEnv *env, Bypass::Element element) {
 	jobjectArray elements = (jobjectArray) env->NewObjectArray(element.size(), java_element_class, 0);
@@ -17,6 +18,13 @@ jobject recurseElement(JNIEnv *env, Bypass::Element element) {
 	}
 	jstring text = env->NewStringUTF(element.getText().c_str());
 	jobject jelement = env->NewObject(java_element_class, java_element_init, text, element.getType(), elements);
+	std::set<std::string> attrNames = element.getAttributeNames();
+	for (std::set<std::string>::iterator it = attrNames.begin(); it != attrNames.end(); ++it) {
+		jstring name = env->NewStringUTF(it->c_str());
+		std::string strValue = element.getAttribute(*it);
+		jstring value = env->NewStringUTF(strValue.c_str());
+		env->CallVoidMethod(jelement, java_element_addAttr, name, value);
+	}
 
 	return jelement;
 }
@@ -36,6 +44,7 @@ JNIEXPORT jobject JNICALL Java_in_uncod_android_bypass_Bypass_processMarkdown
 	jmethodID java_document_init = env->GetMethodID(java_document_class, "<init>", "([Lin/uncod/android/bypass/Element;)V");
 	java_element_class = env->FindClass("in/uncod/android/bypass/Element");
 	java_element_init = env->GetMethodID(java_element_class, "<init>", "(Ljava/lang/String;I[Lin/uncod/android/bypass/Element;)V");
+	java_element_addAttr = env->GetMethodID(java_element_class, "addAttribute", "(Ljava/lang/String;Ljava/lang/String;)V");
 
 	jobjectArray elements = (jobjectArray) env->NewObjectArray(document.size(), java_element_class, 0);
 
