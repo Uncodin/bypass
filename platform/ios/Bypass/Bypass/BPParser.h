@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@class BPDocument;
+#import "BPDocument.h"
 
 @interface BPParser : NSObject
 

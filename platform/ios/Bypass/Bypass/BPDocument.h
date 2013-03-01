@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BPElement.h"
 
 @interface BPDocument : NSObject
 @property (strong, nonatomic, readonly) NSArray *elements;
