@@ -565,3 +565,12 @@ BOOST_FIXTURE_TEST_CASE(parse_list, F) {
 	BOOST_REQUIRE(document[0][1][1].getType() == PARAGRAPH);
 	BOOST_REQUIRE(document[0][1][1][0].getType() == CODE_SPAN);
 }
+
+// Document Order -----------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(check_document_order, F) {
+	Document document = parser.parse("Header!!\n--------\nText goes here or something\n*One* **Two** ***Three***\n");
+	BOOST_REQUIRE(document.size() == 2);
+	BOOST_REQUIRE(document[0].getType() == HEADER);
+	BOOST_REQUIRE(document[1].getType() == PARAGRAPH);
+}
