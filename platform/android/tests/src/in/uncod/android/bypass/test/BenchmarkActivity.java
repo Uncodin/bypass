@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.util.TimingLogger;
 import android.widget.TextView;
 
 public class BenchmarkActivity extends Activity {
@@ -19,9 +20,22 @@ public class BenchmarkActivity extends Activity {
 		setContentView(R.layout.main);
 		
 		TextView text = (TextView) findViewById(R.id.demoText);
-		Bypass bypass = new Bypass();
+		
+		TimingLogger timings = new TimingLogger("Bypass", "onCreate");
+		
 		String readme = loadFile();
+		
+		timings.addSplit("read raw");
+		
+		Bypass bypass = new Bypass();
+		
+		timings.addSplit("instantiated Bypass");
+		
 		CharSequence string = bypass.markdownToSpannable(readme);
+		
+		timings.addSplit("convert to spannable");
+		timings.dumpToLog();
+		
 		text.setText(string);
 		//Allows link clicking
 		text.setMovementMethod(LinkMovementMethod.getInstance());
