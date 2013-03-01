@@ -23,6 +23,7 @@
 		5E5BC87016E007DD00165503 /* markdown.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC86C16E007DD00165503 /* markdown.c */; };
 		5E5BC87316E0083D00165503 /* BPDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC87216E0083D00165503 /* BPDocument.m */; };
 		5E5BC87616E0085000165503 /* BPElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC87516E0085000165503 /* BPElement.mm */; };
+		5E5BC87B16E11F7300165503 /* BPElementTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC87A16E11F7300165503 /* BPElementTests.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,8 @@
 		5E5BC87216E0083D00165503 /* BPDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPDocument.m; sourceTree = "<group>"; };
 		5E5BC87416E0085000165503 /* BPElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPElement.h; sourceTree = "<group>"; };
 		5E5BC87516E0085000165503 /* BPElement.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BPElement.mm; sourceTree = "<group>"; };
+		5E5BC87A16E11F7300165503 /* BPElementTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BPElementTests.mm; sourceTree = "<group>"; };
+		5E5BC87C16E1222A00165503 /* BPElementPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPElementPrivate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +142,7 @@
 				5E5BC87116E0083D00165503 /* BPDocument.h */,
 				5E5BC87216E0083D00165503 /* BPDocument.m */,
 				5E5BC87416E0085000165503 /* BPElement.h */,
+				5E5BC87C16E1222A00165503 /* BPElementPrivate.h */,
 				5E5BC87516E0085000165503 /* BPElement.mm */,
 				5E5BC86716E007AC00165503 /* Soldout */,
 				5E5BC85416E006D700165503 /* Core */,
@@ -158,6 +162,7 @@
 		5E5BC83216E004FA00165503 /* BypassTests */ = {
 			isa = PBXGroup;
 			children = (
+				5E5BC87A16E11F7300165503 /* BPElementTests.mm */,
 				5E5BC83316E004FA00165503 /* Supporting Files */,
 			);
 			path = BypassTests;
@@ -312,6 +317,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E5BC87B16E11F7300165503 /* BPElementTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,9 +399,11 @@
 		5E5BC83E16E004FA00165503 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BOOST_HOME = /opt/local/include;
 				DSTROOT = /tmp/Bypass.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Bypass/Bypass-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(BOOST_HOME)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -405,9 +413,11 @@
 		5E5BC83F16E004FA00165503 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BOOST_HOME = /opt/local/include;
 				DSTROOT = /tmp/Bypass.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Bypass/Bypass-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(BOOST_HOME)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
