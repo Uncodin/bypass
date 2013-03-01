@@ -15,15 +15,19 @@ jobject recurseElement(JNIEnv *env, Bypass::Element element) {
 	for (int i=0; i<element.size(); i++) {
 		jobject jelement = recurseElement(env, element[i]);
 		env->SetObjectArrayElement(elements, i, jelement);
+		env->DeleteLocalRef(jelement);
 	}
 	jstring text = env->NewStringUTF(element.getText().c_str());
 	jobject jelement = env->NewObject(java_element_class, java_element_init, text, element.getType(), elements);
+	env->DeleteLocalRef(text);
 	std::set<std::string> attrNames = element.getAttributeNames();
 	for (std::set<std::string>::iterator it = attrNames.begin(); it != attrNames.end(); ++it) {
 		jstring name = env->NewStringUTF(it->c_str());
 		std::string strValue = element.getAttribute(*it);
 		jstring value = env->NewStringUTF(strValue.c_str());
 		env->CallVoidMethod(jelement, java_element_addAttr, name, value);
+		env->DeleteLocalRef(name);
+		env->DeleteLocalRef(value);
 	}
 
 	return jelement;
@@ -51,6 +55,7 @@ JNIEXPORT jobject JNICALL Java_in_uncod_android_bypass_Bypass_processMarkdown
 	for (int i=0; i<document.size(); i++)  {
 		jobject jelement = recurseElement(env, document[i]);
 		env->SetObjectArrayElement(elements, i, jelement);
+		env->DeleteLocalRef(jelement);
 	}
 
 	jobject jdocument = env->NewObject(java_document_class, java_document_init, elements);
