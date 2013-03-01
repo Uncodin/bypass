@@ -1,0 +1,480 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5E5BC81C16E004FA00165503 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC81B16E004FA00165503 /* Foundation.framework */; };
+		5E5BC82116E004FA00165503 /* Bypass.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5E5BC82016E004FA00165503 /* Bypass.h */; };
+		5E5BC82B16E004FA00165503 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC82A16E004FA00165503 /* SenTestingKit.framework */; };
+		5E5BC82E16E004FA00165503 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC81B16E004FA00165503 /* Foundation.framework */; };
+		5E5BC83116E004FA00165503 /* libBypass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC81816E004FA00165503 /* libBypass.a */; };
+		5E5BC83716E004FA00165503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC83516E004FA00165503 /* InfoPlist.strings */; };
+		5E5BC85016E005E700165503 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC84F16E005E700165503 /* UIKit.framework */; };
+		5E5BC85316E0066E00165503 /* BPParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC85216E0066E00165503 /* BPParser.m */; };
+		5E5BC86416E0076D00165503 /* document.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC85E16E0076D00165503 /* document.cpp */; };
+		5E5BC86516E0076D00165503 /* element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC86016E0076D00165503 /* element.cpp */; };
+		5E5BC86616E0076D00165503 /* parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC86216E0076D00165503 /* parser.cpp */; };
+		5E5BC86E16E007DD00165503 /* array.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC86816E007DD00165503 /* array.c */; };
+		5E5BC86F16E007DD00165503 /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC86A16E007DD00165503 /* buffer.c */; };
+		5E5BC87016E007DD00165503 /* markdown.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC86C16E007DD00165503 /* markdown.c */; };
+		5E5BC87316E0083D00165503 /* BPDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC87216E0083D00165503 /* BPDocument.m */; };
+		5E5BC87616E0085000165503 /* BPElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC87516E0085000165503 /* BPElement.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5E5BC82F16E004FA00165503 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5E5BC81016E004FA00165503 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5E5BC81716E004FA00165503;
+			remoteInfo = Bypass;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5E5BC81616E004FA00165503 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+				5E5BC82116E004FA00165503 /* Bypass.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5E5BC81816E004FA00165503 /* libBypass.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBypass.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E5BC81B16E004FA00165503 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5E5BC81F16E004FA00165503 /* Bypass-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bypass-Prefix.pch"; sourceTree = "<group>"; };
+		5E5BC82016E004FA00165503 /* Bypass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bypass.h; sourceTree = "<group>"; };
+		5E5BC82916E004FA00165503 /* BypassTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BypassTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E5BC82A16E004FA00165503 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		5E5BC83416E004FA00165503 /* BypassTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BypassTests-Info.plist"; sourceTree = "<group>"; };
+		5E5BC83616E004FA00165503 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5E5BC84F16E005E700165503 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		5E5BC85116E0066E00165503 /* BPParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPParser.h; sourceTree = "<group>"; };
+		5E5BC85216E0066E00165503 /* BPParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPParser.m; sourceTree = "<group>"; };
+		5E5BC85E16E0076D00165503 /* document.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = document.cpp; path = /Users/dcarrillo/Development/bypass/platform/ios/BypassSample/../../../src/document.cpp; sourceTree = "<absolute>"; };
+		5E5BC85F16E0076D00165503 /* document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = document.h; path = /Users/dcarrillo/Development/bypass/platform/ios/BypassSample/../../../src/document.h; sourceTree = "<absolute>"; };
+		5E5BC86016E0076D00165503 /* element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = element.cpp; path = /Users/dcarrillo/Development/bypass/platform/ios/BypassSample/../../../src/element.cpp; sourceTree = "<absolute>"; };
+		5E5BC86116E0076D00165503 /* element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = element.h; path = /Users/dcarrillo/Development/bypass/platform/ios/BypassSample/../../../src/element.h; sourceTree = "<absolute>"; };
+		5E5BC86216E0076D00165503 /* parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = parser.cpp; path = /Users/dcarrillo/Development/bypass/platform/ios/BypassSample/../../../src/parser.cpp; sourceTree = "<absolute>"; };
+		5E5BC86316E0076D00165503 /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = parser.h; path = /Users/dcarrillo/Development/bypass/platform/ios/BypassSample/../../../src/parser.h; sourceTree = "<absolute>"; };
+		5E5BC86816E007DD00165503 /* array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = array.c; path = "../../../../dep/libsoldout-1.3/array.c"; sourceTree = "<group>"; };
+		5E5BC86916E007DD00165503 /* array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = array.h; path = "../../../../dep/libsoldout-1.3/array.h"; sourceTree = "<group>"; };
+		5E5BC86A16E007DD00165503 /* buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = buffer.c; path = "../../../../dep/libsoldout-1.3/buffer.c"; sourceTree = "<group>"; };
+		5E5BC86B16E007DD00165503 /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = buffer.h; path = "../../../../dep/libsoldout-1.3/buffer.h"; sourceTree = "<group>"; };
+		5E5BC86C16E007DD00165503 /* markdown.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = markdown.c; path = "../../../../dep/libsoldout-1.3/markdown.c"; sourceTree = "<group>"; };
+		5E5BC86D16E007DD00165503 /* markdown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = markdown.h; path = "../../../../dep/libsoldout-1.3/markdown.h"; sourceTree = "<group>"; };
+		5E5BC87116E0083D00165503 /* BPDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPDocument.h; sourceTree = "<group>"; };
+		5E5BC87216E0083D00165503 /* BPDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPDocument.m; sourceTree = "<group>"; };
+		5E5BC87416E0085000165503 /* BPElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPElement.h; sourceTree = "<group>"; };
+		5E5BC87516E0085000165503 /* BPElement.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BPElement.mm; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5E5BC81516E004FA00165503 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E5BC85016E005E700165503 /* UIKit.framework in Frameworks */,
+				5E5BC81C16E004FA00165503 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E5BC82516E004FA00165503 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E5BC82B16E004FA00165503 /* SenTestingKit.framework in Frameworks */,
+				5E5BC82E16E004FA00165503 /* Foundation.framework in Frameworks */,
+				5E5BC83116E004FA00165503 /* libBypass.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5E5BC80F16E004FA00165503 = {
+			isa = PBXGroup;
+			children = (
+				5E5BC81D16E004FA00165503 /* Bypass */,
+				5E5BC83216E004FA00165503 /* BypassTests */,
+				5E5BC81A16E004FA00165503 /* Frameworks */,
+				5E5BC81916E004FA00165503 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5E5BC81916E004FA00165503 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5E5BC81816E004FA00165503 /* libBypass.a */,
+				5E5BC82916E004FA00165503 /* BypassTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5E5BC81A16E004FA00165503 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5E5BC81B16E004FA00165503 /* Foundation.framework */,
+				5E5BC82A16E004FA00165503 /* SenTestingKit.framework */,
+				5E5BC84F16E005E700165503 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5E5BC81D16E004FA00165503 /* Bypass */ = {
+			isa = PBXGroup;
+			children = (
+				5E5BC82016E004FA00165503 /* Bypass.h */,
+				5E5BC85116E0066E00165503 /* BPParser.h */,
+				5E5BC85216E0066E00165503 /* BPParser.m */,
+				5E5BC87116E0083D00165503 /* BPDocument.h */,
+				5E5BC87216E0083D00165503 /* BPDocument.m */,
+				5E5BC87416E0085000165503 /* BPElement.h */,
+				5E5BC87516E0085000165503 /* BPElement.mm */,
+				5E5BC86716E007AC00165503 /* Soldout */,
+				5E5BC85416E006D700165503 /* Core */,
+				5E5BC81E16E004FA00165503 /* Supporting Files */,
+			);
+			path = Bypass;
+			sourceTree = "<group>";
+		};
+		5E5BC81E16E004FA00165503 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5E5BC81F16E004FA00165503 /* Bypass-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5E5BC83216E004FA00165503 /* BypassTests */ = {
+			isa = PBXGroup;
+			children = (
+				5E5BC83316E004FA00165503 /* Supporting Files */,
+			);
+			path = BypassTests;
+			sourceTree = "<group>";
+		};
+		5E5BC83316E004FA00165503 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5E5BC83416E004FA00165503 /* BypassTests-Info.plist */,
+				5E5BC83516E004FA00165503 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5E5BC85416E006D700165503 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				5E5BC85E16E0076D00165503 /* document.cpp */,
+				5E5BC85F16E0076D00165503 /* document.h */,
+				5E5BC86016E0076D00165503 /* element.cpp */,
+				5E5BC86116E0076D00165503 /* element.h */,
+				5E5BC86216E0076D00165503 /* parser.cpp */,
+				5E5BC86316E0076D00165503 /* parser.h */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		5E5BC86716E007AC00165503 /* Soldout */ = {
+			isa = PBXGroup;
+			children = (
+				5E5BC86816E007DD00165503 /* array.c */,
+				5E5BC86916E007DD00165503 /* array.h */,
+				5E5BC86A16E007DD00165503 /* buffer.c */,
+				5E5BC86B16E007DD00165503 /* buffer.h */,
+				5E5BC86C16E007DD00165503 /* markdown.c */,
+				5E5BC86D16E007DD00165503 /* markdown.h */,
+			);
+			name = Soldout;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5E5BC81716E004FA00165503 /* Bypass */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5E5BC83D16E004FA00165503 /* Build configuration list for PBXNativeTarget "Bypass" */;
+			buildPhases = (
+				5E5BC81416E004FA00165503 /* Sources */,
+				5E5BC81516E004FA00165503 /* Frameworks */,
+				5E5BC81616E004FA00165503 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Bypass;
+			productName = Bypass;
+			productReference = 5E5BC81816E004FA00165503 /* libBypass.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		5E5BC82816E004FA00165503 /* BypassTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5E5BC84016E004FA00165503 /* Build configuration list for PBXNativeTarget "BypassTests" */;
+			buildPhases = (
+				5E5BC82416E004FA00165503 /* Sources */,
+				5E5BC82516E004FA00165503 /* Frameworks */,
+				5E5BC82616E004FA00165503 /* Resources */,
+				5E5BC82716E004FA00165503 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5E5BC83016E004FA00165503 /* PBXTargetDependency */,
+			);
+			name = BypassTests;
+			productName = BypassTests;
+			productReference = 5E5BC82916E004FA00165503 /* BypassTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5E5BC81016E004FA00165503 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = Uncodin;
+			};
+			buildConfigurationList = 5E5BC81316E004FA00165503 /* Build configuration list for PBXProject "Bypass" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5E5BC80F16E004FA00165503;
+			productRefGroup = 5E5BC81916E004FA00165503 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5E5BC81716E004FA00165503 /* Bypass */,
+				5E5BC82816E004FA00165503 /* BypassTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5E5BC82616E004FA00165503 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E5BC83716E004FA00165503 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5E5BC82716E004FA00165503 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5E5BC81416E004FA00165503 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E5BC85316E0066E00165503 /* BPParser.m in Sources */,
+				5E5BC86416E0076D00165503 /* document.cpp in Sources */,
+				5E5BC86516E0076D00165503 /* element.cpp in Sources */,
+				5E5BC86616E0076D00165503 /* parser.cpp in Sources */,
+				5E5BC86E16E007DD00165503 /* array.c in Sources */,
+				5E5BC86F16E007DD00165503 /* buffer.c in Sources */,
+				5E5BC87016E007DD00165503 /* markdown.c in Sources */,
+				5E5BC87316E0083D00165503 /* BPDocument.m in Sources */,
+				5E5BC87616E0085000165503 /* BPElement.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E5BC82416E004FA00165503 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5E5BC83016E004FA00165503 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5E5BC81716E004FA00165503 /* Bypass */;
+			targetProxy = 5E5BC82F16E004FA00165503 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		5E5BC83516E004FA00165503 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5E5BC83616E004FA00165503 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5E5BC83B16E004FA00165503 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		5E5BC83C16E004FA00165503 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5E5BC83E16E004FA00165503 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/Bypass.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bypass/Bypass-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		5E5BC83F16E004FA00165503 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/Bypass.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bypass/Bypass-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		5E5BC84116E004FA00165503 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bypass/Bypass-Prefix.pch";
+				INFOPLIST_FILE = "BypassTests/BypassTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		5E5BC84216E004FA00165503 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bypass/Bypass-Prefix.pch";
+				INFOPLIST_FILE = "BypassTests/BypassTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5E5BC81316E004FA00165503 /* Build configuration list for PBXProject "Bypass" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E5BC83B16E004FA00165503 /* Debug */,
+				5E5BC83C16E004FA00165503 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5E5BC83D16E004FA00165503 /* Build configuration list for PBXNativeTarget "Bypass" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E5BC83E16E004FA00165503 /* Debug */,
+				5E5BC83F16E004FA00165503 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5E5BC84016E004FA00165503 /* Build configuration list for PBXNativeTarget "BypassTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E5BC84116E004FA00165503 /* Debug */,
+				5E5BC84216E004FA00165503 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5E5BC81016E004FA00165503 /* Project object */;
+}

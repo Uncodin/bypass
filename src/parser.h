@@ -6,7 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <cstdio>
-#include <boost/unordered_map.hpp>
+#include <map>
 #include <boost/algorithm/string.hpp>
 
 extern "C" {
@@ -57,7 +57,7 @@ namespace Bypass {
 
 	private:
 		Document document;
-		boost::unordered_map<std::string, Element> elementSoup;
+		std::map<std::string, Element> elementSoup;
 		int elementCount;
 		void handleBlock(Type, struct buf *ob, struct buf *text, int extra = -1);
 		void handleSpan(Type, struct buf *ob, struct buf *text, struct buf *extra = NULL, struct buf *extra2 = NULL);
