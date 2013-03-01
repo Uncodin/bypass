@@ -20,12 +20,14 @@ jobject recurseElement(JNIEnv *env, Bypass::Element element) {
 	jstring text = env->NewStringUTF(element.getText().c_str());
 	jobject jelement = env->NewObject(java_element_class, java_element_init, text, element.getType(), elements);
 	env->DeleteLocalRef(text);
-	std::set<std::string> attrNames = element.getAttributeNames();
-	for (std::set<std::string>::iterator it = attrNames.begin(); it != attrNames.end(); ++it) {
-		jstring name = env->NewStringUTF(it->c_str());
-		std::string strValue = element.getAttribute(*it);
-		jstring value = env->NewStringUTF(strValue.c_str());
+
+	Bypass::Element::AttributeMap::iterator it = element.attrBegin();
+	for (; it != element.attrEnd(); ++it) {
+		jstring name = env->NewStringUTF(it->first.c_str());
+		jstring value = env->NewStringUTF(it->second.c_str());
+
 		env->CallVoidMethod(jelement, java_element_addAttr, name, value);
+
 		env->DeleteLocalRef(name);
 		env->DeleteLocalRef(value);
 	}
