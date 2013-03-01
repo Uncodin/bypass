@@ -38,8 +38,8 @@ FOUNDATION_EXPORT const BPElementType BPTripleEmphasis;
 FOUNDATION_EXPORT const BPElementType BPText;
 
 @interface BPElement : NSObject
-@property (assign, nonatomic) BPElementType type;
-@property (strong, nonatomic) NSString      *text;
-@property (strong, nonatomic) NSDictionary  *attributes;
-@property (strong, nonatomic) NSArray       *children;
+@property (assign, nonatomic, readonly) BPElementType elementType;
+@property (strong, nonatomic, readonly) NSString      *text;
+@property (strong, nonatomic, readonly) NSDictionary  *attributes;
+@property (strong, nonatomic, readonly) NSArray       *childElements;
 @end
