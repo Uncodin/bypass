@@ -86,7 +86,7 @@ namespace Bypass {
 			//parse and assemble document
 			markdown(ob, ib, &mkd_callbacks);
 
-			for (std::map<std::string, Element>::iterator it = elementSoup.begin(); it != elementSoup.end(); ++it) {
+			for (std::map<int, Element>::iterator it = elementSoup.begin(); it != elementSoup.end(); ++it) {
 				document.append(it->second);
 			}
 
@@ -102,10 +102,7 @@ namespace Bypass {
 	}
 
 	void Parser::eraseTrailingControlCharacters(std::string controlCharacters) {
-		std::ostringstream oss;
-		oss << elementCount;
-
-		std::map<std::string, Element>::iterator it = elementSoup.find(oss.str());
+		std::map<int, Element>::iterator it = elementSoup.find(elementCount);
 		Element* element = NULL;
 
 		if ( it != elementSoup.end() ) {
@@ -140,11 +137,12 @@ namespace Bypass {
 		boost::split(strs, textString, boost::is_any_of("|"));
 
 		for(vector<std::string>::iterator it = strs.begin(); it != strs.end(); it++) {
-			std::map<std::string, Element>::iterator elit = elementSoup.find(*it);
+			int pos = atoi((*it).c_str());
+			std::map<int, Element>::iterator elit = elementSoup.find(pos);
 
 			if ( elit != elementSoup.end() ) {
 				block.append((*elit).second);
-				elementSoup.erase(*it);
+				elementSoup.erase(pos);
 			}
 		}
 
@@ -152,7 +150,7 @@ namespace Bypass {
 
 		std::ostringstream oss;
 		oss << elementCount;
-		elementSoup[oss.str()] = block;
+		elementSoup[elementCount] = block;
 		oss << '|';
 		bufputs(ob, oss.str().c_str());
 	}
@@ -199,7 +197,8 @@ namespace Bypass {
 			boost::split(strs, textString, boost::is_any_of("|"));
 		}
 		if (strs.size() > 0) {
-			std::map<std::string, Element>::iterator elit = elementSoup.find(strs[0]);
+			int pos = atoi(strs[0].c_str());
+			std::map<int, Element>::iterator elit = elementSoup.find(pos);
 
 			Element element = elit->second;
 			element.setType(type);
@@ -214,8 +213,8 @@ namespace Bypass {
 					element.addAttribute("title", std::string(extra2->data).substr(0, extra2->size));
 			}
 
-			elementSoup.erase(strs[0]);
-			elementSoup[strs[0]] = element;
+			elementSoup.erase(pos);
+			elementSoup[pos] = element;
 
 			bufputs(ob, textString.c_str());
 		}
@@ -231,7 +230,7 @@ namespace Bypass {
 		elementCount++;
 		std::ostringstream oss;
 		oss << elementCount;
-		elementSoup[oss.str()] = element;
+		elementSoup[elementCount] = element;
 		oss << '|';
 		bufputs(ob, oss.str().c_str());
 	}

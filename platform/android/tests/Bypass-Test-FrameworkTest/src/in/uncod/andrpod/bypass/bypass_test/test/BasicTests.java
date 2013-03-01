@@ -4,6 +4,7 @@ import in.uncod.android.bypass.Bypass;
 import android.graphics.Typeface;
 import android.test.InstrumentationTestCase;
 import android.text.Spannable;
+import android.text.SpannedString;
 import android.text.style.BulletSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -59,5 +60,12 @@ public class BasicTests extends InstrumentationTestCase {
 		Spannable spannable = (Spannable) bypass.markdownToSpannable("-\tOne\n-\tTwo\n");
 		BulletSpan[] spans = spannable.getSpans(0, spannable.length(), BulletSpan.class);
 		assertEquals(2, spans.length);
+	}
+	
+	public void testHeaderOrder() {
+		SpannedString spannable = (SpannedString) bypass.markdownToSpannable("Header!!\n--------\nText goes here or something\n*One* **Two** ***Three***\n");
+		RelativeSizeSpan[] sizeSpan = spannable.getSpans(0, spannable.length(), RelativeSizeSpan.class);
+		assertEquals(1, sizeSpan.length);
+		assertEquals(0, spannable.getSpanStart(sizeSpan[0]));
 	}
 }

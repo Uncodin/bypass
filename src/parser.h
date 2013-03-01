@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <cstdio>
+#include <cstdlib>
 #include <map>
 #include <boost/algorithm/string.hpp>
 
@@ -57,7 +58,7 @@ namespace Bypass {
 
 	private:
 		Document document;
-		std::map<std::string, Element> elementSoup;
+		std::map<int, Element> elementSoup;
 		int elementCount;
 		void handleBlock(Type, struct buf *ob, struct buf *text, int extra = -1);
 		void handleSpan(Type, struct buf *ob, struct buf *text, struct buf *extra = NULL, struct buf *extra2 = NULL);
