@@ -105,15 +105,19 @@ namespace Bypass {
 		std::ostringstream oss;
 		oss << elementCount;
 
-		Element* element = &(elementSoup.at(oss.str()));
+		std::map<std::string, Element>::iterator it = elementSoup.find(oss.str());
+		Element* element = NULL;
 
-		std::string precedingText = element->getText();
-		size_t ptlen = precedingText.length();
-		size_t cclen = controlCharacters.length();
+		if ( it != elementSoup.end() ) {
+			element = &((*it).second);
+			std::string precedingText = element->getText();
+			size_t ptlen = precedingText.length();
+			size_t cclen = controlCharacters.length();
 
-		if (ptlen > cclen) {
-			if (precedingText.substr(ptlen - cclen) == controlCharacters) {
-				element->setText(precedingText.substr(0, ptlen - cclen));
+			if (ptlen > cclen) {
+				if (precedingText.substr(ptlen - cclen) == controlCharacters) {
+					element->setText(precedingText.substr(0, ptlen - cclen));
+				}
 			}
 		}
 	}
@@ -136,8 +140,10 @@ namespace Bypass {
 		boost::split(strs, textString, boost::is_any_of("|"));
 
 		for(vector<std::string>::iterator it = strs.begin(); it != strs.end(); it++) {
-			if (elementSoup.count(*it) > 0) {
-				block.append(elementSoup.at(*it));
+			std::map<std::string, Element>::iterator elit = elementSoup.find(*it);
+
+			if ( elit != elementSoup.end() ) {
+				block.append((*elit).second);
 				elementSoup.erase(*it);
 			}
 		}
@@ -193,7 +199,9 @@ namespace Bypass {
 			boost::split(strs, textString, boost::is_any_of("|"));
 		}
 		if (strs.size() > 0) {
-			Element element = elementSoup.at(strs[0]);
+			std::map<std::string, Element>::iterator elit = elementSoup.find(strs[0]);
+
+			Element element = elit->second;
 			element.setType(type);
 
 			if (extra != NULL && extra->size) {

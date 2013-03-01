@@ -42,7 +42,12 @@ public class Element {
 	    
 	    private static final Type[] TypeValues = Type.values();
 	    public static Type fromInteger(int x) {
-	        return TypeValues[x];
+	    	for (Type type : TypeValues) {
+	    		if (type.value == x) {
+	    			return type;
+	    		}
+	    	}
+	    	return null;
 	    }
 	}
 	
@@ -57,11 +62,34 @@ public class Element {
 		this.type = Type.fromInteger(type);
 	}
 	
-	public String getText() {
-		return text;
+	public void addAttribute(String name, String value) {
+		attributes.put(name, value);
 	}
 	
 	public String getAttribute(String name) {
 		return attributes.get(name);
+	}
+	
+	public String getText() {
+		return text;
+	}
+
+	public int size() {
+		if (children != null) {
+			return children.length;
+		}
+		return 0;
+	}
+	
+	public Type getType() {
+		return type;
+	}
+	
+	public boolean isBlockElement() {
+		return (type.value & 0x100) == 0x000;
+	}
+
+	public boolean isSpanElement() {
+		return (type.value & 0x100) == 0x100;
 	}
 }
