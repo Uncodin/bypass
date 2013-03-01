@@ -5,7 +5,6 @@ import android.test.InstrumentationTestCase;
 import android.text.Spannable;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 
 public class BasicTests extends InstrumentationTestCase {
 
@@ -33,5 +32,6 @@ public class BasicTests extends InstrumentationTestCase {
 		assertEquals(1, spans.length);
 		RelativeSizeSpan[] sizeSpan = spannable.getSpans(0, spannable.length(), RelativeSizeSpan.class);
 		assertEquals(1, sizeSpan.length);
+		assertEquals('\n', spannable.charAt(spannable.length() - 1));
 	}
 }

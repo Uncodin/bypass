@@ -84,4 +84,12 @@ public class Element {
 	public Type getType() {
 		return type;
 	}
+	
+	public boolean isBlockElement() {
+		return (type.value & 0x100) == 0x000;
+	}
+
+	public boolean isSpanElement() {
+		return (type.value & 0x100) == 0x100;
+	}
 }

@@ -42,6 +42,9 @@ public class Bypass {
 		SpannableStringBuilder builder = new SpannableStringBuilder();
 		builder.append(element.getText());
 		builder.append(concat);
+		if(element.isBlockElement()) {
+			builder.append("\n");
+		}
 		
 		if (element.getType() == Type.HEADER) {
 			String levelStr = element.getAttribute("level");
