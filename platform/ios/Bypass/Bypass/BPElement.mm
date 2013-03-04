@@ -41,10 +41,11 @@ const BPElementType BPText           = Bypass::TEXT;
 
 @implementation BPElement
 {
-    Bypass::Element _element;
-    NSString        *_text;
-    NSDictionary    *_attributes;
-    NSArray         *_childElements;
+           Bypass::Element _element;
+           NSString        *_text;
+           NSDictionary    *_attributes;
+    __weak BPElement       *_parentElement;
+           NSArray         *_childElements;
 }
 
 - (id)init
@@ -55,10 +56,16 @@ const BPElementType BPText           = Bypass::TEXT;
 
 - (id)initWithElement:(Bypass::Element)element
 {
+    return [self initWithElement:element parentElement:nil];
+}
+
+- (id)initWithElement:(Bypass::Element)element parentElement:(BPElement *)parentElement
+{
     self = [super init];
     
     if (self != nil) {
         _element = element;
+        _parentElement = parentElement;
     }
     
     return self;
@@ -128,7 +135,7 @@ const BPElementType BPText           = Bypass::TEXT;
         
         for (i = 0; i < count; ++i) {
             Element c = _element[i];
-            BPElement *cc = [[BPElement alloc] initWithElement:c];
+            BPElement *cc = [[BPElement alloc] initWithElement:c parentElement:self];
             childElements[i] = cc;
         }
         

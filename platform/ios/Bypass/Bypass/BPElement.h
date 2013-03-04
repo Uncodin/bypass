@@ -41,6 +41,7 @@ FOUNDATION_EXPORT const BPElementType BPText;
 @property (assign, nonatomic, readonly) BPElementType elementType;
 @property (strong, nonatomic, readonly) NSString      *text;
 @property (strong, nonatomic, readonly) NSDictionary  *attributes;
+@property (weak,   nonatomic, readonly) BPElement     *parentElement;
 @property (strong, nonatomic, readonly) NSArray       *childElements;
 
 - (BOOL)isBlockElement;

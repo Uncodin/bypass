@@ -15,9 +15,6 @@
 		5E5BC83716E004FA00165503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC83516E004FA00165503 /* InfoPlist.strings */; };
 		5E5BC85016E005E700165503 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC84F16E005E700165503 /* UIKit.framework */; };
 		5E5BC85316E0066E00165503 /* BPParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC85216E0066E00165503 /* BPParser.mm */; };
-		5E5BC86416E0076D00165503 /* document.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC85E16E0076D00165503 /* document.cpp */; };
-		5E5BC86516E0076D00165503 /* element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC86016E0076D00165503 /* element.cpp */; };
-		5E5BC86616E0076D00165503 /* parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC86216E0076D00165503 /* parser.cpp */; };
 		5E5BC86E16E007DD00165503 /* array.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC86816E007DD00165503 /* array.c */; };
 		5E5BC86F16E007DD00165503 /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC86A16E007DD00165503 /* buffer.c */; };
 		5E5BC87016E007DD00165503 /* markdown.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC86C16E007DD00165503 /* markdown.c */; };
@@ -27,6 +24,9 @@
 		5E5BC87F16E134C200165503 /* BPDocumentTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC87E16E134C200165503 /* BPDocumentTests.mm */; };
 		5E5BC88216E1448C00165503 /* BPParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC88116E1448C00165503 /* BPParserTests.m */; };
 		5E5BC88716E15C5800165503 /* BPAttributedStringRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC88616E15C5800165503 /* BPAttributedStringRenderer.m */; };
+		6BB80FB416E5032C00ED150B /* document.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BB80FAE16E5032C00ED150B /* document.cpp */; };
+		6BB80FB516E5032C00ED150B /* element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BB80FB016E5032C00ED150B /* element.cpp */; };
+		6BB80FB616E5032C00ED150B /* parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BB80FB216E5032C00ED150B /* parser.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,12 +64,6 @@
 		5E5BC84F16E005E700165503 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5E5BC85116E0066E00165503 /* BPParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPParser.h; sourceTree = "<group>"; };
 		5E5BC85216E0066E00165503 /* BPParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BPParser.mm; sourceTree = "<group>"; };
-		5E5BC85E16E0076D00165503 /* document.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = document.cpp; path = /Users/dcarrillo/Development/bypass/platform/ios/BypassSample/../../../src/document.cpp; sourceTree = "<absolute>"; };
-		5E5BC85F16E0076D00165503 /* document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = document.h; path = /Users/dcarrillo/Development/bypass/platform/ios/BypassSample/../../../src/document.h; sourceTree = "<absolute>"; };
-		5E5BC86016E0076D00165503 /* element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = element.cpp; path = /Users/dcarrillo/Development/bypass/platform/ios/BypassSample/../../../src/element.cpp; sourceTree = "<absolute>"; };
-		5E5BC86116E0076D00165503 /* element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = element.h; path = /Users/dcarrillo/Development/bypass/platform/ios/BypassSample/../../../src/element.h; sourceTree = "<absolute>"; };
-		5E5BC86216E0076D00165503 /* parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = parser.cpp; path = /Users/dcarrillo/Development/bypass/platform/ios/BypassSample/../../../src/parser.cpp; sourceTree = "<absolute>"; };
-		5E5BC86316E0076D00165503 /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = parser.h; path = /Users/dcarrillo/Development/bypass/platform/ios/BypassSample/../../../src/parser.h; sourceTree = "<absolute>"; };
 		5E5BC86816E007DD00165503 /* array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = array.c; path = "../../../../dep/libsoldout-1.3/array.c"; sourceTree = "<group>"; };
 		5E5BC86916E007DD00165503 /* array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = array.h; path = "../../../../dep/libsoldout-1.3/array.h"; sourceTree = "<group>"; };
 		5E5BC86A16E007DD00165503 /* buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = buffer.c; path = "../../../../dep/libsoldout-1.3/buffer.c"; sourceTree = "<group>"; };
@@ -87,6 +81,12 @@
 		5E5BC88116E1448C00165503 /* BPParserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPParserTests.m; sourceTree = "<group>"; };
 		5E5BC88516E15C5800165503 /* BPAttributedStringRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPAttributedStringRenderer.h; sourceTree = "<group>"; };
 		5E5BC88616E15C5800165503 /* BPAttributedStringRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPAttributedStringRenderer.m; sourceTree = "<group>"; };
+		6BB80FAE16E5032C00ED150B /* document.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = document.cpp; sourceTree = "<group>"; };
+		6BB80FAF16E5032C00ED150B /* document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = document.h; sourceTree = "<group>"; };
+		6BB80FB016E5032C00ED150B /* element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = element.cpp; sourceTree = "<group>"; };
+		6BB80FB116E5032C00ED150B /* element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = element.h; sourceTree = "<group>"; };
+		6BB80FB216E5032C00ED150B /* parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parser.cpp; sourceTree = "<group>"; };
+		6BB80FB316E5032C00ED150B /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,12 +193,12 @@
 		5E5BC85416E006D700165503 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				5E5BC85E16E0076D00165503 /* document.cpp */,
-				5E5BC85F16E0076D00165503 /* document.h */,
-				5E5BC86016E0076D00165503 /* element.cpp */,
-				5E5BC86116E0076D00165503 /* element.h */,
-				5E5BC86216E0076D00165503 /* parser.cpp */,
-				5E5BC86316E0076D00165503 /* parser.h */,
+				6BB80FAE16E5032C00ED150B /* document.cpp */,
+				6BB80FAF16E5032C00ED150B /* document.h */,
+				6BB80FB016E5032C00ED150B /* element.cpp */,
+				6BB80FB116E5032C00ED150B /* element.h */,
+				6BB80FB216E5032C00ED150B /* parser.cpp */,
+				6BB80FB316E5032C00ED150B /* parser.h */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -315,15 +315,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E5BC85316E0066E00165503 /* BPParser.mm in Sources */,
-				5E5BC86416E0076D00165503 /* document.cpp in Sources */,
-				5E5BC86516E0076D00165503 /* element.cpp in Sources */,
-				5E5BC86616E0076D00165503 /* parser.cpp in Sources */,
 				5E5BC86E16E007DD00165503 /* array.c in Sources */,
 				5E5BC86F16E007DD00165503 /* buffer.c in Sources */,
 				5E5BC87016E007DD00165503 /* markdown.c in Sources */,
 				5E5BC87316E0083D00165503 /* BPDocument.mm in Sources */,
 				5E5BC87616E0085000165503 /* BPElement.mm in Sources */,
 				5E5BC88716E15C5800165503 /* BPAttributedStringRenderer.m in Sources */,
+				6BB80FB416E5032C00ED150B /* document.cpp in Sources */,
+				6BB80FB516E5032C00ED150B /* element.cpp in Sources */,
+				6BB80FB616E5032C00ED150B /* parser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

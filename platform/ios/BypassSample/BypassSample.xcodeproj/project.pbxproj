@@ -17,12 +17,14 @@
 		5E5BC7AC16E0049800165503 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC7AB16E0049800165503 /* Default@2x.png */; };
 		5E5BC7AE16E0049800165503 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC7AD16E0049800165503 /* Default-568h@2x.png */; };
 		5E5BC7B116E0049800165503 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC7AF16E0049800165503 /* MainStoryboard.storyboard */; };
-		5E5BC7B416E0049800165503 /* BPMarkdownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC7B316E0049800165503 /* BPMarkdownViewController.m */; };
+		5E5BC7B416E0049800165503 /* BPMarkdownViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC7B316E0049800165503 /* BPMarkdownViewController.mm */; };
 		5E5BC7BC16E0049900165503 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC7BB16E0049900165503 /* SenTestingKit.framework */; };
 		5E5BC7BD16E0049900165503 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC79716E0049800165503 /* UIKit.framework */; };
 		5E5BC7BE16E0049900165503 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC79916E0049800165503 /* Foundation.framework */; };
 		5E5BC7C616E0049900165503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC7C416E0049900165503 /* InfoPlist.strings */; };
 		5E5BC7C916E0049900165503 /* BypassSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC7C816E0049900165503 /* BypassSampleTests.m */; };
+		6BB80FB816E5077F00ED150B /* libBypass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC84A16E0055800165503 /* libBypass.a */; };
+		6BB80FBA16E50A1B00ED150B /* sample.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 6BB80FB916E50A1B00ED150B /* sample.markdown */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,7 +74,7 @@
 		5E5BC7AD16E0049800165503 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		5E5BC7B016E0049800165503 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		5E5BC7B216E0049800165503 /* BPMarkdownViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPMarkdownViewController.h; sourceTree = "<group>"; };
-		5E5BC7B316E0049800165503 /* BPMarkdownViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPMarkdownViewController.m; sourceTree = "<group>"; };
+		5E5BC7B316E0049800165503 /* BPMarkdownViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BPMarkdownViewController.mm; sourceTree = "<group>"; };
 		5E5BC7BA16E0049900165503 /* BypassSampleTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BypassSampleTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5BC7BB16E0049900165503 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		5E5BC7C316E0049900165503 /* BypassSampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BypassSampleTests-Info.plist"; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 		5E5BC7C716E0049900165503 /* BypassSampleTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BypassSampleTests.h; sourceTree = "<group>"; };
 		5E5BC7C816E0049900165503 /* BypassSampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BypassSampleTests.m; sourceTree = "<group>"; };
 		5E5BC84416E0055700165503 /* Bypass.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bypass.xcodeproj; path = ../Bypass/Bypass.xcodeproj; sourceTree = "<group>"; };
+		6BB80FB916E50A1B00ED150B /* sample.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sample.markdown; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BB80FB816E5077F00ED150B /* libBypass.a in Frameworks */,
 				5E5BC79816E0049800165503 /* UIKit.framework in Frameworks */,
 				5E5BC79A16E0049800165503 /* Foundation.framework in Frameworks */,
 				5E5BC79C16E0049800165503 /* CoreGraphics.framework in Frameworks */,
@@ -144,7 +148,7 @@
 				5E5BC7A716E0049800165503 /* BPAppDelegate.m */,
 				5E5BC7AF16E0049800165503 /* MainStoryboard.storyboard */,
 				5E5BC7B216E0049800165503 /* BPMarkdownViewController.h */,
-				5E5BC7B316E0049800165503 /* BPMarkdownViewController.m */,
+				5E5BC7B316E0049800165503 /* BPMarkdownViewController.mm */,
 				5E5BC79E16E0049800165503 /* Supporting Files */,
 			);
 			path = BypassSample;
@@ -160,6 +164,7 @@
 				5E5BC7A916E0049800165503 /* Default.png */,
 				5E5BC7AB16E0049800165503 /* Default@2x.png */,
 				5E5BC7AD16E0049800165503 /* Default-568h@2x.png */,
+				6BB80FB916E50A1B00ED150B /* sample.markdown */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -301,6 +306,7 @@
 				5E5BC7AC16E0049800165503 /* Default@2x.png in Resources */,
 				5E5BC7AE16E0049800165503 /* Default-568h@2x.png in Resources */,
 				5E5BC7B116E0049800165503 /* MainStoryboard.storyboard in Resources */,
+				6BB80FBA16E50A1B00ED150B /* sample.markdown in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,7 +343,7 @@
 			files = (
 				5E5BC7A416E0049800165503 /* main.m in Sources */,
 				5E5BC7A816E0049800165503 /* BPAppDelegate.m in Sources */,
-				5E5BC7B416E0049800165503 /* BPMarkdownViewController.m in Sources */,
+				5E5BC7B416E0049800165503 /* BPMarkdownViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,10 +457,12 @@
 		5E5BC7CD16E0049900165503 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BypassSample/BypassSample-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Bypass/";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Bypass/Bypass";
 				INFOPLIST_FILE = "BypassSample/BypassSample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -463,10 +471,12 @@
 		5E5BC7CE16E0049900165503 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BypassSample/BypassSample-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Bypass/";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Bypass/Bypass";
 				INFOPLIST_FILE = "BypassSample/BypassSample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -525,6 +535,7 @@
 				5E5BC7CE16E0049900165503 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5E5BC7CF16E0049900165503 /* Build configuration list for PBXNativeTarget "BypassSampleTests" */ = {
 			isa = XCConfigurationList;
@@ -533,6 +544,7 @@
 				5E5BC7D116E0049900165503 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
