@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BPViewController : UIViewController
+@interface BPMarkdownViewController : UIViewController
 
 @end

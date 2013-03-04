@@ -69,6 +69,11 @@ const BPElementType BPText           = Bypass::TEXT;
     return _element.getType();
 }
 
+- (BOOL)isBlockElement
+{
+    return _element.isBlockElement();
+}
+
 - (NSString *)text
 {
     using namespace std;

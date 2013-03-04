@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Uncodin. All rights reserved.
 //
 
-#import "BPElement.h"
-#import "BPDocument.h"
-#import "BPParser.h"
+#import <Bypass/BPAttributedStringRenderer.h>
+#import <Bypass/BPElement.h>
+#import <Bypass/BPDocument.h>
+#import <Bypass/BPParser.h>

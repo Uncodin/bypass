@@ -42,7 +42,7 @@
     STAssertNotNil(element, @"Expected non-nil element");
 }
 
-- (void)testTypeAccessor
+- (void)testElementTypeAccessor
 {
     STAssertEquals([element elementType], BPParagraph, @"Expected same type");
 }
@@ -82,6 +82,12 @@
     STAssertEquals([[element childElements][0] elementType], BPText, @"Expected first element type to be BPText");
     STAssertEquals([[element childElements][1] elementType], BPDoubleEmphasis, @"Expected second element type to be BPDoubleEmphasis");
     STAssertEquals([[element childElements][2] elementType], BPText, @"Expected third element type to be BPText");
+}
+
+- (void)testIsBlockElementAccessor
+{
+    STAssertEquals([element isBlockElement], YES, @"Expected a block element");
+    STAssertEquals([[element childElements][0] isBlockElement], NO, @"Expected a span element");
 }
 
 @end

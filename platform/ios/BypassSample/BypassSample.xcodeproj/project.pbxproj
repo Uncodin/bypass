@@ -17,7 +17,7 @@
 		5E5BC7AC16E0049800165503 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC7AB16E0049800165503 /* Default@2x.png */; };
 		5E5BC7AE16E0049800165503 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC7AD16E0049800165503 /* Default-568h@2x.png */; };
 		5E5BC7B116E0049800165503 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC7AF16E0049800165503 /* MainStoryboard.storyboard */; };
-		5E5BC7B416E0049800165503 /* BPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC7B316E0049800165503 /* BPViewController.m */; };
+		5E5BC7B416E0049800165503 /* BPMarkdownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC7B316E0049800165503 /* BPMarkdownViewController.m */; };
 		5E5BC7BC16E0049900165503 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC7BB16E0049900165503 /* SenTestingKit.framework */; };
 		5E5BC7BD16E0049900165503 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC79716E0049800165503 /* UIKit.framework */; };
 		5E5BC7BE16E0049900165503 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC79916E0049800165503 /* Foundation.framework */; };
@@ -71,8 +71,8 @@
 		5E5BC7AB16E0049800165503 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		5E5BC7AD16E0049800165503 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		5E5BC7B016E0049800165503 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		5E5BC7B216E0049800165503 /* BPViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPViewController.h; sourceTree = "<group>"; };
-		5E5BC7B316E0049800165503 /* BPViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPViewController.m; sourceTree = "<group>"; };
+		5E5BC7B216E0049800165503 /* BPMarkdownViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPMarkdownViewController.h; sourceTree = "<group>"; };
+		5E5BC7B316E0049800165503 /* BPMarkdownViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPMarkdownViewController.m; sourceTree = "<group>"; };
 		5E5BC7BA16E0049900165503 /* BypassSampleTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BypassSampleTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5BC7BB16E0049900165503 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		5E5BC7C316E0049900165503 /* BypassSampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BypassSampleTests-Info.plist"; sourceTree = "<group>"; };
@@ -143,8 +143,8 @@
 				5E5BC7A616E0049800165503 /* BPAppDelegate.h */,
 				5E5BC7A716E0049800165503 /* BPAppDelegate.m */,
 				5E5BC7AF16E0049800165503 /* MainStoryboard.storyboard */,
-				5E5BC7B216E0049800165503 /* BPViewController.h */,
-				5E5BC7B316E0049800165503 /* BPViewController.m */,
+				5E5BC7B216E0049800165503 /* BPMarkdownViewController.h */,
+				5E5BC7B316E0049800165503 /* BPMarkdownViewController.m */,
 				5E5BC79E16E0049800165503 /* Supporting Files */,
 			);
 			path = BypassSample;
@@ -337,7 +337,7 @@
 			files = (
 				5E5BC7A416E0049800165503 /* main.m in Sources */,
 				5E5BC7A816E0049800165503 /* BPAppDelegate.m in Sources */,
-				5E5BC7B416E0049800165503 /* BPViewController.m in Sources */,
+				5E5BC7B416E0049800165503 /* BPMarkdownViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,6 +453,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BypassSample/BypassSample-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Bypass/";
 				INFOPLIST_FILE = "BypassSample/BypassSample-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -464,6 +465,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BypassSample/BypassSample-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Bypass/";
 				INFOPLIST_FILE = "BypassSample/BypassSample-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
