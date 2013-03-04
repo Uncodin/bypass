@@ -101,20 +101,14 @@ namespace Bypass {
 		return parse(markdown.c_str());
 	}
 
-	void Parser::eraseTrailingControlCharacters(std::string controlCharacters) {
+	void Parser::eraseTrailingControlCharacters(const std::string& controlCharacters) {
 		std::map<int, Element>::iterator it = elementSoup.find(elementCount);
-		Element* element = NULL;
 
 		if ( it != elementSoup.end() ) {
-			element = &((*it).second);
-			std::string precedingText = element->getText();
-			size_t ptlen = precedingText.length();
-			size_t cclen = controlCharacters.length();
+			Element * element = &((*it).second);
 
-			if (ptlen > cclen) {
-				if (precedingText.substr(ptlen - cclen) == controlCharacters) {
-					element->setText(precedingText.substr(0, ptlen - cclen));
-				}
+			if (boost::ends_with(element->text, controlCharacters)) {
+				boost::erase_tail(element->text, controlCharacters.size());
 			}
 		}
 	}
@@ -227,7 +221,7 @@ namespace Bypass {
 		}
 	}
 
-	void Parser::createSpan(Element element, struct buf *ob) {
+	void Parser::createSpan(const Element& element, struct buf *ob) {
 		elementCount++;
 		std::ostringstream oss;
 		oss << elementCount;
@@ -260,7 +254,7 @@ namespace Bypass {
 		if (text && text->size > 0) {
 			Element codeSpan;
 			codeSpan.setType(CODE_SPAN);
-			codeSpan.setText(std::string(text->data, text->data + text->size));
+			codeSpan.text.assign(text->data, text->data + text->size);
 			createSpan(codeSpan, ob);
 		}
 		return 1;
@@ -281,7 +275,7 @@ namespace Bypass {
 		if (text && text->size > 0) {
 			Element normalText;
 			normalText.setType(TEXT);
-			normalText.setText(std::string(text->data, text->data + text->size));
+			normalText.text.assign(text->data, text->data + text->size);
 			createSpan(normalText, ob);
 		}
 	}

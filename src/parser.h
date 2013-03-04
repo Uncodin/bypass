@@ -62,8 +62,8 @@ namespace Bypass {
 		int elementCount;
 		void handleBlock(Type, struct buf *ob, struct buf *text, int extra = -1);
 		void handleSpan(Type, struct buf *ob, struct buf *text, struct buf *extra = NULL, struct buf *extra2 = NULL);
-		void createSpan(Element, struct buf *ob);
-		void eraseTrailingControlCharacters(std::string controlCharacters);
+		void createSpan(const Element&, struct buf *ob);
+		void eraseTrailingControlCharacters(const std::string& controlCharacters);
 	};
 
 }

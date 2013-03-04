@@ -65,7 +65,7 @@ public class Element {
 	public void addAttribute(String name, String value) {
 		attributes.put(name, value);
 	}
-	
+
 	public String getAttribute(String name) {
 		return attributes.get(name);
 	}

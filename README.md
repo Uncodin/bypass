@@ -3,10 +3,31 @@ bypass
 
 Skip the HTML, Bypass takes markdown renders it on Android and iOS
 
-Needs Boost!
+##Requirements
+-   Boost!
 
-Speed
-=====
+##Android
+###Maven
+####Building
+Set the ANDROID_NDK_HOME the the root directory of your NDK installation.
+
+    cd ./platform/android
+    mvn install
+
+####Dependency
+    <dependency>
+        <groupId>in.uncod.android.bypass</groupId>
+        <artifactId>bypass</artifactId>
+        <packaging>apklib</packaging>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+###Library Project
+    cd ./platform/android/library
+    ndk-build
+Then simply point to the library from your project
+
+##Speed
 Android
 -------
 ###Parsing the Readme for Sundown:

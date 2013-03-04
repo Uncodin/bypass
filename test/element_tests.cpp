@@ -177,7 +177,6 @@ BOOST_FIXTURE_TEST_CASE(element_access_single, F) {
 
 	Element child;
 	child.setText(expected);
-
 	BOOST_REQUIRE(child.getText() == expected);
 
 	element.append(child);
@@ -215,17 +214,21 @@ BOOST_FIXTURE_TEST_CASE(element_get_attribute, F) {
 }
 
 BOOST_FIXTURE_TEST_CASE(element_get_attribute_names_with_no_attributes, F) {
-	BOOST_REQUIRE(element.getAttributeNames().size() == 0);
+	BOOST_REQUIRE(element.attrSize() == 0);
 }
 
 BOOST_FIXTURE_TEST_CASE(element_get_attribute_names_with_multiple_attributes, F) {
 	element.addAttribute("a", "A");
 	element.addAttribute("b", "B");
 
-	std::set<std::string> ns = element.getAttributeNames();
+	std::set<std::string> res; 
+	Element::AttributeMap::iterator it = element.attrBegin();
+	for (; it != element.attrEnd(); ++it) {
+		res.insert(it->first);
+	}
 
-	BOOST_REQUIRE(ns.size() == 2);
-	BOOST_REQUIRE(std::find(ns.begin(), ns.end(), "a") != ns.end());
-	BOOST_REQUIRE(std::find(ns.begin(), ns.end(), "b") != ns.end());
+	BOOST_REQUIRE(res.size() == 2);
+	BOOST_REQUIRE(std::find(res.begin(), res.end(), "a") != res.end());
+	BOOST_REQUIRE(std::find(res.begin(), res.end(), "b") != res.end());
 }
 
