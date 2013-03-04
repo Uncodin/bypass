@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>in.uncod.android</groupId>
 		<artifactId>parent</artifactId>
-		<version>${project.version}</version>
+		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -29,21 +29,25 @@
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
+				<executions>
+					<!-- Add the execution of the ndk-build goal - this will compile the 
+						native code in addition to building the Java & APK -->
+					<execution>
+						<goals>
+							<goal>ndk-build</goal>
+						</goals>
+						<configuration>
+							<!-- Configure the plugin to remove all built artifacts from the libs/armeabi 
+								folder when the native build is complete -->
+							<clearNativeArtifacts>false</clearNativeArtifacts>
+							<!-- Configure the plugin to also attach the built, native, artifact 
+								from the libs/armeabi folder when the native build is complete. This puts 
+								the artifact into the Maven repository -->
+							<attachNativeArtifacts>true</attachNativeArtifacts>
+						</configuration>
+					</execution>
+				</executions>
 				<extensions>true</extensions>
-				<goals>
-					<goal>ndk-build</goal>
-				</goals>
-				<configuration>
-					<deleteConflictingFiles>true</deleteConflictingFiles>
-					<attachNativeArtifacts>true</attachNativeArtifacts>
-					<clearNativeArtifacts>false</clearNativeArtifacts>
-					<sign>
-						<debug>false</debug>
-					</sign>
-					<proguard>
-						<skip>true</skip>
-					</proguard>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
