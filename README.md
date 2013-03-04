@@ -9,6 +9,8 @@ Skip the HTML, Bypass takes markdown renders it on Android and iOS
 ##Android
 ###Maven
 ####Building
+Set the ANDROID_NDK_HOME the the root directory of your NDK installation.
+
     cd ./platform/android
     mvn install
 
