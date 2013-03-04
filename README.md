@@ -1,20 +1,17 @@
 bypass
 ======
 
-Skip the HTML, Bypass takes markdown renders it on Android and iOS
+Skip the HTML, Bypass takes markdown and renders it directly on Android and iOS
 
 ##Requirements
--   Boost!
+- Boost!
 
-##Android
-###Maven
-####Building
-Set the ANDROID_NDK_HOME the the root directory of your NDK installation.
+## Android
 
-    cd ./platform/android
-    mvn install
+### Maven Dependency
+If you just want to include Bypass in your Maven project, add the following
+dependency block to your `pom.xml`:
 
-####Dependency
     <dependency>
         <groupId>in.uncod.android.bypass</groupId>
         <artifactId>bypass</artifactId>
@@ -22,24 +19,34 @@ Set the ANDROID_NDK_HOME the the root directory of your NDK installation.
         <version>1.0-SNAPSHOT</version>
     </dependency>
 
-###Library Project
+### Manual Build
+Make sure `$ANDROID_NDK_HOME` is correctly set to the root directory of your
+NDK installation. Also, if Boost lives in a non-standard directory (or you're
+on Windows) you'll need to set `$BYPASS_INCLUDE_PATH` to its parent directory.
+
+#### Maven
+    cd ./platform/android
+    mvn install
+
+#### Library Project
     cd ./platform/android/library
     ndk-build
-Then simply point to the library from your project
 
-##Speed
-Android
--------
-###Parsing the Readme for Sundown:
+Then simply point to the library from your project.
 
-#### Bypass
+## Speed
+
+### Android
+The following benchmarks were obtained by clocking the parsing of Sundown's readme file.
+
+##### Bypass
     03-01 15:13:12.662: D/Bypass(8998): onCreate: begin
     03-01 15:13:12.662: D/Bypass(8998): onCreate:      1 ms, read raw
     03-01 15:13:12.662: D/Bypass(8998): onCreate:      2 ms, instantiated Bypass
     03-01 15:13:12.662: D/Bypass(8998): onCreate:      37 ms, convert to spannable
     03-01 15:13:12.662: D/Bypass(8998): onCreate: end, 40 ms
 
-#### [cwac-anddown](https://github.com/commonsguy/cwac-anddown)
+##### [cwac-anddown](https://github.com/commonsguy/cwac-anddown)
     03-01 15:14:44.662: D/AndDown(9047): onCreate: begin
     03-01 15:14:44.662: D/AndDown(9047): onCreate:      2 ms, read raw
     03-01 15:14:44.662: D/AndDown(9047): onCreate:      2 ms, instantiated AndDown
