@@ -5,7 +5,7 @@
 
 	<groupId>in.uncod.android</groupId>
 	<artifactId>parent</artifactId>
-	<version>${project.version}</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -21,8 +21,6 @@
 		<android.version>4.1.1.4</android.version>
 
 		<junit.version>4.10</junit.version>
-
-		<project.version>1.0-SNAPSHOT</project.version>
 	</properties>
 
 	<dependencyManagement>

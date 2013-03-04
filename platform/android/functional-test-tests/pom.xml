@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>in.uncod.android</groupId>
 		<artifactId>parent</artifactId>
-		<version>${project.version}</version>
+		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>in.uncod.android.bypass</groupId>
 			<artifactId>functional-test</artifactId>
-			<version>${project.version}</version>
+			<version>1.0-SNAPSHOT</version>
 			<type>apk</type>
 		</dependency>
 	</dependencies>
