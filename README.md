@@ -18,7 +18,7 @@ Set the ANDROID_NDK_HOME the the root directory of your NDK installation.
     <dependency>
         <groupId>in.uncod.android.bypass</groupId>
         <artifactId>bypass</artifactId>
-        <packaging>apklib</packaging>
+        <type>apklib</type>
         <version>1.0-SNAPSHOT</version>
     </dependency>
 
