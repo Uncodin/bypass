@@ -5,13 +5,12 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="16" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:label="@string/app_name" >
         <activity android:name="in.uncod.android.bypass.test.BenchmarkActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
