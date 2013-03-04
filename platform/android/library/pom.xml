@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>in.uncod.android.bypass</groupId>
 	<artifactId>bypass</artifactId>
 	<packaging>apklib</packaging>
-	
+
 	<parent>
-		<groupId>in.uncod.android.bypass</groupId>
+		<groupId>in.uncod.android</groupId>
 		<artifactId>parent</artifactId>
 		<version>${project.version}</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>com.google.android</groupId>
@@ -21,29 +21,29 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
-		
+
 		<plugins>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
 				<extensions>true</extensions>
 				<goals>
-          <goal>ndk-build</goal>
-        </goals>
-        <configuration>
-          <deleteConflictingFiles>true</deleteConflictingFiles>
-          <attachNativeArtifacts>true</attachNativeArtifacts>
-          <clearNativeArtifacts>false</clearNativeArtifacts>
-          <sign>
-            <debug>false</debug>
-          </sign>
-          <proguard>
-            <skip>true</skip>
-          </proguard>
-        </configuration>
+					<goal>ndk-build</goal>
+				</goals>
+				<configuration>
+					<deleteConflictingFiles>true</deleteConflictingFiles>
+					<attachNativeArtifacts>true</attachNativeArtifacts>
+					<clearNativeArtifacts>false</clearNativeArtifacts>
+					<sign>
+						<debug>false</debug>
+					</sign>
+					<proguard>
+						<skip>true</skip>
+					</proguard>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

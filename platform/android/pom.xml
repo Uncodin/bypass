@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>in.uncod.android.bypass</groupId>
-    <artifactId>parent</artifactId>
-    <version>${project.version}</version>
-    <packaging>pom</packaging>
+	<groupId>in.uncod.android</groupId>
+	<artifactId>parent</artifactId>
+	<version>${project.version}</version>
+	<packaging>pom</packaging>
 
-    <modules>
-        <module>library</module>
-        <module>functional-test</module>
+	<modules>
+		<module>library</module>
+		<module>functional-test</module>
 		<module>functional-test-tests</module>
-    </modules>
+	</modules>
 
-    <properties>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<android.version>4.1.1.4</android.version>
 
 		<junit.version>4.10</junit.version>
-		
+
 		<project.version>1.0-SNAPSHOT</project.version>
 	</properties>
-    
-    <dependencyManagement>
+
+	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>com.google.android</groupId>
@@ -33,11 +33,11 @@
 				<version>${android.version}</version>
 			</dependency>
 			<dependency>
-		      <groupId>com.google.android</groupId>
-		      <artifactId>android-test</artifactId>
-		      <version>4.1.1.4</version>
-		      <scope>provided</scope>
-		    </dependency>
+				<groupId>com.google.android</groupId>
+				<artifactId>android-test</artifactId>
+				<version>4.1.1.4</version>
+				<scope>provided</scope>
+			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
@@ -46,31 +46,31 @@
 		</dependencies>
 	</dependencyManagement>
 
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-                    <artifactId>android-maven-plugin</artifactId>
-                    <version>3.5.0</version>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+					<artifactId>android-maven-plugin</artifactId>
+					<version>3.5.0</version>
 
-                    <configuration>
-                        <sdk>
-                            <platform>16</platform>
-                        </sdk>
-                    </configuration>
-                </plugin>
+					<configuration>
+						<sdk>
+							<platform>16</platform>
+						</sdk>
+					</configuration>
+				</plugin>
 
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.5.1</version>
-                    <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.5.1</version>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 </project>
