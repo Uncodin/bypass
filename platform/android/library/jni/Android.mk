@@ -1,13 +1,14 @@
 LOCAL_PATH := $(call my-dir)
-BYPASS_SRC := $(LOCAL_PATH)/../../../../src/
-BYPASS_SOURCES := $(wildcard $(BYPASS_SRC)/*.cpp)
+BYPASS_SRC := ../../../../src/
 
 include $(CLEAR_VARS)
 
 LOCAL_MODULE	:= bypass
 LOCAL_SRC_FILES := \
-	 $(subst jni/, , $(BYPASS_SOURCES)) \
 	bypass.cpp \
+	$(BYPASS_SRC)parser.cpp \
+	$(BYPASS_SRC)document.cpp \
+	$(BYPASS_SRC)element.cpp \
 	../../../../dep/libsoldout/markdown.c \
 	../../../../dep/libsoldout/buffer.c \
 	../../../../dep/libsoldout/array.c
