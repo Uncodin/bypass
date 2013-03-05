@@ -24,3 +24,6 @@ dependency block to your `pom.xml`:
 
 [Building And Using](platform/iOS/README.md)
 
+##Credits
+- [**Boost**](http://www.boost.org/)
+- [**libsoldout**](http://fossil.instinctive.eu/libsoldout/home)
