@@ -3,7 +3,19 @@
 //  Bypass
 //
 //  Created by Damian Carrillo on 2/28/13.
-//  Copyright (c) 2013 Uncodin. All rights reserved.
+//  Copyright 2013 Uncodin, Inc.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
 //
 
 #import "BPElementPrivate.h"
@@ -98,10 +110,10 @@ const BPElementType BPText           = Bypass::TEXT;
 
 - (NSDictionary *)attributes
 {
-    using namespace std;
+    using namespace Bypass;
     
     if (_attributes == nil) {
-		Bypass::AttributeMap::iterator it = _element.attrBegin();
+        Element::AttributeMap::iterator it = _element.attrBegin();
         NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:_element.attrSize()];
 
 		for (; it != _element.attrEnd(); ++it) {
@@ -115,6 +127,8 @@ const BPElementType BPText           = Bypass::TEXT;
 
         _attributes = [NSDictionary dictionaryWithDictionary:attributes];
     }
+    
+    return _attributes;
 }
 
 - (NSArray *)childElements
@@ -137,5 +151,19 @@ const BPElementType BPText           = Bypass::TEXT;
     
     return _childElements;
 }
+
+#if __has_feature(objc_subscripting)
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx
+{
+    return [[self childElements] objectAtIndexedSubscript:idx];
+}
+
+- (id)objectForKeyedSubscript:(id)key
+{
+    return [[self attributes] objectForKeyedSubscript:key];
+}
+
+#endif
 
 @end

@@ -50,4 +50,14 @@
     STAssertEquals([[document elements][1] elementType], BPParagraph, @"Expected second element type to be BPParagraph");
 }
 
+#if __has_feature(objc_subscripting)
+
+- (void)testNumericSubscripting
+{
+    STAssertEquals(document[0], [[document elements] objectAtIndex:0], @"Expected document subscripting to return an element");
+}
+
+#endif
+
+
 @end
