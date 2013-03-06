@@ -1,3 +1,19 @@
+//
+//  Copyright 2013 Uncodin, Inc.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
 #define BOOST_TEST_MODULE DocumentTests
 
 #include <boost/test/included/unit_test.hpp>
@@ -221,7 +237,7 @@ BOOST_FIXTURE_TEST_CASE(element_get_attribute_names_with_multiple_attributes, F)
 	element.addAttribute("a", "A");
 	element.addAttribute("b", "B");
 
-	std::set<std::string> res; 
+	std::set<std::string> res;
 	Element::AttributeMap::iterator it = element.attrBegin();
 	for (; it != element.attrEnd(); ++it) {
 		res.insert(it->first);
