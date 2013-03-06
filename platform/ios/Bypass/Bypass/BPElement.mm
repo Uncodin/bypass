@@ -152,4 +152,18 @@ const BPElementType BPText           = Bypass::TEXT;
     return _childElements;
 }
 
+#if __has_feature(objc_subscripting)
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx
+{
+    return [[self childElements] objectAtIndexedSubscript:idx];
+}
+
+- (id)objectForKeyedSubscript:(id)key
+{
+    return [[self attributes] objectForKeyedSubscript:key];
+}
+
+#endif
+
 @end

@@ -90,4 +90,24 @@
     STAssertEquals([[element childElements][0] isBlockElement], NO, @"Expected a span element");
 }
 
+- (void)testForParentElement
+{
+    BPElement *child = [element childElements][0];
+    STAssertEquals([child parentElement], element, @"Expected parent element to be specified");
+}
+
+#if __has_feature(objc_subscripting)
+
+- (void)testNumericSubscripting
+{
+    STAssertEquals(element[0], [[element childElements] objectAtIndex:0], @"Expected element subscripting to return a child element");
+}
+
+- (void)testAlphabeticSubscripting
+{
+    STAssertEqualObjects(element[@"a"], @"A", @"Expected alphabetic subscripting to return an attribute");
+}
+
+#endif
+
 @end

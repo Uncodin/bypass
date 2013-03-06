@@ -65,4 +65,13 @@
     return _elements;
 }
 
+#if __has_feature(objc_subscripting)
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx
+{
+    return [[self elements] objectAtIndexedSubscript:idx];
+}
+
+#endif
+
 @end

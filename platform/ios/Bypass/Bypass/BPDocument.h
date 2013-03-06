@@ -23,4 +23,14 @@
 
 @interface BPDocument : NSObject
 @property (strong, nonatomic, readonly) NSArray *elements;
+
+#if __has_feature(objc_subscripting)
+
+/*!
+ \brief Convenience accessor for retrieving elements
+ */
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+
+#endif
+
 @end

@@ -58,4 +58,18 @@ FOUNDATION_EXPORT const BPElementType BPText;
 
 - (BOOL)isBlockElement;
 
+#if __has_feature(objc_subscripting)
+
+/*!
+ \brief Convenience accessor for retrieving child elements
+ */
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+
+/*!
+ \brief Convenience accessor for retrieving attributes
+ */
+- (id)objectForKeyedSubscript:(id)key;
+
+#endif
+
 @end
