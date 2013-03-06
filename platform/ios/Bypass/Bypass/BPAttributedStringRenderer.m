@@ -18,9 +18,61 @@
 //  limitations under the License.
 //
 
+#import <CoreText/CoreText.h>
 #import "BPAttributedStringRenderer.h"
 
 @implementation BPAttributedStringRenderer
+{
+    CTFontRef _defaultFont;
+    CTFontRef _boldFont;
+    CTFontRef _italicFont;
+    CTFontRef _boldItalicFont;
+    CTFontRef _monospaceFont;
+    CTFontRef _h1Font;
+    CTFontRef _h2Font;
+    CTFontRef _h3Font;
+    CTFontRef _h4Font;
+    CTFontRef _h5Font;
+    CTFontRef _h6Font;
+}
+
+- (id)init
+{
+    self = [super init];
+    
+    if (self != nil) {
+        CGFloat systemFontSize = [UIFont systemFontSize];
+        UIFont *systemFont = [UIFont systemFontOfSize:systemFontSize];
+        CFStringRef systemFontName = (__bridge CFStringRef) [systemFont fontName];
+        
+        _defaultFont = CTFontCreateWithName(systemFontName, systemFontSize, NULL);
+    }
+    
+    return self;
+}
+
+- (void)dealloc
+{
+    CFRelease(_defaultFont);
+    if (_boldFont != NULL) CFRelease(_boldFont);
+    if (_italicFont != NULL) CFRelease(_italicFont);
+    if (_boldItalicFont != NULL) CFRelease(_boldItalicFont);
+    if (_monospaceFont != NULL) CFRelease(_monospaceFont);
+    if (_h1Font != NULL) CFRelease(_h1Font);
+    if (_h2Font != NULL) CFRelease(_h2Font);
+    if (_h3Font != NULL) CFRelease(_h3Font);
+    if (_h4Font != NULL) CFRelease(_h4Font);
+    if (_h5Font != NULL) CFRelease(_h5Font);
+    if (_h6Font != NULL) CFRelease(_h6Font);
+}
+
+- (UIFont *)UIFontFromCTFont:(CTFontRef)ctFont
+{
+    NSString *fontName = (__bridge_transfer NSString *) CTFontCopyName(ctFont, kCTFontPostScriptNameKey);
+    CGFloat fontSize = CTFontGetSize(ctFont);
+    UIFont *font = [UIFont fontWithName:fontName size:fontSize];
+    return font;
+}
 
 - (NSAttributedString *)renderDocument:(BPDocument *)document
 {
@@ -71,9 +123,22 @@
 }
 
 - (void)renderSpanElement:(BPElement *)element
-           withAttributes:(NSMutableDictionary *)attributes
+                 withFont:(CTFontRef)font
                  toTarget:(NSMutableAttributedString *)target
 {
+    [self renderSpanElement:element
+                   withFont:font
+                 attributes:[NSMutableDictionary dictionary]
+                   toTarget:target];
+}
+
+- (void)renderSpanElement:(BPElement *)element
+                 withFont:(CTFontRef)font
+               attributes:(NSMutableDictionary *)attributes
+                 toTarget:(NSMutableAttributedString *)target
+{
+    attributes[NSFontAttributeName] = [self UIFontFromCTFont:font];
+    
     // Override some attributes based on the parent header element
     
     if ([element parentElement] != nil) {
@@ -83,50 +148,95 @@
             }
             
             NSUInteger level = [[[element parentElement] attributes][@"level"] integerValue];
-            NSString *fontName = [attributes[NSFontAttributeName] fontName];
             
-            if ([fontName hasSuffix:@"-Italic"]) {
-                fontName = [fontName stringByReplacingOccurrencesOfString:@"-Italic" withString:@"-BoldItalic"];
-            } else if ([fontName hasSuffix:@"-Oblique"]) {
-                fontName = [fontName stringByReplacingOccurrencesOfString:@"-Italic" withString:@"-BoldOblique"];
-            } else if ([fontName hasSuffix:@"-ItalicMT"]) {
-                fontName = [fontName stringByReplacingOccurrencesOfString:@"-ItalicMT" withString:@"-BoldItalicMT"];
-            } else if (![fontName hasSuffix:@"-Bold"]) {
-                fontName = [fontName stringByAppendingString:@"-Bold"];
-            }
+            // Override font weight and size attributes (but preserve all other attributes)
             
             switch (level) {
                 case 1:
-                    attributes[NSFontAttributeName] = [UIFont fontWithName:fontName size:27.f];
+                    if (_h1Font == NULL) {
+                        _h1Font = CTFontCreateCopyWithSymbolicTraits(font,
+                                                                     CTFontGetSize(font) + 12,
+                                                                     NULL,
+                                                                     kCTFontBoldTrait,
+                                                                     kCTFontBoldTrait);
+                    }
+                    
+                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h1Font];
+                    
                     break;
                 case 2:
-                    attributes[NSFontAttributeName] = [UIFont fontWithName:fontName size:25.f];
+                    if (_h2Font == NULL) {
+                        _h2Font = CTFontCreateCopyWithSymbolicTraits(font,
+                                                                     CTFontGetSize(font) + 10,
+                                                                     NULL,
+                                                                     kCTFontBoldTrait,
+                                                                     kCTFontBoldTrait);
+                    }
+                    
+                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h2Font];
+                    
                     break;
                 case 3:
-                    attributes[NSFontAttributeName] = [UIFont fontWithName:fontName size:23.f];
+                    if (_h3Font == NULL) {
+                        _h3Font = CTFontCreateCopyWithSymbolicTraits(font,
+                                                                     CTFontGetSize(font) + 8,
+                                                                     NULL,
+                                                                     kCTFontBoldTrait,
+                                                                     kCTFontBoldTrait);
+                    }
+                    
+                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h3Font];
+                    
                     break;
                 case 4:
-                    attributes[NSFontAttributeName] = [UIFont fontWithName:fontName size:21.f];
+                    if (_h4Font == NULL) {
+                        _h4Font = CTFontCreateCopyWithSymbolicTraits(font,
+                                                                     CTFontGetSize(font) + 6,
+                                                                     NULL,
+                                                                     kCTFontBoldTrait,
+                                                                     kCTFontBoldTrait);
+                    }
+                    
+                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h4Font];
+                    
                     break;
                 case 5:
-                    attributes[NSFontAttributeName] = [UIFont fontWithName:fontName size:19.f];
+                    if (_h5Font == NULL) {
+                        _h5Font = CTFontCreateCopyWithSymbolicTraits(font,
+                                                                     CTFontGetSize(font) + 4,
+                                                                     NULL,
+                                                                     kCTFontBoldTrait,
+                                                                     kCTFontBoldTrait);
+                    }
+                    
+                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h5Font];
+                    
                     break;
                 case 6:
-                    attributes[NSFontAttributeName] = [UIFont fontWithName:fontName size:17.f];
+                    if (_h6Font == NULL) {
+                        _h6Font = CTFontCreateCopyWithSymbolicTraits(font,
+                                                                     CTFontGetSize(font) + 2,
+                                                                     NULL,
+                                                                     kCTFontBoldTrait,
+                                                                     kCTFontBoldTrait);
+                    }
+                    
+                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h6Font];
+                   
                     break;
                 default:
-                    attributes[NSFontAttributeName] = [UIFont fontWithName:fontName size:15.f];
+                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_defaultFont];
                     break;
             }
         } else if ([[element parentElement] elementType] == BPHeader) {
-            attributes[NSFontAttributeName] = [UIFont fontWithName:@"Courier" size:16.f];
+            if (_monospaceFont == NULL) {
+                _monospaceFont = CTFontCreateWithName(CFSTR("Courier"), CTFontGetSize(_defaultFont) + 1, NULL);
+            }
+            
+            attributes[NSFontAttributeName] = [self UIFontFromCTFont:_monospaceFont];
         } else if ([[element parentElement] elementType] == BPListItem) {
-            if ([[element parentElement] childElements][0] == element) {
-                if ([[[element parentElement] parentElement] childElements][0] == [element parentElement]) {
-                    [target appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
-                }
-                
-                [target appendAttributedString:[[NSAttributedString alloc] initWithString:@"• "]];
+            if (element == [element parentElement][0]) {
+                [target appendAttributedString:[[NSAttributedString alloc] initWithString:@"◦"]];
             }
         }
     }
@@ -147,37 +257,55 @@
 
 - (void)renderTextElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
-    NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    attributes[NSFontAttributeName] = [UIFont fontWithName:@"Helvetica" size:15.f];
-    [self renderSpanElement:element withAttributes:attributes toTarget:target];
+    [self renderSpanElement:element withFont:_defaultFont toTarget:target];
 }
 
 - (void)renderBoldItalicElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
-    NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    attributes[NSFontAttributeName] = [UIFont fontWithName:@"Helvetica-BoldOblique" size:15.f];
-    [self renderSpanElement:element withAttributes:attributes toTarget:target];
+    if (_boldItalicFont == NULL) {
+        _boldItalicFont = CTFontCreateCopyWithSymbolicTraits(_defaultFont,
+                                                             0.f,
+                                                             NULL,
+                                                             kCTFontBoldTrait | kCTFontItalicTrait,
+                                                             kCTFontBoldTrait | kCTFontItalicTrait);
+    }
+    
+    [self renderSpanElement:element withFont:_boldItalicFont toTarget:target];
 }
 
 - (void)renderBoldElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
-    NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    attributes[NSFontAttributeName] = [UIFont fontWithName:@"Helvetica-Bold" size:15.f];
-    [self renderSpanElement:element withAttributes:attributes toTarget:target];
+    if (_boldFont == NULL) {
+        _boldFont = CTFontCreateCopyWithSymbolicTraits(_defaultFont,
+                                                       0.f,
+                                                       NULL,
+                                                       kCTFontBoldTrait,
+                                                       kCTFontBoldTrait);
+    }
+    
+    [self renderSpanElement:element withFont:_boldFont toTarget:target];
 }
 
 - (void)renderItalicElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
-    NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    attributes[NSFontAttributeName] = [UIFont fontWithName:@"Helvetica-Oblique" size:15.f];
-    [self renderSpanElement:element withAttributes:attributes toTarget:target];
+    if (_italicFont == NULL) {
+        _italicFont = CTFontCreateCopyWithSymbolicTraits(_defaultFont,
+                                                         0.f,
+                                                         NULL,
+                                                         kCTFontItalicTrait,
+                                                         kCTFontItalicTrait);
+    }
+    
+    [self renderSpanElement:element withFont:_italicFont toTarget:target];
 }
 
 - (void)renderCodeSpanElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
-    NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    attributes[NSFontAttributeName] = [UIFont fontWithName:@"Courier" size:15.f];
-    [self renderSpanElement:element withAttributes:attributes toTarget:target];
+    if (_monospaceFont == NULL) {
+        _monospaceFont = CTFontCreateWithName(CFSTR("Courier"), CTFontGetSize(_defaultFont) + 1, NULL);
+    }
+    
+    [self renderSpanElement:element withFont:_monospaceFont toTarget:target];
 }
 
 - (void)renderLinkElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
@@ -185,8 +313,7 @@
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
     attributes[NSUnderlineStyleAttributeName] = @(1);
     attributes[NSForegroundColorAttributeName] = [UIColor blueColor];
-    attributes[NSFontAttributeName] = [UIFont fontWithName:@"Helvetica" size:15.f];
-    [self renderSpanElement:element withAttributes:attributes toTarget:target];
+    [self renderSpanElement:element withFont:_defaultFont attributes:attributes toTarget:target];
 }
 
 - (void)renderLineBreak:(BPElement *)element toTarget:(NSMutableAttributedString *)target

@@ -27,6 +27,8 @@
 		5E5BC89A16E79B6200165503 /* document.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC89416E79B6200165503 /* document.cpp */; };
 		5E5BC89B16E79B6200165503 /* element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC89616E79B6200165503 /* element.cpp */; };
 		5E5BC89C16E79B6200165503 /* parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC89816E79B6200165503 /* parser.cpp */; };
+		5E5BC8A116E7BE9400165503 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC8A016E7BE9400165503 /* CoreText.framework */; };
+		5E5BC8A716E7C4B500165503 /* UIFont+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC8A616E7C4B500165503 /* UIFont+Additions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +89,9 @@
 		5E5BC89716E79B6200165503 /* element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = element.h; path = ../../../../src/element.h; sourceTree = "<group>"; };
 		5E5BC89816E79B6200165503 /* parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = parser.cpp; path = ../../../../src/parser.cpp; sourceTree = "<group>"; };
 		5E5BC89916E79B6200165503 /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = parser.h; path = ../../../../src/parser.h; sourceTree = "<group>"; };
+		5E5BC8A016E7BE9400165503 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		5E5BC8A516E7C4B400165503 /* UIFont+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Additions.h"; sourceTree = "<group>"; };
+		5E5BC8A616E7C4B500165503 /* UIFont+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+Additions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E5BC8A116E7BE9400165503 /* CoreText.framework in Frameworks */,
 				5E5BC85016E005E700165503 /* UIKit.framework in Frameworks */,
 				5E5BC81C16E004FA00165503 /* Foundation.framework in Frameworks */,
 			);
@@ -134,6 +140,7 @@
 		5E5BC81A16E004FA00165503 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5E5BC8A016E7BE9400165503 /* CoreText.framework */,
 				5E5BC81B16E004FA00165503 /* Foundation.framework */,
 				5E5BC82A16E004FA00165503 /* SenTestingKit.framework */,
 				5E5BC84F16E005E700165503 /* UIKit.framework */,
@@ -155,6 +162,8 @@
 				5E5BC87C16E1222A00165503 /* BPElementPrivate.h */,
 				5E5BC88516E15C5800165503 /* BPAttributedStringRenderer.h */,
 				5E5BC88616E15C5800165503 /* BPAttributedStringRenderer.m */,
+				5E5BC8A516E7C4B400165503 /* UIFont+Additions.h */,
+				5E5BC8A616E7C4B500165503 /* UIFont+Additions.m */,
 				5E5BC86716E007AC00165503 /* Soldout */,
 				5E5BC85416E006D700165503 /* Core */,
 				5E5BC81E16E004FA00165503 /* Supporting Files */,
@@ -324,6 +333,7 @@
 				5E5BC89A16E79B6200165503 /* document.cpp in Sources */,
 				5E5BC89B16E79B6200165503 /* element.cpp in Sources */,
 				5E5BC89C16E79B6200165503 /* parser.cpp in Sources */,
+				5E5BC8A716E7C4B500165503 /* UIFont+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
