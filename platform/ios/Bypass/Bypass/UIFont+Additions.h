@@ -1,8 +1,8 @@
 //
-//  BPAttributedStringRenderer.h
+//  UIFont+Additions.h
 //  Bypass
 //
-//  Created by Damian Carrillo on 3/1/13.
+//  Created by Damian Carrillo on 3/6/13.
 //  Copyright 2013 Uncodin, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,14 +18,14 @@
 //  limitations under the License.
 //
 
+#import <CoreText/CoreText.h>
 #import <UIKit/UIKit.h>
-#import "BPDocument.h"
 
-/*!
- \brief Renders a Bypass Document to an `NSAttributedString`.
- */
-@interface BPAttributedStringRenderer : NSObject
+CTFontRef BPCreateFontFromFont(UIFont *font);
 
-- (NSAttributedString *)renderDocument:(BPDocument *)document;
+@interface UIFont (Additions)
+
++ (id)BP_fontFromFont:(CTFontRef)font;
++ (id)BP_fontFromFontDescriptor:(CTFontDescriptorRef)fontDescriptor;
 
 @end
