@@ -8,7 +8,6 @@ Skip the HTML, Bypass takes markdown and renders it directly on Android and iOS
 
 ## Android
 
-### Maven Dependency
 If you just want to include Bypass in your Maven project, add the following
 dependency block to your `pom.xml`:
 
@@ -19,38 +18,12 @@ dependency block to your `pom.xml`:
         <version>1.0-SNAPSHOT</version>
     </dependency>
 
-### Manual Build
-Make sure `$ANDROID_NDK_HOME` is correctly set to the root directory of your
-NDK installation. Also, if Boost lives in a non-standard directory (or you're
-on Windows) you'll need to set `$BYPASS_INCLUDE_PATH` to its parent directory.
+[Building And Using](platform/android/README.md)
 
-#### Maven
-    cd ./platform/android
-    mvn install
+## iOS
 
-#### Library Project
-    cd ./platform/android/library
-    ndk-build
+[Building And Using](platform/iOS/README.md)
 
-Then simply point to the library from your project.
-
-## Speed
-
-### Android
-The following benchmarks were obtained by clocking the parsing of Sundown's readme file.
-
-##### Bypass
-    03-01 15:13:12.662: D/Bypass(8998): onCreate: begin
-    03-01 15:13:12.662: D/Bypass(8998): onCreate:      1 ms, read raw
-    03-01 15:13:12.662: D/Bypass(8998): onCreate:      2 ms, instantiated Bypass
-    03-01 15:13:12.662: D/Bypass(8998): onCreate:      37 ms, convert to spannable
-    03-01 15:13:12.662: D/Bypass(8998): onCreate: end, 40 ms
-
-##### [cwac-anddown](https://github.com/commonsguy/cwac-anddown)
-    03-01 15:14:44.662: D/AndDown(9047): onCreate: begin
-    03-01 15:14:44.662: D/AndDown(9047): onCreate:      2 ms, read raw
-    03-01 15:14:44.662: D/AndDown(9047): onCreate:      2 ms, instantiated AndDown
-    03-01 15:14:44.662: D/AndDown(9047): onCreate:      2 ms, convert to HTML
-    03-01 15:14:44.662: D/AndDown(9047): onCreate:      167 ms, convert to Spanned
-    03-01 15:14:44.662: D/AndDown(9047): onCreate: end, 173 ms
-
+##Credits
+- [**Boost**](http://www.boost.org/)
+- [**libsoldout**](http://fossil.instinctive.eu/libsoldout/home)
