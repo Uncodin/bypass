@@ -98,10 +98,10 @@ const BPElementType BPText           = Bypass::TEXT;
 
 - (NSDictionary *)attributes
 {
-    using namespace std;
+    using namespace Bypass;
     
     if (_attributes == nil) {
-		Bypass::AttributeMap::iterator it = _element.attrBegin();
+        Element::AttributeMap::iterator it = _element.attrBegin();
         NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:_element.attrSize()];
 
 		for (; it != _element.attrEnd(); ++it) {
@@ -115,6 +115,8 @@ const BPElementType BPText           = Bypass::TEXT;
 
         _attributes = [NSDictionary dictionaryWithDictionary:attributes];
     }
+    
+    return _attributes;
 }
 
 - (NSArray *)childElements
