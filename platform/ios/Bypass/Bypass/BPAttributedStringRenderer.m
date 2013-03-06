@@ -235,12 +235,8 @@
             
             attributes[NSFontAttributeName] = [self UIFontFromCTFont:_monospaceFont];
         } else if ([[element parentElement] elementType] == BPListItem) {
-            if ([[element parentElement] childElements][0] == element) {
-                if ([[[element parentElement] parentElement] childElements][0] == [element parentElement]) {
-                    [target appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
-                }
-                
-                [target appendAttributedString:[[NSAttributedString alloc] initWithString:@"◦ "]];
+            if (element == [element parentElement][0]) {
+                [target appendAttributedString:[[NSAttributedString alloc] initWithString:@"◦"]];
             }
         }
     }
