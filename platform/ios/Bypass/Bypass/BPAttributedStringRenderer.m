@@ -164,7 +164,7 @@
 - (void)renderCodeSpanElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    attributes[NSFontAttributeName] = [UIFont fontWithName:@"Courier" size:16.f];
+    attributes[NSFontAttributeName] = [UIFont fontWithName:@"Courier" size:15.f];
     [self renderSpanElement:element withAttributes:attributes toTarget:target];
 }
 

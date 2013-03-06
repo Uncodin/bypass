@@ -24,7 +24,7 @@ Features
 	`Sundown` is fully UTF-8 aware, both when parsing the source document and when
 	generating the resulting (X)HTML code.
 
-*	**Tested & Ready to be used on production**
+*	**Tested and Ready to be used on production**
 
 	`Sundown` has been extensively security audited, and includes protection against
 	all possible DOS attacks (stack overflows, out of memory situations, malformed
