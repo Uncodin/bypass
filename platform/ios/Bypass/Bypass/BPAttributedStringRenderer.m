@@ -87,40 +87,206 @@
 
 - (void)renderElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
-    if ([[element text] length] > 0) {
-        BPElementType elementType = [element elementType];
-        
-        if (elementType == BPAutoLink) {
-            [self renderLinkElement:element toTarget:target];
-        } else if (elementType == BPCodeSpan) {
-            [self renderCodeSpanElement:element toTarget:target];
-        } else if (elementType == BPDoubleEmphasis) {
-            [self renderBoldElement:element toTarget:target];
-        } else if (elementType == BPEmphasis) {
-            [self renderItalicElement:element toTarget:target];
-        } else if (elementType == BPImage) {
-            // Currently not supported
-        } else if (elementType == BPLineBreak) {
-            [self renderLineBreak:element toTarget:target];
-        } else if (elementType == BPLink) {
-            [self renderLinkElement:element toTarget:target];
-        } else if (elementType == BPRawHTMLTag) {
-            // Currently not supported
-        } else if (elementType == BPTripleEmphasis) {
-            [self renderBoldItalicElement:element toTarget:target];
-        } else if (elementType == BPText) {
-            [self renderTextElement:element toTarget:target];
-        }
+    BPElementType elementType = [element elementType];
+
+    NSRange effectiveRange;
+    effectiveRange.location = [target length];
+    
+    if (elementType == BPListItem) {
+        [self insertBulletIntoTarget:target];
+    } else if (elementType == BPAutoLink) {
+        [self renderLinkElement:element toTarget:target];
+    } else if (elementType == BPCodeSpan) {
+        [self renderCodeSpanElement:element toTarget:target];
+    } else if (elementType == BPDoubleEmphasis) {
+        [self renderBoldElement:element toTarget:target];
+    } else if (elementType == BPEmphasis) {
+        [self renderItalicElement:element toTarget:target];
+    } else if (elementType == BPImage) {
+        // Currently not supported
+    } else if (elementType == BPLineBreak) {
+        [self renderLineBreak:element toTarget:target];
+    } else if (elementType == BPLink) {
+        [self renderLinkElement:element toTarget:target];
+    } else if (elementType == BPRawHTMLTag) {
+        // Currently not supported
+    } else if (elementType == BPTripleEmphasis) {
+        [self renderBoldItalicElement:element toTarget:target];
+    } else if (elementType == BPText) {
+        [self renderTextElement:element toTarget:target];
     }
     
     for (BPElement *childElement in [element childElements]) {
         [self renderElement:childElement toTarget:target];
     }
     
-    if ([element isBlockElement]) {
+    effectiveRange.length = [target length] - effectiveRange.location;
+    
+    if (elementType == BPParagraph) {
+        [self renderParagraphElement:element inRange:effectiveRange toTarget:target];
+    } else if (elementType == BPHeader) {
+        [self renderHeaderElement:element inRange:effectiveRange toTarget:target];
+    } else if (elementType == BPList) {
+        [self renderListElement:element inRange:effectiveRange toTarget:target];
+    } else if (elementType == BPListItem) {
+        [self renderListItemElement:element inRange:effectiveRange toTarget:target];
+    } else if (elementType == BPBlockCode) {
+        [self renderBlockCodeElement:element inRange:effectiveRange toTarget:target];
+    }
+    
+    if ([element isBlockElement] && [element elementType] != BPListItem) {
         [target appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
     }
 }
+
+#pragma mark Block Elements
+
+- (void)renderBlockQuoteElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
+{
+    // do nothing
+}
+
+- (void)renderBlockHTMLElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
+{
+    // do nothing
+}
+
+- (void)renderHRuleElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
+{
+    // do nothing
+}
+
+- (void)renderBlockCodeElement:(BPElement *)element
+                       inRange:(NSRange)effectiveRange
+                      toTarget:(NSMutableAttributedString *)target
+{
+    if (_monospaceFont == NULL) {
+        _monospaceFont = CTFontCreateWithName(CFSTR("Courier"), CTFontGetSize(_defaultFont), NULL);
+    }
+    
+    UIFont *monospaceFont = [self UIFontFromCTFont:_monospaceFont];
+    NSDictionary *attributes = @{NSFontAttributeName : monospaceFont, NSForegroundColorAttributeName : [UIColor grayColor]};
+    [target addAttributes:attributes range:effectiveRange];
+    [self insertNewlineIntoTarget:target];
+}
+
+- (void)renderParagraphElement:(BPElement *)element
+                       inRange:(NSRange)effectiveRange
+                      toTarget:(NSMutableAttributedString *)target
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setParagraphSpacing:20.f];
+    
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle};
+    [target addAttributes:attributes range:effectiveRange];
+}
+
+- (void)renderListElement:(BPElement *)element
+                  inRange:(NSRange)effectiveRange
+                 toTarget:(NSMutableAttributedString *)target
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setParagraphSpacing:15.f];
+    
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle};
+    [target addAttributes:attributes range:effectiveRange];
+}
+
+- (void)insertBulletIntoTarget:(NSMutableAttributedString *)target
+{
+    [target appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"• "]];
+}
+
+- (void)insertNewlineIntoTarget:(NSMutableAttributedString *)target
+{
+    [target appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"\n"]];
+}
+
+- (void)renderListItemElement:(BPElement *)element
+                      inRange:(NSRange)effectiveRange
+                     toTarget:(NSMutableAttributedString *)target
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setParagraphSpacing:0.f];
+    
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle};
+    [target addAttributes:attributes range:effectiveRange];
+    [self insertNewlineIntoTarget:target];
+}
+
+- (void)renderHeaderElement:(BPElement *)element
+                    inRange:(NSRange)effectiveRange
+                    toTarget:(NSMutableAttributedString *)target
+{
+    NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setParagraphSpacing:15.f];
+    
+    attributes[NSParagraphStyleAttributeName] = paragraphStyle;
+    
+    CTFontRef font = _defaultFont;
+    NSUInteger level = [element[@"level"] integerValue];
+    
+    // Override font weight and size attributes (but preserve all other attributes)
+    
+    switch (level) {
+        case 1:
+            if (_h1Font == NULL) {
+                _h1Font = CTFontCreateCopyWithSymbolicTraits(font, CTFontGetSize(font) + 12, NULL, kCTFontBoldTrait, kCTFontBoldTrait);
+            }
+            
+            attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h1Font];
+            
+            break;
+        case 2:
+            if (_h2Font == NULL) {
+                _h2Font = CTFontCreateCopyWithSymbolicTraits(font, CTFontGetSize(font) + 10, NULL, kCTFontBoldTrait, kCTFontBoldTrait);
+            }
+            
+            attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h2Font];
+            
+            break;
+        case 3:
+            if (_h3Font == NULL) {
+                _h3Font = CTFontCreateCopyWithSymbolicTraits(font, CTFontGetSize(font) + 8, NULL, kCTFontBoldTrait, kCTFontBoldTrait);
+            }
+            
+            attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h3Font];
+            
+            break;
+        case 4:
+            if (_h4Font == NULL) {
+                _h4Font = CTFontCreateCopyWithSymbolicTraits(font, CTFontGetSize(font) + 6, NULL, kCTFontBoldTrait, kCTFontBoldTrait);
+            }
+            
+            attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h4Font];
+            
+            break;
+        case 5:
+            if (_h5Font == NULL) {
+                _h5Font = CTFontCreateCopyWithSymbolicTraits(font, CTFontGetSize(font) + 4, NULL, kCTFontBoldTrait, kCTFontBoldTrait);
+            }
+            
+            attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h5Font];
+            
+            break;
+        case 6:
+            if (_h6Font == NULL) {
+                _h6Font = CTFontCreateCopyWithSymbolicTraits(font, CTFontGetSize(font) + 2, NULL, kCTFontBoldTrait, kCTFontBoldTrait);
+            }
+            
+            attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h6Font];
+            
+            break;
+        default:
+            attributes[NSFontAttributeName] = [self UIFontFromCTFont:_defaultFont];
+            break;
+    }
+    
+    [target addAttributes:attributes range:effectiveRange];
+}
+
+#pragma mark Span Elements
 
 - (void)renderSpanElement:(BPElement *)element
                  withFont:(CTFontRef)font
@@ -138,121 +304,10 @@
                  toTarget:(NSMutableAttributedString *)target
 {
     attributes[NSFontAttributeName] = [self UIFontFromCTFont:font];
-    
-    // Override some attributes based on the parent header element
-    
-    if ([element parentElement] != nil) {
-        if ([[element parentElement] elementType] == BPHeader) {
-            if ([target length] > 0) {
-                [target appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
-            }
-            
-            NSUInteger level = [[[element parentElement] attributes][@"level"] integerValue];
-            
-            // Override font weight and size attributes (but preserve all other attributes)
-            
-            switch (level) {
-                case 1:
-                    if (_h1Font == NULL) {
-                        _h1Font = CTFontCreateCopyWithSymbolicTraits(font,
-                                                                     CTFontGetSize(font) + 12,
-                                                                     NULL,
-                                                                     kCTFontBoldTrait,
-                                                                     kCTFontBoldTrait);
-                    }
-                    
-                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h1Font];
-                    
-                    break;
-                case 2:
-                    if (_h2Font == NULL) {
-                        _h2Font = CTFontCreateCopyWithSymbolicTraits(font,
-                                                                     CTFontGetSize(font) + 10,
-                                                                     NULL,
-                                                                     kCTFontBoldTrait,
-                                                                     kCTFontBoldTrait);
-                    }
-                    
-                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h2Font];
-                    
-                    break;
-                case 3:
-                    if (_h3Font == NULL) {
-                        _h3Font = CTFontCreateCopyWithSymbolicTraits(font,
-                                                                     CTFontGetSize(font) + 8,
-                                                                     NULL,
-                                                                     kCTFontBoldTrait,
-                                                                     kCTFontBoldTrait);
-                    }
-                    
-                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h3Font];
-                    
-                    break;
-                case 4:
-                    if (_h4Font == NULL) {
-                        _h4Font = CTFontCreateCopyWithSymbolicTraits(font,
-                                                                     CTFontGetSize(font) + 6,
-                                                                     NULL,
-                                                                     kCTFontBoldTrait,
-                                                                     kCTFontBoldTrait);
-                    }
-                    
-                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h4Font];
-                    
-                    break;
-                case 5:
-                    if (_h5Font == NULL) {
-                        _h5Font = CTFontCreateCopyWithSymbolicTraits(font,
-                                                                     CTFontGetSize(font) + 4,
-                                                                     NULL,
-                                                                     kCTFontBoldTrait,
-                                                                     kCTFontBoldTrait);
-                    }
-                    
-                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h5Font];
-                    
-                    break;
-                case 6:
-                    if (_h6Font == NULL) {
-                        _h6Font = CTFontCreateCopyWithSymbolicTraits(font,
-                                                                     CTFontGetSize(font) + 2,
-                                                                     NULL,
-                                                                     kCTFontBoldTrait,
-                                                                     kCTFontBoldTrait);
-                    }
-                    
-                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_h6Font];
-                   
-                    break;
-                default:
-                    attributes[NSFontAttributeName] = [self UIFontFromCTFont:_defaultFont];
-                    break;
-            }
-        } else if ([[element parentElement] elementType] == BPHeader) {
-            if (_monospaceFont == NULL) {
-                _monospaceFont = CTFontCreateWithName(CFSTR("Courier"), CTFontGetSize(_defaultFont) + 1, NULL);
-            }
-            
-            attributes[NSFontAttributeName] = [self UIFontFromCTFont:_monospaceFont];
-        } else if ([[element parentElement] elementType] == BPListItem) {
-            if (element == [element parentElement][0]) {
-                [target appendAttributedString:[[NSAttributedString alloc] initWithString:@"◦"]];
-            }
-        }
-    }
-    
-    // Rewrite newlines
-    
     NSString *text = [[element text] stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
-    
-    // Append an attributed text segment (glyph run)
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
     [target appendAttributedString:attributedText];
-    
-    if ([element parentElement] != nil && [[element parentElement] elementType] == BPHeader) {
-        [target appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
-    }
 }
 
 - (void)renderTextElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
@@ -263,11 +318,7 @@
 - (void)renderBoldItalicElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
     if (_boldItalicFont == NULL) {
-        _boldItalicFont = CTFontCreateCopyWithSymbolicTraits(_defaultFont,
-                                                             0.f,
-                                                             NULL,
-                                                             kCTFontBoldTrait | kCTFontItalicTrait,
-                                                             kCTFontBoldTrait | kCTFontItalicTrait);
+        _boldItalicFont = CTFontCreateCopyWithSymbolicTraits(_defaultFont, 0.f, NULL, kCTFontBoldTrait | kCTFontItalicTrait, kCTFontBoldTrait | kCTFontItalicTrait);
     }
     
     [self renderSpanElement:element withFont:_boldItalicFont toTarget:target];
@@ -276,11 +327,7 @@
 - (void)renderBoldElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
     if (_boldFont == NULL) {
-        _boldFont = CTFontCreateCopyWithSymbolicTraits(_defaultFont,
-                                                       0.f,
-                                                       NULL,
-                                                       kCTFontBoldTrait,
-                                                       kCTFontBoldTrait);
+        _boldFont = CTFontCreateCopyWithSymbolicTraits(_defaultFont, 0.f, NULL, kCTFontBoldTrait, kCTFontBoldTrait);
     }
     
     [self renderSpanElement:element withFont:_boldFont toTarget:target];
@@ -289,11 +336,7 @@
 - (void)renderItalicElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
     if (_italicFont == NULL) {
-        _italicFont = CTFontCreateCopyWithSymbolicTraits(_defaultFont,
-                                                         0.f,
-                                                         NULL,
-                                                         kCTFontItalicTrait,
-                                                         kCTFontItalicTrait);
+        _italicFont = CTFontCreateCopyWithSymbolicTraits(_defaultFont, 0.f, NULL, kCTFontItalicTrait, kCTFontItalicTrait);
     }
     
     [self renderSpanElement:element withFont:_italicFont toTarget:target];
@@ -302,7 +345,7 @@
 - (void)renderCodeSpanElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
     if (_monospaceFont == NULL) {
-        _monospaceFont = CTFontCreateWithName(CFSTR("Courier"), CTFontGetSize(_defaultFont) + 1, NULL);
+        _monospaceFont = CTFontCreateWithName(CFSTR("Courier"), CTFontGetSize(_defaultFont), NULL);
     }
     
     [self renderSpanElement:element withFont:_monospaceFont toTarget:target];
@@ -311,15 +354,14 @@
 - (void)renderLinkElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    attributes[NSUnderlineStyleAttributeName] = @(1);
+    attributes[NSUnderlineStyleAttributeName] = @(NSUnderlineStyleSingle);
     attributes[NSForegroundColorAttributeName] = [UIColor blueColor];
     [self renderSpanElement:element withFont:_defaultFont attributes:attributes toTarget:target];
 }
 
 - (void)renderLineBreak:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
-    NSAttributedString *newline = [[NSAttributedString alloc] initWithString:@"\n"];
-    [target appendAttributedString:newline];
+    [self insertNewlineIntoTarget:target];
 }
 
 @end

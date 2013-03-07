@@ -74,4 +74,18 @@
 
 #endif
 
+- (NSString *)debugDescription
+{
+    NSMutableString *desc = [NSMutableString stringWithString:NSStringFromClass([self class])];
+    [desc appendString:@"{ childElements:"];
+    
+    for (BPElement *element in [self elements]) {
+        [desc appendFormat:@"%@\n", [element debugDescription]];
+    }
+    
+    [desc appendString:@"}"];
+    return desc;
+}
+
+
 @end

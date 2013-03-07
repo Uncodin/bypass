@@ -166,4 +166,67 @@ const BPElementType BPText           = Bypass::TEXT;
 
 #endif
 
+- (NSString *)debugDescription
+{
+    NSString *elementType;
+    
+    if ([self elementType] == BPBlockCode) {
+        elementType = @"BPBlockCode";
+    } else if ([self elementType] == BPBlockQuote) {
+        elementType = @"BPBlockQuote";
+    } else if ([self elementType] == BPBlockHTML) {
+        elementType = @"BPBlockHTML";
+    } else if ([self elementType] == BPHeader) {
+        elementType = @"BPHeader";
+    } else if ([self elementType] == BPHRule) {
+        elementType = @"BPHRule";
+    } else if ([self elementType] == BPList) {
+        elementType = @"BPList";
+    } else if ([self elementType] == BPListItem) {
+        elementType = @"BPListItem";
+    } else if ([self elementType] == BPParagraph) {
+        elementType = @"BPParagraph";
+    } else if ([self elementType] == BPTable) {
+        elementType = @"BPTable";
+    } else if ([self elementType] == BPTableCell) {
+        elementType = @"BPTableCell";
+    } else if ([self elementType] == BPTableRow) {
+        elementType = @"BPTableRow";
+    } else if ([self elementType] == BPAutoLink) {
+        elementType = @"BPAutoLink";
+    } else if ([self elementType] == BPCodeSpan) {
+        elementType = @"BPCodeSpan";
+    } else if ([self elementType] == BPDoubleEmphasis) {
+        elementType = @"BPDoubleEmphasis";
+    } else if ([self elementType] == BPEmphasis) {
+        elementType = @"BPEmphasis";
+    } else if ([self elementType] == BPImage) {
+        elementType = @"BPImage";
+    } else if ([self elementType] == BPLineBreak) {
+        elementType = @"BPLineBreak";
+    } else if ([self elementType] == BPLink) {
+        elementType = @"BPLink";
+    } else if ([self elementType] == BPRawHTMLTag) {
+        elementType = @"BPRawHTMLTag";
+    } else if ([self elementType] == BPTripleEmphasis) {
+        elementType = @"BPTripleEmphasis";
+    } else if ([self elementType] == BPText) {
+        elementType = @"BPText";
+    }
+    
+    NSMutableString *desc = [NSMutableString stringWithString:NSStringFromClass([self class])];
+    [desc appendFormat:@"{ type: %@", elementType];
+    [desc appendFormat:@", text: %@", [self text]];
+    [desc appendFormat:@", attributes: %@", [[self attributes] debugDescription]];
+    [desc appendString:@", childElements: {"];
+    
+    for (BPElement *childElement in [self childElements]) {
+        [desc appendFormat:@"%@\n", [childElement debugDescription]];
+    }
+    
+    [desc appendString:@"}"];
+    [desc appendString:@"}"];
+    return desc;
+}
+
 @end
