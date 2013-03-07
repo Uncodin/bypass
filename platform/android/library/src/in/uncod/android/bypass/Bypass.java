@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.text.style.BulletSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
 
 public class Bypass {
@@ -75,6 +76,10 @@ public class Bypass {
 			StyleSpan bolditalicSpan = new StyleSpan(Typeface.BOLD_ITALIC);
             builder.setSpan(bolditalicSpan, 0, builder.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		else if (element.getType() == Type.CODE_SPAN) {
+			TypefaceSpan monoSpan = new TypefaceSpan("monospace");
+			builder.setSpan(monoSpan, 0, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		else if (element.getType() == Type.LINK) {
 			URLSpan urlSpan = new URLSpan(element.getAttribute("link"));
