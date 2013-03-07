@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.BulletSpan;
+import android.text.style.QuoteSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
@@ -47,7 +48,7 @@ public class Bypass {
 		builder.append(element.getText());
 		builder.append(concat);
 		if(element.isBlockElement() && element.type != Type.LIST_ITEM) {
-			builder.append("\n");
+			builder.append("\n\n");
 		}
 		
 		if (element.getType() == Type.HEADER) {
@@ -84,6 +85,10 @@ public class Bypass {
 		else if (element.getType() == Type.LINK) {
 			URLSpan urlSpan = new URLSpan(element.getAttribute("link"));
             builder.setSpan(urlSpan, 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		else if (element.getType() == Type.BLOCK_QUOTE) {
+			QuoteSpan quoteSpan = new QuoteSpan();
+			builder.setSpan(quoteSpan, 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		
 		return builder;
