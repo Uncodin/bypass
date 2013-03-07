@@ -21,7 +21,7 @@
 #import <CoreText/CoreText.h>
 #import "BPAttributedStringRenderer.h"
 
-static const CGFloat kBulletIndentation     =  6.f;
+static const CGFloat kBulletIndentation     =  8.f;
 static const CGFloat kCodeIndentation       = 10.f;
 static const CGFloat kQuoteIndentation      = 23.f;
 static const CGFloat kParagraphSpacingLarge = 20.f;
