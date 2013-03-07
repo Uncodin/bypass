@@ -16,6 +16,18 @@
 
 @implementation BPMarkdownViewController
 
+- (IBAction)textViewWasTapped:(id)sender
+{
+    CGPoint pos = [sender locationInView:self.view];
+    pos.y += [self markdownView].contentOffset.y;
+
+    UITextPosition *tapPos = [[self markdownView] closestPositionToPoint:pos];
+    
+    UITextRange * wr = [[self markdownView].tokenizer rangeEnclosingPosition:tapPos withGranularity:UITextGranularityWord inDirection:UITextLayoutDirectionRight];
+    
+    NSLog(@"WORD: %@", [[self markdownView] textInRange:wr]);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
