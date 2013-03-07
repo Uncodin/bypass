@@ -34,6 +34,7 @@
     CTFontRef _h4Font;
     CTFontRef _h5Font;
     CTFontRef _h6Font;
+    CTFontRef _quoteFont;
 }
 
 - (id)init
@@ -87,10 +88,15 @@
 
 - (void)renderElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
-    BPElementType elementType = [element elementType];
-
+    // Capture the starting point of the effective range to apply attributes to
+    
     NSRange effectiveRange;
     effectiveRange.location = [target length];
+ 
+    BPElementType elementType = [element elementType];
+    
+    // Render span elements immediately, and for some block-level elements, insert special
+    // characters
     
     if (elementType == BPListItem) {
         [self insertBulletIntoTarget:target];
@@ -116,11 +122,17 @@
         [self renderTextElement:element toTarget:target];
     }
     
+    // Render children of this particular element recursively
+    
     for (BPElement *childElement in [element childElements]) {
         [self renderElement:childElement toTarget:target];
     }
     
+    // Capture the end of the range
+    
     effectiveRange.length = [target length] - effectiveRange.location;
+    
+    // Follow up with some types of block-level elements and apply properties en masse.
     
     if (elementType == BPParagraph) {
         [self renderParagraphElement:element inRange:effectiveRange toTarget:target];
@@ -132,6 +144,8 @@
         [self renderListItemElement:element inRange:effectiveRange toTarget:target];
     } else if (elementType == BPBlockCode) {
         [self renderBlockCodeElement:element inRange:effectiveRange toTarget:target];
+    } else if (elementType == BPBlockQuote) {
+        [self renderBlockQuoteElement:element inRange:effectiveRange toTarget:target];
     }
     
     if ([element isBlockElement] && [element elementType] != BPListItem) {
@@ -139,21 +153,27 @@
     }
 }
 
-#pragma mark Block Elements
+#pragma mark Block Element Rendering
 
-- (void)renderBlockQuoteElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
+- (void)renderBlockQuoteElement:(BPElement *)element
+                        inRange:(NSRange)effectiveRange
+                       toTarget:(NSMutableAttributedString *)target
 {
-    // do nothing
-}
-
-- (void)renderBlockHTMLElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
-{
-    // do nothing
-}
-
-- (void)renderHRuleElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
-{
-    // do nothing
+    if (_quoteFont == NULL) {
+        _quoteFont = CTFontCreateWithName(CFSTR("Marion-Italic"), CTFontGetSize(_defaultFont) + 2, NULL);
+    }
+    
+    UIFont *quoteFont = [self UIFontFromCTFont:_quoteFont];
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setParagraphSpacing:15.f];
+    [paragraphStyle setFirstLineHeadIndent:23.f];
+    [paragraphStyle setHeadIndent:23.f];
+    [paragraphStyle setTailIndent:-23.f];
+    
+    NSDictionary *attributes = @{NSFontAttributeName : quoteFont, NSParagraphStyleAttributeName : paragraphStyle};
+    
+    [target addAttributes:attributes range:effectiveRange];
 }
 
 - (void)renderBlockCodeElement:(BPElement *)element
@@ -185,21 +205,7 @@
                   inRange:(NSRange)effectiveRange
                  toTarget:(NSMutableAttributedString *)target
 {
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setParagraphSpacing:15.f];
-    
-    NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle};
-    [target addAttributes:attributes range:effectiveRange];
-}
-
-- (void)insertBulletIntoTarget:(NSMutableAttributedString *)target
-{
-    [target appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"• "]];
-}
-
-- (void)insertNewlineIntoTarget:(NSMutableAttributedString *)target
-{
-    [target appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"\n"]];
+    // Currently do nothing
 }
 
 - (void)renderListItemElement:(BPElement *)element
@@ -208,9 +214,12 @@
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setParagraphSpacing:0.f];
-    
+    [paragraphStyle setFirstLineHeadIndent:6.f];
+    [paragraphStyle setHeadIndent:23.f];
+
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle};
     [target addAttributes:attributes range:effectiveRange];
+    
     [self insertNewlineIntoTarget:target];
 }
 
@@ -286,7 +295,7 @@
     [target addAttributes:attributes range:effectiveRange];
 }
 
-#pragma mark Span Elements
+#pragma mark Span Element Rendering
 
 - (void)renderSpanElement:(BPElement *)element
                  withFont:(CTFontRef)font
@@ -304,7 +313,17 @@
                  toTarget:(NSMutableAttributedString *)target
 {
     attributes[NSFontAttributeName] = [self UIFontFromCTFont:font];
-    NSString *text = [[element text] stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+    
+    NSString *text;
+    
+    if ([[element parentElement] elementType] == BPBlockCode) {
+        
+        // Preserve whitespace within a code block
+        
+        text = [element text];
+    } else {
+        text = [[element text] stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+    }
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
     [target appendAttributedString:attributedText];
@@ -362,6 +381,24 @@
 - (void)renderLineBreak:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
     [self insertNewlineIntoTarget:target];
+}
+
+#pragma mark Character Insertion
+
+- (void)insertBulletIntoTarget:(NSMutableAttributedString *)target
+{
+    if (_monospaceFont == NULL) {
+        _monospaceFont = CTFontCreateWithName(CFSTR("Courier"), CTFontGetSize(_defaultFont), NULL);
+    }
+    
+    UIFont *bulletFont = [self UIFontFromCTFont:_monospaceFont];
+    NSDictionary *attributes = @{NSFontAttributeName : bulletFont};
+    [target appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"• " attributes:attributes]];
+}
+
+- (void)insertNewlineIntoTarget:(NSMutableAttributedString *)target
+{
+    [target appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"\n"]];
 }
 
 @end

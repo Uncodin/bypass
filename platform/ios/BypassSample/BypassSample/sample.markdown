@@ -63,17 +63,37 @@ more backticks on a single line.
 
 The aforementioned filter interprets fenced code blocks with the following algorithm:
 
-* Locate a fenced code block
+* Locate a fenced code block, I am intentionally extending the length of this line
+  I am intentionally extending the length of this line I am intentionally extending
+  the length of this line I am intentionally extending the length of this line
 * Isolate the specified programming language
 * Isolate the actual block of code
 * Escape html entities in the block of code
-* Return the following snippet of HTML
 
-	<div class="code-container">
-	  <div class="langspec">objective-c</div>
-	  <pre class="highlight">
-	    <code class="language-objective-c">
-	      ... pygmentized markup ...
-	    </code>
-	  </pre>
-	</div>
+And then return the following snippet of HTML:
+
+    <div class="code-container">
+      <div class="langspec">
+        objective-c
+      </div>
+      <pre class="highlight">
+        <code
+          class="language-objective-c">
+          ... pygmentized markup ...
+        </code>
+      </pre>
+    </div>
+
+> What doesn't it support? Of course, comments. Comments would greatly increase
+> the code complexity, would require a strong antispam system to avoid flooding
+> and might pose a security issue on the server. So sorry, but no comments, at
+> least until I have another free afternoon waiting for some computations to
+> finish.
+>
+> I wanted to post something to celebrate the grand opening, and what's better
+> than a meta post explaining the script that generates this blog?
+>
+> In the future I'll post some scientific tips or tutorials which don't really
+> fit on the home page and maybe some rants about my work. To end up, if you are
+> interested in bioinformatics or general science computing, check the unix
+> section of my home page for more tips, tutorials, FAQs and cheat sheets.
