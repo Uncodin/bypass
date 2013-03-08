@@ -8,6 +8,7 @@ import android.text.SpannedString;
 import android.text.style.BulletSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
 
 public class BasicTests extends InstrumentationTestCase {
@@ -67,5 +68,12 @@ public class BasicTests extends InstrumentationTestCase {
 		RelativeSizeSpan[] sizeSpan = spannable.getSpans(0, spannable.length(), RelativeSizeSpan.class);
 		assertEquals(1, sizeSpan.length);
 		assertEquals(0, spannable.getSpanStart(sizeSpan[0]));
+	}
+
+	public void testCodeSpan() {
+		Spannable spannable = (Spannable) bypass.markdownToSpannable("`code`");
+		TypefaceSpan[] spans = spannable.getSpans(0, spannable.length(), TypefaceSpan.class);
+		assertEquals(1, spans.length);
+		assertEquals(0, spannable.getSpanStart(spans[0]));
 	}
 }
