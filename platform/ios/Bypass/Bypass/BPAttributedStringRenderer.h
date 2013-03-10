@@ -21,6 +21,8 @@
 #import <UIKit/UIKit.h>
 #import "BPDocument.h"
 
+OBJC_EXPORT NSString *const BPLinkStyleAttributeName;
+
 /*!
  \brief Renders a Bypass Document to an `NSAttributedString`.
  */

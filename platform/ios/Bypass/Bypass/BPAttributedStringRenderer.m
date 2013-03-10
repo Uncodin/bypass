@@ -21,6 +21,8 @@
 #import <CoreText/CoreText.h>
 #import "BPAttributedStringRenderer.h"
 
+NSString *const BPLinkStyleAttributeName = @"BPLinkStyleAttributeName";
+
 static const CGFloat kBulletIndentation     =  8.f;
 static const CGFloat kCodeIndentation       = 10.f;
 static const CGFloat kQuoteIndentation      = 23.f;
@@ -339,6 +341,7 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
     attributes[NSUnderlineStyleAttributeName] = @(NSUnderlineStyleSingle);
     attributes[NSForegroundColorAttributeName] = [UIColor blueColor];
+    attributes[BPLinkStyleAttributeName] = element[@"link"];
     [self renderSpanElement:element withFont:_defaultFont attributes:attributes toTarget:target];
 }
 
