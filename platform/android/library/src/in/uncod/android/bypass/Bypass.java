@@ -45,7 +45,11 @@ public class Bypass {
 		CharSequence concat = TextUtils.concat(spans);
 		
 		SpannableStringBuilder builder = new SpannableStringBuilder();
-		builder.append(element.getText());
+		String text = element.getText();
+		if (element.getParent() != null && element.getParent().getType() != Type.BLOCK_CODE) {
+			text = text.replace('\n', ' ');
+		}
+		builder.append(text);
 		builder.append(concat);
 		if(element.isBlockElement() && element.type != Type.LIST_ITEM) {
 			builder.append("\n\n");
@@ -89,6 +93,8 @@ public class Bypass {
 		else if (element.getType() == Type.BLOCK_QUOTE) {
 			QuoteSpan quoteSpan = new QuoteSpan();
 			builder.setSpan(quoteSpan, 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			StyleSpan italicSpan = new StyleSpan(Typeface.ITALIC);
+            builder.setSpan(italicSpan, 0, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		
 		return builder;
