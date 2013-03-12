@@ -1,5 +1,5 @@
 //
-//  BPMarkdownViewController.m
+//  BPTextViewController.m
 //  BypassSample
 //
 //  Created by Damian Carrillo on 3/1/13.
@@ -18,16 +18,19 @@
 //  limitations under the License.
 //
 
-#import "BPMarkdownViewController.h"
+#import "BPTextViewController.h"
 #import <Bypass.h>
 
-@interface BPMarkdownViewController ()
+@interface BPTextViewController ()
 @property (weak, nonatomic) IBOutlet UITextView         *markdownView;
 @property (copy, nonatomic)          NSAttributedString *attributedText;
 @end
 
-@implementation BPMarkdownViewController
+@implementation BPTextViewController
 
+/*
+ Responds to a user's tap, and if necessary opens the embedded URL.
+ */
 - (IBAction)textViewWasTapped:(id)sender
 {
     CGPoint position = [sender locationInView:[self markdownView]];
@@ -40,6 +43,9 @@
     NSRange effectiveRange;
     effectiveRange.location = characterIndex;
     effectiveRange.length = 0;
+    
+    // Seek out a bypass link attribute. The attributed string renderer will embed the URL
+    // as a string into the attributes dictionary of a link.
     
     NSDictionary *attributes = [[self  attributedText] attributesAtIndex:characterIndex effectiveRange:&effectiveRange];
     NSString *linkHREF = attributes[BPLinkStyleAttributeName];
@@ -74,6 +80,11 @@
     
     [self setAttributedText:attributedText];
     [[self markdownView] setAttributedText:attributedText];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [[self markdownView] flashScrollIndicators];
 }
 
 @end
