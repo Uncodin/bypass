@@ -27,6 +27,8 @@
 		6BAA148116EF8A12002C2C30 /* UITextView.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BAA147F16EF8A12002C2C30 /* UITextView.png */; };
 		6BAA148216EF8A12002C2C30 /* UITextView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BAA148016EF8A12002C2C30 /* UITextView@2x.png */; };
 		6BAA148516EF949C002C2C30 /* BPLabelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BAA148416EF949C002C2C30 /* BPLabelViewController.m */; };
+		6BAA148A16EFBC0E002C2C30 /* UILabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BAA148816EFBC0E002C2C30 /* UILabel.png */; };
+		6BAA148B16EFBC0E002C2C30 /* UILabel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BAA148916EFBC0E002C2C30 /* UILabel@2x.png */; };
 		6BB80FB816E5077F00ED150B /* libBypass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC84A16E0055800165503 /* libBypass.a */; };
 		6BB80FBA16E50A1B00ED150B /* sample.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 6BB80FB916E50A1B00ED150B /* sample.markdown */; };
 /* End PBXBuildFile section */
@@ -91,6 +93,8 @@
 		6BAA148016EF8A12002C2C30 /* UITextView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UITextView@2x.png"; sourceTree = "<group>"; };
 		6BAA148316EF949C002C2C30 /* BPLabelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPLabelViewController.h; sourceTree = "<group>"; };
 		6BAA148416EF949C002C2C30 /* BPLabelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPLabelViewController.m; sourceTree = "<group>"; };
+		6BAA148816EFBC0E002C2C30 /* UILabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UILabel.png; sourceTree = "<group>"; };
+		6BAA148916EFBC0E002C2C30 /* UILabel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UILabel@2x.png"; sourceTree = "<group>"; };
 		6BB80FB916E50A1B00ED150B /* sample.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sample.markdown; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -221,6 +225,8 @@
 			children = (
 				6BAA147F16EF8A12002C2C30 /* UITextView.png */,
 				6BAA148016EF8A12002C2C30 /* UITextView@2x.png */,
+				6BAA148816EFBC0E002C2C30 /* UILabel.png */,
+				6BAA148916EFBC0E002C2C30 /* UILabel@2x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -348,6 +354,8 @@
 				6BB80FBA16E50A1B00ED150B /* sample.markdown in Resources */,
 				6BAA148116EF8A12002C2C30 /* UITextView.png in Resources */,
 				6BAA148216EF8A12002C2C30 /* UITextView@2x.png in Resources */,
+				6BAA148A16EFBC0E002C2C30 /* UILabel.png in Resources */,
+				6BAA148B16EFBC0E002C2C30 /* UILabel@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

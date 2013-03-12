@@ -55,7 +55,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="UILabel" id="TqZ-jr-3Ze"/>
+                    <tabBarItem key="tabBarItem" title="UILabel" image="UILabel.png" id="TqZ-jr-3Ze"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A4r-1d-czq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -82,6 +82,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="UILabel.png" width="23" height="27"/>
         <image name="UITextView.png" width="23" height="27"/>
     </resources>
     <classes>
