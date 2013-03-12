@@ -55,19 +55,31 @@ public class Element {
 	Map<String, String> attributes = new HashMap<String, String>();
 	Element[] children;
 	Type type;
+	Element parent;
 	
-	public Element(String text, int type, Element[] children) {
+	public Element(String text, int type) {
 		this.text = text;
-		this.children = children;
 		this.type = Type.fromInteger(type);
 	}
 	
+	public void setParent(Element element) {
+		this.parent = element;
+	}
+	
+	public void setChildren(Element[] children) {
+		this.children = children;
+	}
+
 	public void addAttribute(String name, String value) {
 		attributes.put(name, value);
 	}
 
 	public String getAttribute(String name) {
 		return attributes.get(name);
+	}
+
+	public Element getParent() {
+		return parent;
 	}
 	
 	public String getText() {
