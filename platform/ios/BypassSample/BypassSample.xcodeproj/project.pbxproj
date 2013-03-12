@@ -17,13 +17,18 @@
 		5E5BC7AC16E0049800165503 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC7AB16E0049800165503 /* Default@2x.png */; };
 		5E5BC7AE16E0049800165503 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC7AD16E0049800165503 /* Default-568h@2x.png */; };
 		5E5BC7B116E0049800165503 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC7AF16E0049800165503 /* MainStoryboard.storyboard */; };
-		5E5BC7B416E0049800165503 /* BPMarkdownViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC7B316E0049800165503 /* BPMarkdownViewController.mm */; };
+		5E5BC7B416E0049800165503 /* BPTextViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC7B316E0049800165503 /* BPTextViewController.mm */; };
 		5E5BC7BC16E0049900165503 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC7BB16E0049900165503 /* SenTestingKit.framework */; };
 		5E5BC7BD16E0049900165503 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC79716E0049800165503 /* UIKit.framework */; };
 		5E5BC7BE16E0049900165503 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC79916E0049800165503 /* Foundation.framework */; };
 		5E5BC7C616E0049900165503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC7C416E0049900165503 /* InfoPlist.strings */; };
 		5E5BC7C916E0049900165503 /* BypassSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC7C816E0049900165503 /* BypassSampleTests.m */; };
 		5E5BC8A316E7C25700165503 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC8A216E7C25700165503 /* CoreText.framework */; };
+		6BAA148116EF8A12002C2C30 /* UITextView.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BAA147F16EF8A12002C2C30 /* UITextView.png */; };
+		6BAA148216EF8A12002C2C30 /* UITextView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BAA148016EF8A12002C2C30 /* UITextView@2x.png */; };
+		6BAA148516EF949C002C2C30 /* BPLabelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BAA148416EF949C002C2C30 /* BPLabelViewController.m */; };
+		6BAA148A16EFBC0E002C2C30 /* UILabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BAA148816EFBC0E002C2C30 /* UILabel.png */; };
+		6BAA148B16EFBC0E002C2C30 /* UILabel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BAA148916EFBC0E002C2C30 /* UILabel@2x.png */; };
 		6BB80FB816E5077F00ED150B /* libBypass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC84A16E0055800165503 /* libBypass.a */; };
 		6BB80FBA16E50A1B00ED150B /* sample.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 6BB80FB916E50A1B00ED150B /* sample.markdown */; };
 /* End PBXBuildFile section */
@@ -74,8 +79,8 @@
 		5E5BC7AB16E0049800165503 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		5E5BC7AD16E0049800165503 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		5E5BC7B016E0049800165503 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		5E5BC7B216E0049800165503 /* BPMarkdownViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPMarkdownViewController.h; sourceTree = "<group>"; };
-		5E5BC7B316E0049800165503 /* BPMarkdownViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BPMarkdownViewController.mm; sourceTree = "<group>"; };
+		5E5BC7B216E0049800165503 /* BPTextViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPTextViewController.h; sourceTree = "<group>"; };
+		5E5BC7B316E0049800165503 /* BPTextViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BPTextViewController.mm; sourceTree = "<group>"; };
 		5E5BC7BA16E0049900165503 /* BypassSampleTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BypassSampleTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5BC7BB16E0049900165503 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		5E5BC7C316E0049900165503 /* BypassSampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BypassSampleTests-Info.plist"; sourceTree = "<group>"; };
@@ -84,6 +89,12 @@
 		5E5BC7C816E0049900165503 /* BypassSampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BypassSampleTests.m; sourceTree = "<group>"; };
 		5E5BC84416E0055700165503 /* Bypass.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bypass.xcodeproj; path = ../Bypass/Bypass.xcodeproj; sourceTree = "<group>"; };
 		5E5BC8A216E7C25700165503 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		6BAA147F16EF8A12002C2C30 /* UITextView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UITextView.png; sourceTree = "<group>"; };
+		6BAA148016EF8A12002C2C30 /* UITextView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UITextView@2x.png"; sourceTree = "<group>"; };
+		6BAA148316EF949C002C2C30 /* BPLabelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPLabelViewController.h; sourceTree = "<group>"; };
+		6BAA148416EF949C002C2C30 /* BPLabelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPLabelViewController.m; sourceTree = "<group>"; };
+		6BAA148816EFBC0E002C2C30 /* UILabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UILabel.png; sourceTree = "<group>"; };
+		6BAA148916EFBC0E002C2C30 /* UILabel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UILabel@2x.png"; sourceTree = "<group>"; };
 		6BB80FB916E50A1B00ED150B /* sample.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sample.markdown; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,9 +161,9 @@
 			children = (
 				5E5BC7A616E0049800165503 /* BPAppDelegate.h */,
 				5E5BC7A716E0049800165503 /* BPAppDelegate.m */,
-				5E5BC7AF16E0049800165503 /* MainStoryboard.storyboard */,
-				5E5BC7B216E0049800165503 /* BPMarkdownViewController.h */,
-				5E5BC7B316E0049800165503 /* BPMarkdownViewController.mm */,
+				6BAA148716EF94B7002C2C30 /* Controller */,
+				6BAA148616EF94AC002C2C30 /* View */,
+				6BAA147E16EF8A01002C2C30 /* Images */,
 				5E5BC79E16E0049800165503 /* Supporting Files */,
 			);
 			path = BypassSample;
@@ -207,6 +218,36 @@
 				5E5BC84C16E0055800165503 /* BypassTests.octest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		6BAA147E16EF8A01002C2C30 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				6BAA147F16EF8A12002C2C30 /* UITextView.png */,
+				6BAA148016EF8A12002C2C30 /* UITextView@2x.png */,
+				6BAA148816EFBC0E002C2C30 /* UILabel.png */,
+				6BAA148916EFBC0E002C2C30 /* UILabel@2x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		6BAA148616EF94AC002C2C30 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5E5BC7AF16E0049800165503 /* MainStoryboard.storyboard */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		6BAA148716EF94B7002C2C30 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5E5BC7B216E0049800165503 /* BPTextViewController.h */,
+				5E5BC7B316E0049800165503 /* BPTextViewController.mm */,
+				6BAA148316EF949C002C2C30 /* BPLabelViewController.h */,
+				6BAA148416EF949C002C2C30 /* BPLabelViewController.m */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,6 +352,10 @@
 				5E5BC7AE16E0049800165503 /* Default-568h@2x.png in Resources */,
 				5E5BC7B116E0049800165503 /* MainStoryboard.storyboard in Resources */,
 				6BB80FBA16E50A1B00ED150B /* sample.markdown in Resources */,
+				6BAA148116EF8A12002C2C30 /* UITextView.png in Resources */,
+				6BAA148216EF8A12002C2C30 /* UITextView@2x.png in Resources */,
+				6BAA148A16EFBC0E002C2C30 /* UILabel.png in Resources */,
+				6BAA148B16EFBC0E002C2C30 /* UILabel@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,7 +392,8 @@
 			files = (
 				5E5BC7A416E0049800165503 /* main.m in Sources */,
 				5E5BC7A816E0049800165503 /* BPAppDelegate.m in Sources */,
-				5E5BC7B416E0049800165503 /* BPMarkdownViewController.mm in Sources */,
+				5E5BC7B416E0049800165503 /* BPTextViewController.mm in Sources */,
+				6BAA148516EF949C002C2C30 /* BPLabelViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

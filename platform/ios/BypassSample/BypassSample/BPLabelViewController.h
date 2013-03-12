@@ -1,5 +1,5 @@
 //
-//  BPViewController.h
+//  BPLabelViewController.h
 //  BypassSample
 //
 //  Created by Damian Carrillo on 3/1/13.
@@ -20,6 +20,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BPMarkdownViewController : UIViewController
+@interface BPLabelViewController : UIViewController <UIScrollViewDelegate>
 
 @end
