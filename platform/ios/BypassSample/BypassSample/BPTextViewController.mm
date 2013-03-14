@@ -58,21 +58,13 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSString *samplePath = [[NSBundle mainBundle] pathForResource:@"sample" ofType:@"markdown"];
-    
-    NSError *error = nil;
-    NSString *sample = [NSString stringWithContentsOfFile:samplePath encoding:NSUTF8StringEncoding error:&error];
-    
-    if (error != nil) {
-        NSLog(@"Error: %@", error);
-        return;
-    }
+    NSString *sample = [self sampleMarkdown];
     
     BPParser *parser = [[BPParser alloc] init];
     BPDocument *document = [parser parse:sample];
     
-    BPAttributedStringRenderer *renderer = [[BPAttributedStringRenderer alloc] init];
-    NSAttributedString *attributedText = [renderer renderDocument:document];
+    BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
+    NSAttributedString *attributedText = [converter convertDocument:document];
     
     // Warning: The attributed text is being set on a simple UITextView out of convenience. After this has been done,
     //          Bypass' custom text attributes have been stripped. We save a copy to use as a point of reference for

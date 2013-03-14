@@ -37,10 +37,16 @@ const CGFloat kFooterMargin = 25.f;
 - (void)viewDidLoad
 {
     UIScrollView *scrollView = [[UIScrollView alloc] init];
+    UIViewAutoresizing autoresizingMask = UIViewAutoresizingFlexibleTopMargin
+                                        | UIViewAutoresizingFlexibleTopMargin
+                                        | UIViewAutoresizingFlexibleBottomMargin
+                                        | UIViewAutoresizingFlexibleLeftMargin;
+    [scrollView setAutoresizingMask:autoresizingMask];
     [[self view] addSubview:scrollView];
     [self setScrollView:scrollView];
 
     UILabel *label = [[UILabel alloc] init];
+    [label setAutoresizingMask:autoresizingMask];
     [label setNumberOfLines:0];
     [[self scrollView] addSubview:label];
     [self setLabel:label];
@@ -51,21 +57,13 @@ const CGFloat kFooterMargin = 25.f;
     [[self scrollView] setFrame:[[self view] bounds]];
     [[self label] setFrame:[[self view] bounds]];
     
-    NSString *samplePath = [[NSBundle mainBundle] pathForResource:@"sample" ofType:@"markdown"];
-    
-    NSError *error = nil;
-    NSString *sample = [NSString stringWithContentsOfFile:samplePath encoding:NSUTF8StringEncoding error:&error];
-    
-    if (error != nil) {
-        NSLog(@"Error: %@", error);
-        return;
-    }
+    NSString *sample = [self sampleMarkdown];
     
     BPParser *parser = [[BPParser alloc] init];
     BPDocument *document = [parser parse:sample];
     
-    BPAttributedStringRenderer *renderer = [[BPAttributedStringRenderer alloc] init];
-    NSAttributedString *attributedText = [renderer renderDocument:document];
+    BPAttributedStringConverter *renderer = [[BPAttributedStringConverter alloc] init];
+    NSAttributedString *attributedText = [renderer convertDocument:document];
 
     [self setAttributedText:attributedText];
 
@@ -86,7 +84,5 @@ const CGFloat kFooterMargin = 25.f;
 {
     [[self scrollView] flashScrollIndicators];
 }
-
-#pragma mark UIScrollViewDelegate
 
 @end

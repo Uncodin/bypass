@@ -1,8 +1,8 @@
 //
-//  UIFont+Additions.h
+//  BPMarkdownView.h
 //  Bypass
 //
-//  Created by Damian Carrillo on 3/6/13.
+//  Created by Damian Carrillo on 3/13/13.
 //  Copyright 2013 Uncodin, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,11 +21,10 @@
 #import <CoreText/CoreText.h>
 #import <UIKit/UIKit.h>
 
-CTFontRef BPCreateFontFromFont(UIFont *font);
+@class BPDocument;
 
-@interface UIFont (Additions)
+@interface BPMarkdownView : UIView
 
-+ (id)BP_fontFromFont:(CTFontRef)font;
-+ (id)BP_fontFromFontDescriptor:(CTFontDescriptorRef)fontDescriptor;
+- (id)initWithFrame:(CGRect)frame textFrame:(CTFrameRef)textFrame;
 
 @end

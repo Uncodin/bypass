@@ -19,7 +19,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BPAbstractViewController.h"
 
-@interface BPTextViewController : UIViewController
+@interface BPTextViewController : BPAbstractViewController
 
 @end

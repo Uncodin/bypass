@@ -97,3 +97,8 @@ And then return the following snippet of HTML:
 > fit on the home page and maybe some rants about my work. To end up, if you are
 > interested in bioinformatics or general science computing, check the unix
 > section of my home page for more tips, tutorials, FAQs and cheat sheets.
+
+* blah
+  * a
+  * b
+  * c
