@@ -26,8 +26,8 @@ OBJC_EXPORT NSString *const BPLinkStyleAttributeName;
 /*!
  \brief Renders a Bypass Document to an `NSAttributedString`.
  */
-@interface BPAttributedStringRenderer : NSObject
+@interface BPAttributedStringConverter : NSObject
 
-- (NSAttributedString *)renderDocument:(BPDocument *)document;
+- (NSAttributedString *)convertDocument:(BPDocument *)document;
 
 @end

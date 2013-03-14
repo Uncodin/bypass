@@ -19,9 +19,9 @@
 //
 
 #import <CoreText/CoreText.h>
-#import "BPAttributedStringRenderer.h"
+#import "BPAttributedStringConverter.h"
 
-NSString *const BPLinkStyleAttributeName = @"BPLinkStyleAttributeName";
+NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 
 static const CGFloat kBulletIndentation     =  8.f;
 static const CGFloat kCodeIndentation       = 10.f;
@@ -30,7 +30,7 @@ static const CGFloat kParagraphSpacingLarge = 20.f;
 static const CGFloat kParagraphSpacingSmall = 10.f;
 static const CGFloat kParagraphSpacingNone  =  0.f;
 
-@implementation BPAttributedStringRenderer
+@implementation BPAttributedStringConverter
 {
     CTFontRef _defaultFont;
     CTFontRef _boldFont;
@@ -186,7 +186,7 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
 
 #pragma mark Rendering
 
-- (NSAttributedString *)renderDocument:(BPDocument *)document
+- (NSAttributedString *)convertDocument:(BPDocument *)document
 {
     NSMutableAttributedString *target = [[NSMutableAttributedString alloc] init];
 

@@ -33,6 +33,8 @@
 		6BB80FBA16E50A1B00ED150B /* sample.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 6BB80FB916E50A1B00ED150B /* sample.markdown */; };
 		6BE4F70016EFCD8C00670C16 /* iPhone Retina.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BE4F6FF16EFCD8C00670C16 /* iPhone Retina.png */; };
 		6BE4F70216EFCF8E00670C16 /* iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BE4F70116EFCF8E00670C16 /* iPhone.png */; };
+		6BE4F73316F107A400670C16 /* BPMarkdownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE4F73216F107A400670C16 /* BPMarkdownViewController.m */; };
+		6BE4F73616F107DC00670C16 /* BPAbstractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE4F73516F107DC00670C16 /* BPAbstractViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +102,10 @@
 		6BB80FB916E50A1B00ED150B /* sample.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sample.markdown; sourceTree = "<group>"; };
 		6BE4F6FF16EFCD8C00670C16 /* iPhone Retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPhone Retina.png"; sourceTree = "<group>"; };
 		6BE4F70116EFCF8E00670C16 /* iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone.png; sourceTree = "<group>"; };
+		6BE4F73116F107A400670C16 /* BPMarkdownViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPMarkdownViewController.h; sourceTree = "<group>"; };
+		6BE4F73216F107A400670C16 /* BPMarkdownViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPMarkdownViewController.m; sourceTree = "<group>"; };
+		6BE4F73416F107DC00670C16 /* BPAbstractViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPAbstractViewController.h; sourceTree = "<group>"; };
+		6BE4F73516F107DC00670C16 /* BPAbstractViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPAbstractViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,10 +254,14 @@
 		6BAA148716EF94B7002C2C30 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				6BE4F73416F107DC00670C16 /* BPAbstractViewController.h */,
+				6BE4F73516F107DC00670C16 /* BPAbstractViewController.m */,
 				5E5BC7B216E0049800165503 /* BPTextViewController.h */,
 				5E5BC7B316E0049800165503 /* BPTextViewController.mm */,
 				6BAA148316EF949C002C2C30 /* BPLabelViewController.h */,
 				6BAA148416EF949C002C2C30 /* BPLabelViewController.m */,
+				6BE4F73116F107A400670C16 /* BPMarkdownViewController.h */,
+				6BE4F73216F107A400670C16 /* BPMarkdownViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -402,6 +412,8 @@
 				5E5BC7A816E0049800165503 /* BPAppDelegate.m in Sources */,
 				5E5BC7B416E0049800165503 /* BPTextViewController.mm in Sources */,
 				6BAA148516EF949C002C2C30 /* BPLabelViewController.m in Sources */,
+				6BE4F73316F107A400670C16 /* BPMarkdownViewController.m in Sources */,
+				6BE4F73616F107DC00670C16 /* BPAbstractViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

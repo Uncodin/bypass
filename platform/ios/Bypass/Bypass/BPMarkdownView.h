@@ -1,8 +1,8 @@
 //
-//  BPTextViewController.h
-//  BypassSample
+//  BPMarkdownView.h
+//  Bypass
 //
-//  Created by Damian Carrillo on 3/1/13.
+//  Created by Damian Carrillo on 3/13/13.
 //  Copyright 2013 Uncodin, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,13 @@
 //  limitations under the License.
 //
 
+#import <CoreText/CoreText.h>
 #import <UIKit/UIKit.h>
-#import "BPAbstractViewController.h"
 
-@interface BPTextViewController : BPAbstractViewController
+@class BPDocument;
+
+@interface BPMarkdownView : UIView
+
+- (id)initWithFrame:(CGRect)frame textFrame:(CTFrameRef)textFrame;
 
 @end

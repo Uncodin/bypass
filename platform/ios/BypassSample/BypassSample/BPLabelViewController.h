@@ -19,7 +19,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BPAbstractViewController.h"
 
-@interface BPLabelViewController : UIViewController <UIScrollViewDelegate>
+@interface BPLabelViewController : BPAbstractViewController
 
 @end
