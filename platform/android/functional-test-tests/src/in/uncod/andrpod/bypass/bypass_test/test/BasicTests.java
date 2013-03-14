@@ -6,6 +6,7 @@ import android.test.InstrumentationTestCase;
 import android.text.Spannable;
 import android.text.SpannedString;
 import android.text.style.BulletSpan;
+import android.text.style.LeadingMarginSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
@@ -55,12 +56,6 @@ public class BasicTests extends InstrumentationTestCase {
 		assertEquals(1, spans.length);
 		assertTrue(spannable.toString().contains("Link"));
 		assertEquals("https://github.com/Uncodin/bypass", spans[0].getURL());
-	}
-	
-	public void testBullets() {
-		Spannable spannable = (Spannable) bypass.markdownToSpannable("-\tOne\n-\tTwo\n");
-		BulletSpan[] spans = spannable.getSpans(0, spannable.length(), BulletSpan.class);
-		assertEquals(2, spans.length);
 	}
 	
 	public void testHeaderOrder() {
