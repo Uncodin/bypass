@@ -56,6 +56,7 @@ public class Element {
 	Element[] children;
 	Type type;
 	Element parent;
+	int nestLevel = 0;
 	
 	public Element(String text, int type) {
 		this.text = text;

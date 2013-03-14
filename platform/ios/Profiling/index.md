@@ -32,7 +32,7 @@ above.
 
 ## Expanded View
 
-The expanded view of the data follows.s
+The expanded view of the data follows.
 
 ### UITextView
 

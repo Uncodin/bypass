@@ -27,7 +27,7 @@ dependency block to your `pom.xml`:
 
 ## iOS
 
-[Building And Using](platform/iOS/README.md)
+[Building And Using](platform/ios/README.md)
 
 ## 3rd Party Libraries
 
