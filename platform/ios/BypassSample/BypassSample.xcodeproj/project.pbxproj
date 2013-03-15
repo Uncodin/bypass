@@ -527,10 +527,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Bypass/Bypass";
 				INFOPLIST_FILE = "BypassSample/BypassSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -545,10 +542,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Bypass/Bypass";
 				INFOPLIST_FILE = "BypassSample/BypassSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
