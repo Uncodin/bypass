@@ -70,7 +70,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </scrollView>
-                    <tabBarItem key="tabBarItem" title="BPMarkdownView" id="Am8-Yk-y6b"/>
+                    <tabBarItem key="tabBarItem" title="BPMarkdownView" image="BPMarkdownView.png" id="Am8-Yk-y6b"/>
                     <connections>
                         <outlet property="scrollView" destination="lfX-Tf-UTt" id="1ka-hc-VQx"/>
                     </connections>
@@ -101,6 +101,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="BPMarkdownView.png" width="23" height="28"/>
         <image name="UILabel.png" width="23" height="27"/>
         <image name="UITextView.png" width="23" height="27"/>
     </resources>
@@ -111,13 +112,10 @@
         <class className="BPLabelViewController" superclassName="BPAbstractViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/BPLabelViewController.h"/>
         </class>
-        <class className="BPMarkdownView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/BPMarkdownView.h"/>
-        </class>
         <class className="BPMarkdownViewController" superclassName="BPAbstractViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/BPMarkdownViewController.h"/>
             <relationships>
-                <relationship kind="outlet" name="markdownView" candidateClass="BPMarkdownView"/>
+                <relationship kind="outlet" name="pages" candidateClass="NSArray"/>
                 <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
             </relationships>
         </class>
