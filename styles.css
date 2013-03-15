@@ -25,3 +25,16 @@ pre code {
 	background-color: transparent;
 	border: none;
 }
+
+.sample {
+	float: left;
+}
+
+.clearBoth { clear:both; }
+
+#markdownsample {
+	width: 260px;
+	padding-top:30px;
+	padding-left:20px;
+	padding-right:20px;
+}
