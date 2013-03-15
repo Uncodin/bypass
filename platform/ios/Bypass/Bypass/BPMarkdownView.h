@@ -23,8 +23,18 @@
 
 @class BPDocument;
 
+@protocol BPMarkdownViewLinkHandler;
+
 @interface BPMarkdownView : UIView
+@property (weak, nonatomic) id<BPMarkdownViewLinkHandler> linkDelegate;
 
 - (id)initWithFrame:(CGRect)frame textFrame:(CTFrameRef)textFrame;
+
+@end
+
+@protocol BPMarkdownViewLinkHandler <NSObject>
+@required
+
+- (void)markdownView:(BPMarkdownView *)markdownView didHaveLinkClicked:(NSString *)link;
 
 @end

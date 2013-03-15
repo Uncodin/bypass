@@ -69,4 +69,62 @@ BPContextFlipVertical(CGContextRef context, CGRect rect)
     CTFrameDraw(_textFrame, context);
 }
 
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    
+    if ([touch tapCount] == 1 && [touch phase] == UITouchPhaseEnded) {
+        CGPoint touchPoint = [touch locationInView:self];
+        
+        // Account for matrix flip
+        
+        touchPoint = CGPointMake(touchPoint.x, CGRectGetHeight([self frame]) - touchPoint.y);
+
+        CFArrayRef lines = CTFrameGetLines(_textFrame);
+        CFIndex lineCount = CFArrayGetCount(lines);
+        CGPoint origins[lineCount];
+        
+        CTFrameGetLineOrigins(_textFrame, CFRangeMake(0, lineCount), origins);
+        
+        CFIndex i;
+        for (i = 0; i < lineCount; i++) {
+            CTLineRef line = CFArrayGetValueAtIndex(lines, i);
+            CGRect lineBounds = CTLineGetBoundsWithOptions(line, kCTLineBoundsUseOpticalBounds);
+            
+            lineBounds.origin.x += origins[i].x;
+            lineBounds.origin.y += origins[i].y;
+            
+            if (CGRectContainsPoint(lineBounds, touchPoint)) {
+                CFIndex stringIndex = CTLineGetStringIndexForPosition(line, touchPoint);
+                
+                if (stringIndex > 0 && touchPoint.x < CTLineGetOffsetForStringIndex(line, stringIndex, NULL)) {
+                    
+                    // Account for caret snapping when a boundary glyph's outer half has been tapped
+                    
+                    --stringIndex;
+                }
+                
+                CFArrayRef glyphRuns = CTLineGetGlyphRuns(line);
+                CFIndex j, glyphRunCount = CFArrayGetCount(glyphRuns);
+                
+                for (j = 0; j < glyphRunCount; j++) {
+                    CTRunRef glyphRun = CFArrayGetValueAtIndex(glyphRuns, j);
+                    CFRange textRange = CTRunGetStringRange(glyphRun);
+                    
+                    if (textRange.location <= stringIndex && stringIndex < textRange.location + textRange.length) {
+                        CFDictionaryRef attributes = CTRunGetAttributes(glyphRun);
+                        NSString *link = (NSString *) CFDictionaryGetValue(attributes, (const void *) BPLinkStyleAttributeName);
+                        [[self linkDelegate] markdownView:self didHaveLinkClicked:link];
+                        return;
+                    }
+                }
+                
+                break;
+            }
+        }
+    }
+    
+    [super touchesEnded:touches withEvent:event];
+}
+
 @end
