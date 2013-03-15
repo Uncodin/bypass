@@ -35,6 +35,8 @@
 		6BE4F70216EFCF8E00670C16 /* iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BE4F70116EFCF8E00670C16 /* iPhone.png */; };
 		6BE4F73316F107A400670C16 /* BPMarkdownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE4F73216F107A400670C16 /* BPMarkdownViewController.m */; };
 		6BE4F73616F107DC00670C16 /* BPAbstractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE4F73516F107DC00670C16 /* BPAbstractViewController.m */; };
+		6BE4F75616F2892400670C16 /* BPMarkdownView.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BE4F75416F2892400670C16 /* BPMarkdownView.png */; };
+		6BE4F75716F2892400670C16 /* BPMarkdownView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BE4F75516F2892400670C16 /* BPMarkdownView@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +108,8 @@
 		6BE4F73216F107A400670C16 /* BPMarkdownViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPMarkdownViewController.m; sourceTree = "<group>"; };
 		6BE4F73416F107DC00670C16 /* BPAbstractViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPAbstractViewController.h; sourceTree = "<group>"; };
 		6BE4F73516F107DC00670C16 /* BPAbstractViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPAbstractViewController.m; sourceTree = "<group>"; };
+		6BE4F75416F2892400670C16 /* BPMarkdownView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BPMarkdownView.png; sourceTree = "<group>"; };
+		6BE4F75516F2892400670C16 /* BPMarkdownView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BPMarkdownView@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +239,8 @@
 		6BAA147E16EF8A01002C2C30 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6BE4F75416F2892400670C16 /* BPMarkdownView.png */,
+				6BE4F75516F2892400670C16 /* BPMarkdownView@2x.png */,
 				6BAA147F16EF8A12002C2C30 /* UITextView.png */,
 				6BAA148016EF8A12002C2C30 /* UITextView@2x.png */,
 				6BAA148816EFBC0E002C2C30 /* UILabel.png */,
@@ -374,6 +380,8 @@
 				6BAA148B16EFBC0E002C2C30 /* UILabel@2x.png in Resources */,
 				6BE4F70016EFCD8C00670C16 /* iPhone Retina.png in Resources */,
 				6BE4F70216EFCF8E00670C16 /* iPhone.png in Resources */,
+				6BE4F75616F2892400670C16 /* BPMarkdownView.png in Resources */,
+				6BE4F75716F2892400670C16 /* BPMarkdownView@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
