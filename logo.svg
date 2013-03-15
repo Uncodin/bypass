@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="114px" height="114px" viewBox="0 0 114 114" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <title>iPhone Retina</title>
+    <description>Created with Sketch (http://www.bohemiancoding.com/sketch)</description>
+    <defs>
+        <linearGradient x1="99.0820289%" y1="51.1757791%" x2="-0.917968713%" y2="51.1757791%" id="linearGradient-1">
+            <stop stop-color="#F9D25A" offset="0%"></stop>
+            <stop stop-color="#DE2E2C" offset="47.5247532%"></stop>
+            <stop stop-color="#0A2F73" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.670668658" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="50%" cy="27.4918095%" fx="50%" fy="27.4918095%" r="72.5081921%" id="radialGradient-3">
+            <stop stop-color="#FFD75C" offset="0%"></stop>
+            <stop stop-color="#FF6E02" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="Page 1" fill="#E0E0E0" fill-rule="evenodd">
+        <g id="iPhone Retina" fill="#D8D8D8">
+            <g id="Icon">
+                <path d="M0,0 L0,114 L114,114 L114,0 L0,0 Z M0,0" id="Rectangle 1" fill="url(#linearGradient-1)"></path>
+                <path d="M-1,-1 L-1,115 L115,115 L115,-1 L-1,-1 Z M-1,-1" id="Rectangle 1" fill="url(#linearGradient-2)"></path>
+                <path d="M48.5,67 C57.060414,67 64,60.060414 64,51.5 C64,42.939586 57.060414,36 48.5,36 C39.939586,36 33,42.939586 33,51.5 C33,60.060414 39.939586,67 48.5,67 Z M48.5,67" id="Oval 1" fill="url(#radialGradient-3)"></path>
+                <path d="M45.5599177,115.616002 C45.5599177,115.616002 39.9440541,108.704324 38.8099177,102.103481 C37.6757813,95.5026388 38.5931208,86.5724899 45.8099177,83.0858605 C53.0267145,79.5992315 77.378905,71.927084 73.4677725,59.5640661 C71.7404938,54.1041703 69.4114072,50.2456813 67.3489622,47.6390368 L59.391335,55.323628 L53.6332895,21.2896449 L87.4455872,28.2319516 L80.4651438,34.9728874 C82.2002171,37.1354045 84.4177266,40.2219144 86.9999991,44.5110561 C93.5009757,55.3091471 91.0351554,72.9847043 79.3593741,81.5434157 C67.6835934,90.102129 44.1708985,87.5900339 53.5599177,105.106264 C62.9489369,122.622493 61.0599177,115.616002 61.0599177,115.616002 Z M45.5599177,115.616002" id="Path 3" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>
