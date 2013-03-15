@@ -191,14 +191,14 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
     NSMutableAttributedString *target = [[NSMutableAttributedString alloc] init];
 
     for (BPElement *element in [document elements]) {
-        [self renderElement:element toTarget:target];
+        [self convertElement:element toTarget:target];
     }
     
     return target;
 }
 
 
-- (void)renderElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
+- (void)convertElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
 {
     // Capture the starting point of the effective range to apply attributes to
     
@@ -210,8 +210,10 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
     // Render span elements immediately, and for some block-level elements, insert special
     // characters
     
-    if (elementType == BPListItem) {
-        [self insertBulletIntoTarget:target];
+    if (elementType == BPList) {
+        if ([[element parentElement] elementType] == BPListItem) {
+            [self insertNewlineIntoTarget:target];
+        }
     } else if (elementType == BPAutoLink) {
         [self renderLinkElement:element toTarget:target];
     } else if (elementType == BPCodeSpan) {
@@ -237,7 +239,7 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
     // Render children of this particular element recursively
     
     for (BPElement *childElement in [element childElements]) {
-        [self renderElement:childElement toTarget:target];
+        [self convertElement:childElement toTarget:target];
     }
     
     // Capture the end of the range
@@ -259,18 +261,19 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
     }
     
     if ([element isBlockElement] && [element elementType] != BPListItem) {
+        if ([element elementType] == BPListItem) {
+            return;
+        }
+        
+        if ([element elementType] == BPList && [[element parentElement] elementType] == BPListItem) {
+            return;
+        }
+        
         [self insertNewlineIntoTarget:target];
     }
 }
 
 #pragma mark Character Insertion
-
-- (void)insertBulletIntoTarget:(NSMutableAttributedString *)target
-{
-    UIFont *bulletFont = [self UIFontFromCTFont:[self monospaceFont]];
-    NSDictionary *attributes = @{NSFontAttributeName : bulletFont};
-    [target appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"• " attributes:attributes]];
-}
 
 - (void)insertNewlineIntoTarget:(NSMutableAttributedString *)target
 {
@@ -404,9 +407,41 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
                       inRange:(NSRange)effectiveRange
                      toTarget:(NSMutableAttributedString *)target
 {
+    NSUInteger level = 0;
+    BPElement *inspectedElement = element;
+    
+    while ([inspectedElement elementType] == BPList || [inspectedElement elementType] == BPListItem) {
+        ++level;
+        inspectedElement = [inspectedElement parentElement];
+    }
+    
+    level = (level / 2) - 1;
+    
+    UIFont *bulletFont = [self UIFontFromCTFont:[self monospaceFont]];
+    NSDictionary *bulletAttributes = @{NSFontAttributeName : bulletFont};
+    
+    NSString *bullet;
+    
+    switch (level % 3) {
+        case 1:
+            bullet = @"◦ ";
+            break;
+        case 2:
+            bullet = @"▪ ";
+            break;
+        default:
+            bullet = @"• ";
+            break;
+    }
+    
+    NSAttributedString *attributedBullet = [[NSAttributedString alloc] initWithString:bullet attributes:bulletAttributes];
+    [target insertAttributedString:attributedBullet atIndex:effectiveRange.location];
+    
+    CGFloat indentation = kBulletIndentation * (level + 1);
+    
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setParagraphSpacing:kParagraphSpacingNone];
-    [paragraphStyle setFirstLineHeadIndent:kBulletIndentation];
+    [paragraphStyle setFirstLineHeadIndent:indentation];
     [paragraphStyle setHeadIndent:kQuoteIndentation];
     
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle};
