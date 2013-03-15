@@ -37,8 +37,11 @@
     BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
     CFAttributedStringRef attributedText = (__bridge CFAttributedStringRef) [converter convertDocument:document];
     
+    CFIndex len = CFAttributedStringGetLength(attributedText);
+    CFMutableAttributedStringRef mutableAttributedText = CFAttributedStringCreateMutableCopy(kCFAllocatorDefault, len, attributedText);
+    
     CFMutableArrayRef frames = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
-    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(attributedText);
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(mutableAttributedText);
     CGRect pageRect = CGRectMake(0.f, 0.f, _pageSize.width, _pageSize.height);
     CGSize constraints = CGSizeMake(CGRectGetWidth(pageRect), CGFLOAT_MAX);
     
@@ -59,7 +62,6 @@
         
         y += CGRectGetHeight(pageRect);
     }
-    
     
     NSUInteger i, count = CFArrayGetCount(frames);
     NSMutableArray *frameViews = [NSMutableArray arrayWithCapacity:count];
