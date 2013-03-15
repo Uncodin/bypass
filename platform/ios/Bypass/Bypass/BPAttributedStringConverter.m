@@ -434,9 +434,6 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
             break;
     }
     
-    NSAttributedString *attributedBullet = [[NSAttributedString alloc] initWithString:bullet attributes:bulletAttributes];
-    [target insertAttributedString:attributedBullet atIndex:effectiveRange.location];
-    
     CGFloat indentation = kBulletIndentation * (level + 1);
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -446,6 +443,9 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
     
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle};
     [target addAttributes:attributes range:effectiveRange];
+
+    NSAttributedString *attributedBullet = [[NSAttributedString alloc] initWithString:bullet attributes:bulletAttributes];
+    [target insertAttributedString:attributedBullet atIndex:effectiveRange.location];
     
     [self insertNewlineIntoTarget:target];
 }
