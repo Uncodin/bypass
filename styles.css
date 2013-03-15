@@ -9,6 +9,11 @@ body, input, select, textarea, button {
 	margin-right:auto;
 }
 
+#header img{
+	float:left;
+	margin-right:15px;
+}
+
 pre {
 	background-color: #f8f8f8;
 	border: 1px solid #ccc;
