@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Uncodin. All rights reserved.
 //
 
-#import <Bypass/Bypass.h>
 #import "BPMarkdownViewController.h"
 
 const CGFloat kUIStandardMargin = 8.f; // UI* widgets seem to use 8 pts of margin in general
@@ -39,7 +38,8 @@ const CGFloat kUIStandardMargin = 8.f; // UI* widgets seem to use 8 pts of margi
                                                             0)];
         [[self scrollView] setContentSize:suggestedContainerSize]; // note: this will typically truncate the last page
         
-        for (UIView *pageView in pageViews) {
+        for (BPMarkdownView *pageView in pageViews) {
+            [pageView setLinkDelegate:self];
             [[self scrollView] addSubview:pageView];
         }
         
@@ -50,6 +50,13 @@ const CGFloat kUIStandardMargin = 8.f; // UI* widgets seem to use 8 pts of margi
 - (void)viewDidAppear:(BOOL)animated
 {
     [[self scrollView] flashScrollIndicators];
+}
+
+#pragma mark BPMarkdownViewLinkHandler
+
+- (void)markdownView:(BPMarkdownView *)markdownView didHaveLinkClicked:(NSString *)link
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:link]];
 }
 
 @end

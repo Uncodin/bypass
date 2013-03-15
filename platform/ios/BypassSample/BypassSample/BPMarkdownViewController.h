@@ -6,9 +6,10 @@
 //  Copyright (c) 2013 Uncodin. All rights reserved.
 //
 
+#import <Bypass/Bypass.h>
 #import <UIKit/UIKit.h>
 #import "BPAbstractViewController.h"
 
-@interface BPMarkdownViewController : BPAbstractViewController
+@interface BPMarkdownViewController : BPAbstractViewController <BPMarkdownViewLinkHandler>
 
 @end

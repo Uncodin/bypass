@@ -42,6 +42,8 @@
     
     CFMutableArrayRef frames = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
     CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(mutableAttributedText);
+    CFRelease(mutableAttributedText);
+    
     CGRect pageRect = CGRectMake(0.f, 0.f, _pageSize.width, _pageSize.height);
     CGSize constraints = CGSizeMake(CGRectGetWidth(pageRect), CGFLOAT_MAX);
     
@@ -55,6 +57,8 @@
     while (y < suggestedSize.height) {
         CGPathRef path = CGPathCreateWithRect(pageRect, &CGAffineTransformIdentity);
         CTFrameRef textFrame = CTFramesetterCreateFrame(framesetter, textRange, path, NULL);
+        CGPathRelease(path);
+        
         CFArrayAppendValue(frames, textFrame);
         
         CFRange visibleRange = CTFrameGetVisibleStringRange(textFrame);
