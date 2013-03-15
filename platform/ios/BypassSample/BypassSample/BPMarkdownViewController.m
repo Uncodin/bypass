@@ -12,15 +12,15 @@
 const CGFloat kUIStandardMargin = 8.f; // UI* widgets seem to use 8 pts of margin in general
 
 @interface BPMarkdownViewController ()
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (strong, nonatomic) IBOutlet NSArray      *pages;
+@property (strong, nonatomic) IBOutlet                           UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutletCollection(BPMarkdownView) NSArray      *pageViews;
 @end
 
 @implementation BPMarkdownViewController
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    if ([self pages] == nil) {
+    if ([self pageViews] == nil) {
         NSString *sample = [self sampleMarkdown];
         BPParser *parser = [[BPParser alloc] init];
         BPDocument *document = [parser parse:sample];
@@ -33,12 +33,17 @@ const CGFloat kUIStandardMargin = 8.f; // UI* widgets seem to use 8 pts of margi
         NSArray *pageViews = [renderer renderDocument:document suggestedContainerSize:&suggestedContainerSize];
         
         
-        [[self scrollView] setContentInset:UIEdgeInsetsMake(1.5 * kUIStandardMargin, kUIStandardMargin, 4 * kUIStandardMargin, 0)];
+        [[self scrollView] setContentInset:UIEdgeInsetsMake(1.5 * kUIStandardMargin,
+                                                            kUIStandardMargin,
+                                                            4 * kUIStandardMargin,
+                                                            0)];
         [[self scrollView] setContentSize:suggestedContainerSize]; // note: this will typically truncate the last page
         
         for (UIView *pageView in pageViews) {
             [[self scrollView] addSubview:pageView];
         }
+        
+        [self setPageViews:pageViews];
     }
 }
 

@@ -394,6 +394,7 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setParagraphSpacing:kParagraphSpacingLarge];
+    [paragraphStyle setLineSpacing:1.1f];
     
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle};
     [target addAttributes:attributes range:effectiveRange];
