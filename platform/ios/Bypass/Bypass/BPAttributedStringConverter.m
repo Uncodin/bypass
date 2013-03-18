@@ -404,7 +404,6 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
 {
     NSUInteger level = 0;
     BPElement *inspectedElement = [[element parentElement] parentElement];
-    
     NSMutableString *indentation = [NSMutableString  string];
     
     while ([inspectedElement elementType] == BPList || [inspectedElement elementType] == BPListItem) {

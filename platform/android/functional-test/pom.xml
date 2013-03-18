@@ -5,6 +5,7 @@
 	<groupId>in.uncod.android.bypass</groupId>
 	<artifactId>functional-test</artifactId>
 	<packaging>apk</packaging>
+	<name>Functional Test</name>
 
 	<parent>
 		<groupId>in.uncod.android.bypass</groupId>
