@@ -39,7 +39,7 @@
     
     CFIndex len = CFAttributedStringGetLength(attributedText);
     CFMutableAttributedStringRef mutableAttributedText = CFAttributedStringCreateMutableCopy(kCFAllocatorDefault, len, attributedText);
-    
+
     CFMutableArrayRef frames = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
     CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(mutableAttributedText);
     CFRelease(mutableAttributedText);

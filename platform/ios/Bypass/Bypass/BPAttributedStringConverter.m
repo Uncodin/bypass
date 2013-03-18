@@ -435,7 +435,12 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
     NSAttributedString *attributedBullet = [[NSAttributedString alloc] initWithString:@"• " attributes:bulletAttributes];
     [target insertAttributedString:attributedBullet atIndex:effectiveRange.location];
     
-    NSDictionary *indentationAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:6.f]};
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:kLineSpacingSmall];
+    
+    NSDictionary *indentationAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:kBulletIndentation],
+                                            NSParagraphStyleAttributeName : paragraphStyle};
     NSAttributedString *attributedIndentation = [[NSAttributedString alloc] initWithString:indentation attributes:indentationAttributes];
     [target insertAttributedString:attributedIndentation atIndex:effectiveRange.location];
 
