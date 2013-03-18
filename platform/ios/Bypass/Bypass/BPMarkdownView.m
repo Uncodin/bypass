@@ -113,6 +113,12 @@ BPContextFlipVertical(CGContextRef context, CGRect rect)
                     
                     if (textRange.location <= stringIndex && stringIndex < textRange.location + textRange.length) {
                         CFDictionaryRef attributes = CTRunGetAttributes(glyphRun);
+                        
+#ifdef DEBUG
+                        // Shows what attributes are available on the tap point
+                        NSLog(@"%@", (__bridge NSDictionary *) attributes);
+#endif
+                        
                         NSString *link = (NSString *) CFDictionaryGetValue(attributes, (const void *) BPLinkStyleAttributeName);
                         [[self linkDelegate] markdownView:self didHaveLinkClicked:link];
                         return;

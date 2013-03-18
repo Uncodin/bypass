@@ -6,14 +6,14 @@ a `UITextView` or in a `BPMarkdownView`.
 
 Because `UITextView`s represent
 `NSAttributedString`s internally as HTML, they render much slower than directly
-rendering with Core Text. `BPMarkdownView` solves this problem by dropping down
-to Core Text and rendering text directly.
+rendering with Core Text. `BPMarkdownView` addresses this issue and provides an
+alternative for when you have a lot of read-only text.
 
 ## Requirements
 
 Bypass requires iOS version 6.0 or greater.
 
-## Inclusion
+## Setup
 
 * Clone bypass from Github
 * Drag the Bypass.xcodeproj from Finder into your project
@@ -22,5 +22,7 @@ Bypass requires iOS version 6.0 or greater.
 * Add Bypass as a target dependency
 * Add libBypass.a to the list of libraries to link against
 
+## Performance
 
-[Profiling data](./Profiling/index.md)
+Visit the [profiling data](./Profiling/index.md) page to see information on
+speed and performance.
