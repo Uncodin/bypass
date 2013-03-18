@@ -23,12 +23,13 @@
 
 NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 
-static const CGFloat kBulletIndentation     =  8.f;
-static const CGFloat kCodeIndentation       = 10.f;
-static const CGFloat kQuoteIndentation      = 23.f;
-static const CGFloat kParagraphSpacingLarge = 20.f;
-static const CGFloat kParagraphSpacingSmall = 10.f;
-static const CGFloat kParagraphSpacingNone  =  0.f;
+static const CGFloat kBulletIndentation     = 13.0f;
+static const CGFloat kCodeIndentation       = 10.0f;
+static const CGFloat kQuoteIndentation      = 23.0f;
+static const CGFloat kLineSpacingSmall      =  1.2f;
+static const CGFloat kParagraphSpacingLarge = 20.0f;
+static const CGFloat kParagraphSpacingSmall = 10.0f;
+static const CGFloat kParagraphSpacingNone  =  0.0f;
 
 @implementation BPAttributedStringConverter
 {
@@ -133,7 +134,7 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
 - (CTFontRef)h1Font
 {
     if (_h1Font == NULL) {
-        _h1Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"), CTFontGetSize([self defaultFont]) + 12, NULL);
+        _h1Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"), CTFontGetSize([self defaultFont]) * 1.5, NULL);
     }
     
     return _h1Font;
@@ -142,7 +143,7 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
 - (CTFontRef)h2Font
 {
     if (_h2Font == NULL) {
-        _h2Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"), CTFontGetSize([self defaultFont]) + 10, NULL);
+        _h2Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"), CTFontGetSize([self defaultFont]) * 1.4, NULL);
     }
     
     return _h2Font;
@@ -151,7 +152,7 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
 - (CTFontRef)h3Font
 {
     if (_h3Font == NULL) {
-        _h3Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"), CTFontGetSize([self defaultFont]) + 8, NULL);
+        _h3Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"), CTFontGetSize([self defaultFont]) * 1.3, NULL);
     }
     
     return _h3Font;
@@ -160,7 +161,7 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
 - (CTFontRef)h4Font
 {
     if (_h4Font == NULL) {
-        _h4Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"), CTFontGetSize([self defaultFont]) + 6, NULL);
+        _h4Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"), CTFontGetSize([self defaultFont]) * 1.2, NULL);
     }
     
     return _h4Font;
@@ -169,7 +170,7 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
 - (CTFontRef)h5Font
 {
     if (_h5Font == NULL) {
-        _h5Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"), CTFontGetSize([self defaultFont]) + 4, NULL);
+        _h5Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"), CTFontGetSize([self defaultFont]) * 1.1, NULL);
     }
     
     return _h5Font;
@@ -178,7 +179,7 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
 - (CTFontRef)h6Font
 {
     if (_h6Font == NULL) {
-        _h6Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"), CTFontGetSize([self defaultFont]) + 2, NULL);
+        _h6Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"), CTFontGetSize([self defaultFont]) * 1, NULL);
     }
     
     return _h6Font;
@@ -260,15 +261,9 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
         [self renderBlockQuoteElement:element inRange:effectiveRange toTarget:target];
     }
     
-    if ([element isBlockElement] && [element elementType] != BPListItem) {
-        if ([element elementType] == BPListItem) {
-            return;
-        }
-        
-        if ([element elementType] == BPList && [[element parentElement] elementType] == BPListItem) {
-            return;
-        }
-        
+    if ([element isBlockElement]
+        && ![[element parentElement] isBlockElement]
+        && ![[[element parentElement] parentElement] isBlockElement]) {
         [self insertNewlineIntoTarget:target];
     }
 }
@@ -408,46 +403,50 @@ static const CGFloat kParagraphSpacingNone  =  0.f;
                      toTarget:(NSMutableAttributedString *)target
 {
     NSUInteger level = 0;
-    BPElement *inspectedElement = element;
+    BPElement *inspectedElement = [[element parentElement] parentElement];
+    NSMutableString *indentation = [NSMutableString  string];
     
     while ([inspectedElement elementType] == BPList || [inspectedElement elementType] == BPListItem) {
-        ++level;
+        if ([inspectedElement elementType] == BPList) {
+            [indentation appendString:@"\t"];
+            ++level;
+        }
+        
         inspectedElement = [inspectedElement parentElement];
     }
     
-    level = (level / 2) - 1;
-    
-    UIFont *bulletFont = [self UIFontFromCTFont:[self monospaceFont]];
-    NSDictionary *bulletAttributes = @{NSFontAttributeName : bulletFont};
-    
-    NSString *bullet;
+    UIColor *bulletColor;
     
     switch (level % 3) {
         case 1:
-            bullet = @"◦ ";
+            bulletColor = [UIColor grayColor];
             break;
         case 2:
-            bullet = @"▪ ";
+            bulletColor = [UIColor lightGrayColor];
             break;
         default:
-            bullet = @"• ";
+            bulletColor = [UIColor blackColor];
             break;
     }
     
-    CGFloat indentation = kBulletIndentation * (level + 1);
-    
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setParagraphSpacing:kParagraphSpacingNone];
-    [paragraphStyle setFirstLineHeadIndent:indentation];
-    [paragraphStyle setHeadIndent:kQuoteIndentation];
-    
-    NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle};
-    [target addAttributes:attributes range:effectiveRange];
-
-    NSAttributedString *attributedBullet = [[NSAttributedString alloc] initWithString:bullet attributes:bulletAttributes];
+    NSDictionary *bulletAttributes = @{NSFontAttributeName            : [self UIFontFromCTFont:[self monospaceFont]],
+                                       NSForegroundColorAttributeName : bulletColor};
+    NSAttributedString *attributedBullet = [[NSAttributedString alloc] initWithString:@"• " attributes:bulletAttributes];
     [target insertAttributedString:attributedBullet atIndex:effectiveRange.location];
     
-    [self insertNewlineIntoTarget:target];
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:kLineSpacingSmall];
+    
+    NSDictionary *indentationAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:kBulletIndentation],
+                                            NSParagraphStyleAttributeName : paragraphStyle};
+    NSAttributedString *attributedIndentation = [[NSAttributedString alloc] initWithString:indentation attributes:indentationAttributes];
+    [target insertAttributedString:attributedIndentation atIndex:effectiveRange.location];
+
+    if (([[[element parentElement] parentElement] elementType] != BPListItem)
+        || (element != [[[element parentElement] childElements] lastObject])) {
+        [self insertNewlineIntoTarget:target];
+    }
 }
 
 - (void)renderHeaderElement:(BPElement *)element
