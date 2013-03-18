@@ -69,8 +69,30 @@ text.setMovementMethod(LinkMovementMethod.getInstance());</code>
 			<h2>iOS</h2>
 			<a name="iOSSetup"></a>
 			<h3>Setup</h3>
+			<ol>
+				<li>Clone Bypass from <a href="https://github.com/Uncodin/bypass">Github</a></li>
+				<li>Drag <em>.../bypass/platform/ios/Bypass/Bypass.xcodeproj</em> into your project from the Finder</li>
+				<li>In Xcode, open the target settings
+				<li>Select the <em>Build Phases</em> tab</li>
+				<li>Add Bypass as a target dependency</li>
+				<li>Add libBypass.a to the list of libraries to link against</li>
+			</ol>
+
 			<a name="iOSUsage"></a>
+
 			<h3>Usage</h3>
+
+			<p>The following example shows the simplest usage of Bypass. You
+			can see more in the README.md file on Github.</p>
+
+<pre><code>NSString *markdownString = @"#Markdown!";
+BPParser *parser = [[BPParser alloc] init];
+BPDocument *document = [parser parse:markdownString];
+
+BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
+NSAttributedString *attributedText = [converter convertDocument:document];
+
+[[self markdownView] setAttributedText:attributedText];</pre></code>
 		</div>
 	</body>
 </html>
