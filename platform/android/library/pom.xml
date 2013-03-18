@@ -6,9 +6,10 @@
 	<groupId>in.uncod.android.bypass</groupId>
 	<artifactId>bypass</artifactId>
 	<packaging>apklib</packaging>
+	<name>Bypass</name>
 
 	<parent>
-		<groupId>in.uncod.android</groupId>
+		<groupId>in.uncod.android.bypass</groupId>
 		<artifactId>parent</artifactId>
 		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>

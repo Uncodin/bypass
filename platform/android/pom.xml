@@ -3,16 +3,75 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
 	<groupId>in.uncod.android.bypass</groupId>
 	<artifactId>parent</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+
+	<name>Bypass (Parent)</name>
+	<description>Skip the HTML, Bypass takes markdown and renders it directly on Android and iOS.</description>
+	<url>http://uncodin.github.com/bypass/</url>
+	<inceptionYear>2013</inceptionYear>
 
 	<modules>
 		<module>library</module>
 		<module>functional-test</module>
 		<module>functional-test-tests</module>
 	</modules>
+
+	<scm>
+		<url>https://github.com/Uncodin/bypass/</url>
+		<connection>scm:git:git://github.com/Uncodin/bypass.git</connection>
+		<developerConnection>scm:git:git@github.com:Uncodin/bypass.git</developerConnection>
+	</scm>
+
+	<developers>
+		<developer>
+			<name>Colin Edwards</name>
+			<email>colin@recursivepenguin.com</email>
+			<id>cedwards</id>
+			<url>http://recursivepenguin.com/</url>
+			<timezone>-6</timezone>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Damian Carrillo</name>
+			<email>damian@uncod.in</email>
+			<id>dcarrillo</id>
+			<timezone>-6</timezone>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<organization>
+		<name>Uncodin</name>
+		<url>http://uncod.in/</url>
+	</organization>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/Uncodin/bypass/issues</url>
+	</issueManagement>
+
+	<licenses>
+		<license>
+			<name>Apache License Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>	
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -69,6 +128,19 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-	</build>
 
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.2.2</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<localCheckout>true</localCheckout>
+	        		<pushChanges>false</pushChanges>
+	        		<goals>deploy</goals>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
