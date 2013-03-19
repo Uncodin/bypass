@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>in.uncod.android.bypass</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -23,7 +23,7 @@
 			<groupId>in.uncod.android.bypass</groupId>
 			<artifactId>bypass</artifactId>
 			<type>apklib</type>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 
