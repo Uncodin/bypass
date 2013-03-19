@@ -18,7 +18,7 @@
 
 @implementation BPDocumentRenderer
 {
-    CGSize                _pageSize;
+    CGSize _pageSize;
 }
 
 - (id)initWithPageSize:(CGSize)pageSize
@@ -51,6 +51,8 @@
     CGSize suggestedSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, 0), NULL, constraints, &fitRange);
     *suggestedContainerSizeOut = suggestedSize;
     
+    pageRect.size.height = MIN(_pageSize.height, suggestedSize.height);
+
     CFRange textRange = {0, 0};
     CGFloat y = CGRectGetMinY(pageRect);
     
