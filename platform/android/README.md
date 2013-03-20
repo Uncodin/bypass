@@ -6,7 +6,7 @@ dependency block to your `pom.xml`:
         <groupId>in.uncod.android.bypass</groupId>
         <artifactId>bypass</artifactId>
         <type>apklib</type>
-        <version>1.0</version>
+        <version>1.1</version>
     </dependency>
 
 ### Manual Build
