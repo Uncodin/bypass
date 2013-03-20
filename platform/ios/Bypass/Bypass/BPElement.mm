@@ -114,7 +114,8 @@ const BPElementType BPText           = Bypass::TEXT;
     
     if (_attributes == nil) {
         Element::AttributeMap::iterator it = _element.attrBegin();
-        NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:_element.attrSize()];
+        NSMutableDictionary *attributes;
+        attributes = [NSMutableDictionary dictionaryWithCapacity:_element.attrSize()];
 
 		for (; it != _element.attrEnd(); ++it) {
 			if (!it->first.empty() && !it->second.empty()) {

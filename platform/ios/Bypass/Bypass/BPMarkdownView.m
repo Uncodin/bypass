@@ -3,7 +3,19 @@
 //  Bypass
 //
 //  Created by Damian Carrillo on 3/20/13.
-//  Copyright (c) 2013 Uncodin. All rights reserved.
+//  Copyright 2013 Uncodin, Inc.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
 //
 
 #import <CoreText/CoreText.h>
@@ -13,7 +25,7 @@
 #import "BPParser.h"
 
 static const CGFloat        kUIStandardMargin      = 8.f;
-static const NSTimeInterval kReorientationDuration = 0.1;
+static const NSTimeInterval kReorientationDuration = 0.3;
 
 static CFArrayRef
 BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedContentSizeOut) {
@@ -113,7 +125,7 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
     
     _parser = [[BPParser alloc] init];
     _pageViews = [[NSMutableArray alloc] init];
-    _asynchronous = YES;
+    _asynchronous = NO;
     _asynchronousRevealDuration = 0.25;
     
     [self setContentInset:UIEdgeInsetsMake(1.5 * kUIStandardMargin,
@@ -236,11 +248,19 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
         
         [_pageViews addObject:textView];
         [self addSubview:textView];
-
-        [UIView animateWithDuration:duration animations:^{
-            [textView setAlpha:1.f];
-        } completion:completion];
+        
+        [textView setLinkDelegate:self];
     }
+    
+    [UIView animateWithDuration:duration animations:^{
+        for (BPMarkdownPageView *pageView in _pageViews) {
+            [pageView setAlpha:1.f];
+        }
+        
+        for (BPMarkdownPageView *previousPageView in _previousPageViews) {
+            [previousPageView setAlpha:0.f];
+        }
+    } completion:completion];
 }
 
 #pragma mark BPMarkdownViewLinkDelegate

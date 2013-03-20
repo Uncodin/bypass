@@ -35,6 +35,7 @@
 @protocol BPMarkdownPageViewLinkDelegate <NSObject>
 @required
 
-- (void)markdownPageView:(BPMarkdownPageView *)markdownPageView didHaveLinkTapped:(NSString *)link;
+- (void)markdownPageView:(BPMarkdownPageView *)markdownPageView
+       didHaveLinkTapped:(NSString *)link;
 
 @end

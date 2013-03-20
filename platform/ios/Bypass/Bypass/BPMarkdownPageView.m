@@ -99,9 +99,11 @@ BPContextFlipVertical(CGContextRef context, CGRect rect)
             if (CGRectContainsPoint(lineBounds, touchPoint)) {
                 CFIndex stringIndex = CTLineGetStringIndexForPosition(line, touchPoint);
                 
-                if (stringIndex > 0 && touchPoint.x < CTLineGetOffsetForStringIndex(line, stringIndex, NULL)) {
+                if (stringIndex > 0 &&
+                    touchPoint.x < CTLineGetOffsetForStringIndex(line, stringIndex, NULL)) {
                     
-                    // Account for caret snapping when a boundary glyph's outer half has been tapped
+                    // Account for caret snapping when a boundary glyph's outer half has
+                    // been tapped
                     
                     --stringIndex;
                 }
@@ -113,7 +115,9 @@ BPContextFlipVertical(CGContextRef context, CGRect rect)
                     CTRunRef glyphRun = CFArrayGetValueAtIndex(glyphRuns, j);
                     CFRange textRange = CTRunGetStringRange(glyphRun);
                     
-                    if (textRange.location <= stringIndex && stringIndex < textRange.location + textRange.length) {
+                    if (textRange.location <= stringIndex &&
+                        stringIndex < textRange.location + textRange.length) {
+                        
                         CFDictionaryRef attributes = CTRunGetAttributes(glyphRun);
                         
 #if SHOW_ATTRIBUTES_ON_TAP == 1
@@ -121,7 +125,11 @@ BPContextFlipVertical(CGContextRef context, CGRect rect)
                         NSLog(@"%@", (__bridge NSDictionary *) attributes);
 #endif
                         
-                        NSString *link = (NSString *) CFDictionaryGetValue(attributes, (const void *) BPLinkStyleAttributeName);
+                        const void *value;
+                        value = CFDictionaryGetValue(attributes,
+                                                     (const void *) BPLinkStyleAttributeName);
+                        
+                        NSString *link = (__bridge NSString *) value;
                         [[self linkDelegate] markdownPageView:self didHaveLinkTapped:link];
                         return;
                     }
