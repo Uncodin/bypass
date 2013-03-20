@@ -10,7 +10,7 @@
 
 	<groupId>in.uncod.android.bypass</groupId>
 	<artifactId>parent</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>pom</packaging>
 
 	<name>Bypass (Parent)</name>
@@ -28,7 +28,7 @@
 		<url>https://github.com/Uncodin/bypass/</url>
 		<connection>scm:git:git://github.com/Uncodin/bypass.git</connection>
 		<developerConnection>scm:git:git@github.com:Uncodin/bypass.git</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>parent-1.0</tag>
   </scm>
 
 	<developers>
