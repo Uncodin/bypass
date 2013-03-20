@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E007AF316FA327200F8CFFD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC79B16E0049800165503 /* CoreGraphics.framework */; };
+		5E007AF416FA329800F8CFFD /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E007AF116FA325100F8CFFD /* QuartzCore.framework */; };
 		5E5BC79816E0049800165503 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC79716E0049800165503 /* UIKit.framework */; };
 		5E5BC79A16E0049800165503 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC79916E0049800165503 /* Foundation.framework */; };
-		5E5BC79C16E0049800165503 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC79B16E0049800165503 /* CoreGraphics.framework */; };
 		5E5BC7A216E0049800165503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5E5BC7A016E0049800165503 /* InfoPlist.strings */; };
 		5E5BC7A416E0049800165503 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC7A316E0049800165503 /* main.m */; };
 		5E5BC7A816E0049800165503 /* BPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC7A716E0049800165503 /* BPAppDelegate.m */; };
@@ -68,6 +69,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5E007AF116FA325100F8CFFD /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5E5BC79416E0049800165503 /* BypassSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BypassSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5BC79716E0049800165503 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5E5BC79916E0049800165503 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -111,9 +113,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BB80FB816E5077F00ED150B /* libBypass.a in Frameworks */,
-				5E5BC79C16E0049800165503 /* CoreGraphics.framework in Frameworks */,
+				5E007AF316FA327200F8CFFD /* CoreGraphics.framework in Frameworks */,
 				5E5BC8A316E7C25700165503 /* CoreText.framework in Frameworks */,
 				5E5BC79A16E0049800165503 /* Foundation.framework in Frameworks */,
+				5E007AF416FA329800F8CFFD /* QuartzCore.framework in Frameworks */,
 				5E5BC79816E0049800165503 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -134,6 +137,7 @@
 		5E5BC78B16E0049800165503 = {
 			isa = PBXGroup;
 			children = (
+				5E007AF116FA325100F8CFFD /* QuartzCore.framework */,
 				6BE4F70116EFCF8E00670C16 /* iPhone.png */,
 				6BE4F6FF16EFCD8C00670C16 /* iPhone Retina.png */,
 				5E5BC79D16E0049800165503 /* BypassSample */,
@@ -527,7 +531,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Bypass/Bypass";
 				INFOPLIST_FILE = "BypassSample/BypassSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -542,7 +546,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Bypass/Bypass";
 				INFOPLIST_FILE = "BypassSample/BypassSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

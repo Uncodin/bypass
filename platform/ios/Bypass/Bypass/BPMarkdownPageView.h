@@ -1,8 +1,8 @@
 //
-//  Bypass.h
+//  BPMarkdownPageView.h
 //  Bypass
 //
-//  Created by Damian Carrillo on 2/28/13.
+//  Created by Damian Carrillo on 3/13/13.
 //  Copyright 2013 Uncodin, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +18,23 @@
 //  limitations under the License.
 //
 
-#import "BPAttributedStringConverter.h"
-#import "BPElement.h"
-#import "BPDocument.h"
-#import "BPMarkdownView.h"
-#import "BPParser.h"
+#import <CoreText/CoreText.h>
+#import <UIKit/UIKit.h>
+
+@class BPDocument;
+
+@protocol BPMarkdownPageViewLinkDelegate;
+
+@interface BPMarkdownPageView : UIView
+@property (weak, nonatomic) id<BPMarkdownPageViewLinkDelegate> linkDelegate;
+
+- (id)initWithFrame:(CGRect)frame textFrame:(CTFrameRef)textFrame;
+
+@end
+
+@protocol BPMarkdownPageViewLinkDelegate <NSObject>
+@required
+
+- (void)markdownPageView:(BPMarkdownPageView *)markdownPageView didHaveLinkTapped:(NSString *)link;
+
+@end

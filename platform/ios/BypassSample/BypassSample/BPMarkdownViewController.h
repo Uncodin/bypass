@@ -10,6 +10,6 @@
 #import <UIKit/UIKit.h>
 #import "BPAbstractViewController.h"
 
-@interface BPMarkdownViewController : BPAbstractViewController <BPMarkdownViewLinkHandler>
+@interface BPMarkdownViewController : BPAbstractViewController
 
 @end

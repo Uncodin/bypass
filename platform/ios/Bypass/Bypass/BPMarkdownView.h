@@ -2,39 +2,26 @@
 //  BPMarkdownView.h
 //  Bypass
 //
-//  Created by Damian Carrillo on 3/13/13.
-//  Copyright 2013 Uncodin, Inc.
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//  http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
+//  Created by Damian Carrillo on 3/20/13.
+//  Copyright (c) 2013 Uncodin. All rights reserved.
 //
 
-#import <CoreText/CoreText.h>
 #import <UIKit/UIKit.h>
 
-@class BPDocument;
+@protocol BPMarkdownViewLinkDelegate;
 
-@protocol BPMarkdownViewLinkHandler;
+@interface BPMarkdownView : UIScrollView
+@property (strong, nonatomic) NSString *markdown;
+@property (assign, nonatomic, getter = isAsynchronous) BOOL asynchronous;
+@property (assign, nonatomic) NSTimeInterval asynchronousRevealDuration;
+@property (weak, nonatomic) id<BPMarkdownViewLinkDelegate> linkDelegate;
 
-@interface BPMarkdownView : UIView
-@property (weak, nonatomic) id<BPMarkdownViewLinkHandler> linkDelegate;
-
-- (id)initWithFrame:(CGRect)frame textFrame:(CTFrameRef)textFrame;
+- (id)initWithFrame:(CGRect)frame markdown:(NSString *)markdown;
 
 @end
 
-@protocol BPMarkdownViewLinkHandler <NSObject>
-@required
+@protocol BPMarkdownViewLinkDelegate <NSObject>
 
-- (void)markdownView:(BPMarkdownView *)markdownView didHaveLinkClicked:(NSString *)link;
+- (void)markdownView:(BPMarkdownView *)markdownView didHaveLinkTapped:(NSString *)link;
 
 @end
