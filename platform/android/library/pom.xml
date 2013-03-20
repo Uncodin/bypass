@@ -37,9 +37,11 @@
 							<goal>ndk-build</goal>
 						</goals>
 						<configuration>
+							<target>all</target>
+							<deleteConflictingFiles>true</deleteConflictingFiles>
 							<!-- Configure the plugin to remove all built artifacts from the libs/armeabi 
 								folder when the native build is complete -->
-							<clearNativeArtifacts>false</clearNativeArtifacts>
+							<clearNativeArtifacts>true</clearNativeArtifacts>
 							<!-- Configure the plugin to also attach the built, native, artifact 
 								from the libs/armeabi folder when the native build is complete. This puts 
 								the artifact into the Maven repository -->
