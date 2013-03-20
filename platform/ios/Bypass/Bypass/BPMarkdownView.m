@@ -24,9 +24,31 @@
 #import "BPMarkdownPageView.h"
 #import "BPParser.h"
 
-static const CGFloat        kUIStandardMargin      = 8.f;
+/*
+ * The standard margin of the UIKit views. This value was based on human inspection.
+ */
+static const CGFloat kUIStandardMargin = 8.f;
+
+/*
+ * The duration of the view reorientation animation.
+ */
 static const NSTimeInterval kReorientationDuration = 0.3;
 
+/*
+ * Creates an array of CTFrameRefs (frames) from the given document. The frames are created 
+ * at the given page size. This function will transfer the suggested content size back to the 
+ * caller through `suggestedContentSizeOut`. This is the size that the framesetter recommends
+ * the container should have, and is based on the length of the body of attribited markdown.
+ *
+ * Note that it is possible to supply a `pageSize` with an unbounded height by suppling a size
+ * whose height is CGFLOAT_MAX. This will size a single view to fit around the attributed text,
+ * but it is not recommended for long strings because the entire view will be rendered in the
+ * `drawRect` method.
+ * 
+ * \param document a document tree
+ * \pageSize the size for a given page frame
+ *
+ */
 static CFArrayRef
 BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedContentSizeOut) {
     BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
@@ -163,6 +185,9 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
     }
 }
 
+/*
+ * Occurs during a device rotation.
+ */
 - (BOOL)viewHasBeenReoriented
 {
     return !CGRectEqualToRect([self frame], _previousFrame);
@@ -174,14 +199,26 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
     _document = nil;
 }
 
+/*
+ * Renders markdown text into corresponding CTFrames and arranges for them to be  displayed.
+ */
 - (void)renderMarkdownWithDuration:(NSTimeInterval)duration
                         completion:(void (^)(BOOL finished))completion
 {
+    /*
+     In order to be flexible in the way that the text is rendered, this method's implementation
+     is a bit wonky. The intent is to support views that render immediately and also to support
+     a two step process where the text is rendered into Core Text frames in the background and 
+     then those frames fill views that are inserted.
+     
+            *** Please ensure that you thoroughly understand what is going ***
+            ***            on before attempting to change this.            ***
+     
+     */
+    
     _previousFrame = [self frame];
     
     void (^createPageFrames)(void) = ^{
-        [_pageViews removeAllObjects];
-
         if (_document == nil) {
             _document = [_parser parse:_markdown];
         }
@@ -222,6 +259,17 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
     }
 }
 
+/*
+ * Following from `renderMarkdownWithDuration:completion:`, this method will display the 
+ * populate a view with a frame that it is to display and add it as a subview.
+ *
+ * There are three cases that this must support:
+ * 
+ *   - Rendering text immediately when this view loads for the first time
+ *   - Rendering text that fades in when this view loads text asynchronously
+ *   - Rendering text after a device reorientation which has an animation, but the duration
+ *     is not configurable.
+ */
 - (void)createAndDisplayViewsFromPageFrames:(CFArrayRef)pageFrames
                                    pageSize:(CGSize)pageSize
                                 contentSize:(CGSize)contentSize
@@ -241,16 +289,15 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
                                                                        textFrame:textFrame];
         
         [textView setTag:i + 1];
-        
-        if ([self isAsynchronous]) {
-            [textView setAlpha:0.f];
-        }
+        [textView setAlpha:0.f];
         
         [_pageViews addObject:textView];
         [self addSubview:textView];
         
         [textView setLinkDelegate:self];
     }
+    
+    // Schedule the fade in and fade out animations to occur at the same time
     
     [UIView animateWithDuration:duration animations:^{
         for (BPMarkdownPageView *pageView in _pageViews) {
