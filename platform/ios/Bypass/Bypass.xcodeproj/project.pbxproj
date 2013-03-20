@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E007AEB16FA17D200F8CFFD /* BPMarkdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E007AEA16FA17D100F8CFFD /* BPMarkdownView.m */; };
 		5E5BC81C16E004FA00165503 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC81B16E004FA00165503 /* Foundation.framework */; };
 		5E5BC82116E004FA00165503 /* Bypass.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5E5BC82016E004FA00165503 /* Bypass.h */; };
 		5E5BC82B16E004FA00165503 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC82A16E004FA00165503 /* SenTestingKit.framework */; };
@@ -28,8 +29,7 @@
 		5E5BC89B16E79B6200165503 /* element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC89616E79B6200165503 /* element.cpp */; };
 		5E5BC89C16E79B6200165503 /* parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC89816E79B6200165503 /* parser.cpp */; };
 		5E5BC8A116E7BE9400165503 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC8A016E7BE9400165503 /* CoreText.framework */; };
-		6BE4F72716F0E9D100670C16 /* BPMarkdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE4F72616F0E9D100670C16 /* BPMarkdownView.m */; };
-		6BE4F74316F265FF00670C16 /* BPDocumentRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE4F74216F265FE00670C16 /* BPDocumentRenderer.m */; };
+		6BE4F72716F0E9D100670C16 /* BPMarkdownPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE4F72616F0E9D100670C16 /* BPMarkdownPageView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +56,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5E007AE916FA17D100F8CFFD /* BPMarkdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPMarkdownView.h; sourceTree = "<group>"; };
+		5E007AEA16FA17D100F8CFFD /* BPMarkdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPMarkdownView.m; sourceTree = "<group>"; };
 		5E5BC81816E004FA00165503 /* libBypass.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBypass.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5BC81B16E004FA00165503 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5E5BC81F16E004FA00165503 /* Bypass-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bypass-Prefix.pch"; sourceTree = "<group>"; };
@@ -91,10 +93,8 @@
 		5E5BC89816E79B6200165503 /* parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = parser.cpp; path = ../../../../src/parser.cpp; sourceTree = "<group>"; };
 		5E5BC89916E79B6200165503 /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = parser.h; path = ../../../../src/parser.h; sourceTree = "<group>"; };
 		5E5BC8A016E7BE9400165503 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		6BE4F72516F0E9D100670C16 /* BPMarkdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPMarkdownView.h; sourceTree = "<group>"; };
-		6BE4F72616F0E9D100670C16 /* BPMarkdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPMarkdownView.m; sourceTree = "<group>"; };
-		6BE4F74116F265FE00670C16 /* BPDocumentRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPDocumentRenderer.h; sourceTree = "<group>"; };
-		6BE4F74216F265FE00670C16 /* BPDocumentRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPDocumentRenderer.m; sourceTree = "<group>"; };
+		6BE4F72516F0E9D100670C16 /* BPMarkdownPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPMarkdownPageView.h; sourceTree = "<group>"; };
+		6BE4F72616F0E9D100670C16 /* BPMarkdownPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPMarkdownPageView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,10 +238,10 @@
 		6BE4F72416F0E99000670C16 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6BE4F72516F0E9D100670C16 /* BPMarkdownView.h */,
-				6BE4F72616F0E9D100670C16 /* BPMarkdownView.m */,
-				6BE4F74116F265FE00670C16 /* BPDocumentRenderer.h */,
-				6BE4F74216F265FE00670C16 /* BPDocumentRenderer.m */,
+				5E007AE916FA17D100F8CFFD /* BPMarkdownView.h */,
+				5E007AEA16FA17D100F8CFFD /* BPMarkdownView.m */,
+				6BE4F72516F0E9D100670C16 /* BPMarkdownPageView.h */,
+				6BE4F72616F0E9D100670C16 /* BPMarkdownPageView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -354,8 +354,8 @@
 				5E5BC89A16E79B6200165503 /* document.cpp in Sources */,
 				5E5BC89B16E79B6200165503 /* element.cpp in Sources */,
 				5E5BC89C16E79B6200165503 /* parser.cpp in Sources */,
-				6BE4F72716F0E9D100670C16 /* BPMarkdownView.m in Sources */,
-				6BE4F74316F265FF00670C16 /* BPDocumentRenderer.m in Sources */,
+				6BE4F72716F0E9D100670C16 /* BPMarkdownPageView.m in Sources */,
+				5E007AEB16FA17D200F8CFFD /* BPMarkdownView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

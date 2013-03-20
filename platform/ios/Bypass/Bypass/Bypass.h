@@ -21,6 +21,5 @@
 #import "BPAttributedStringConverter.h"
 #import "BPElement.h"
 #import "BPDocument.h"
-#import "BPDocumentRenderer.h"
 #import "BPMarkdownView.h"
 #import "BPParser.h"

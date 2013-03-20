@@ -1,8 +1,8 @@
 //
-//  BPParser.m
+//  BPMarkdownPageView.h
 //  Bypass
 //
-//  Created by Damian Carrillo on 2/28/13.
+//  Created by Damian Carrillo on 3/13/13.
 //  Copyright 2013 Uncodin, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,23 +18,24 @@
 //  limitations under the License.
 //
 
-#import "BPParser.h"
-#import "BPDocumentPrivate.h"
-#import "parser.h"
+#import <CoreText/CoreText.h>
+#import <UIKit/UIKit.h>
 
-@implementation BPParser
+@class BPDocument;
 
-- (BPDocument *)parse:(NSString *)markdown
-{
-    using namespace Bypass;
-    
-    const char *mstr = [markdown cStringUsingEncoding:NSUTF8StringEncoding];
-    
-    Bypass::Parser parser = Bypass::Parser();
-    Document doc = parser.parse(mstr);
-    BPDocument *document = [[BPDocument alloc] initWithDocument:doc];
-    
-    return document;
-}
+@protocol BPMarkdownPageViewLinkDelegate;
+
+@interface BPMarkdownPageView : UIView
+@property (weak, nonatomic) id<BPMarkdownPageViewLinkDelegate> linkDelegate;
+
+- (id)initWithFrame:(CGRect)frame textFrame:(CTFrameRef)textFrame;
+
+@end
+
+@protocol BPMarkdownPageViewLinkDelegate <NSObject>
+@required
+
+- (void)markdownPageView:(BPMarkdownPageView *)markdownPageView
+       didHaveLinkTapped:(NSString *)link;
 
 @end

@@ -2,7 +2,7 @@
 //  BPMarkdownView.m
 //  Bypass
 //
-//  Created by Damian Carrillo on 3/13/13.
+//  Created by Damian Carrillo on 3/20/13.
 //  Copyright 2013 Uncodin, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,119 +18,312 @@
 //  limitations under the License.
 //
 
+#import <CoreText/CoreText.h>
 #import "BPAttributedStringConverter.h"
-#import "BPDocument.h"
 #import "BPMarkdownView.h"
+#import "BPMarkdownPageView.h"
+#import "BPParser.h"
 
-void
-BPContextFlipVertical(CGContextRef context, CGRect rect)
-{
-    CGFloat h = CGRectGetHeight(rect);
-    CGAffineTransform flipTransformation = CGAffineTransformMake(1,  0,  // 0
-                                                                 0, -1,  // 0
-                                                                 0,  h); // 1
-    CGContextConcatCTM(context, flipTransformation);
+/*
+ * The standard margin of the UIKit views. This value was based on human inspection.
+ */
+static const CGFloat kUIStandardMargin = 8.f;
+
+/*
+ * The duration of the view reorientation animation.
+ */
+static const NSTimeInterval kReorientationDuration = 0.3;
+
+/*
+ * Creates an array of CTFrameRefs (frames) from the given document. The frames are created 
+ * at the given page size. This function will transfer the suggested content size back to the 
+ * caller through `suggestedContentSizeOut`. This is the size that the framesetter recommends
+ * the container should have, and is based on the length of the body of attribited markdown.
+ *
+ * Note that it is possible to supply a `pageSize` with an unbounded height by suppling a size
+ * whose height is CGFLOAT_MAX. This will size a single view to fit around the attributed text,
+ * but it is not recommended for long strings because the entire view will be rendered in the
+ * `drawRect` method.
+ * 
+ * \param document a document tree
+ * \pageSize the size for a given page frame
+ *
+ */
+static CFArrayRef
+BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedContentSizeOut) {
+    BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
+    
+    CFAttributedStringRef attributedText;
+    attributedText = (__bridge CFAttributedStringRef) [converter convertDocument:document];
+    
+    CFIndex len = CFAttributedStringGetLength(attributedText);
+    CFMutableAttributedStringRef mutableAttributedText;
+    mutableAttributedText = CFAttributedStringCreateMutableCopy(kCFAllocatorDefault,
+                                                                len,
+                                                                attributedText);
+    
+    CFMutableArrayRef frames = CFArrayCreateMutable(kCFAllocatorDefault,
+                                                    0,
+                                                    &kCFTypeArrayCallBacks);
+    CTFramesetterRef framesetter;
+    framesetter = CTFramesetterCreateWithAttributedString(mutableAttributedText);
+    CFRelease(mutableAttributedText);
+    
+    CGRect pageRect = CGRectMake(0.f, 0.f, pageSize.width, pageSize.height);
+    CGSize constraints = CGSizeMake(CGRectGetWidth(pageRect), CGFLOAT_MAX);
+    
+    CFRange fitRange;
+    CGSize suggestedSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter,
+                                                                        CFRangeMake(0, 0),
+                                                                        NULL,
+                                                                        constraints,
+                                                                        &fitRange);
+    *suggestedContentSizeOut = suggestedSize;
+    
+    pageRect.size.height = MIN(pageSize.height, suggestedSize.height);
+    
+    CFRange textRange = {0, 0};
+    CGFloat y = CGRectGetMinY(pageRect);
+    
+    while (y < suggestedSize.height) {
+        CGPathRef path = CGPathCreateWithRect(pageRect, &CGAffineTransformIdentity);
+        CTFrameRef textFrame = CTFramesetterCreateFrame(framesetter, textRange, path, NULL);
+        CGPathRelease(path);
+        
+        CFArrayAppendValue(frames, textFrame);
+        
+        CFRange visibleRange = CTFrameGetVisibleStringRange(textFrame);
+        textRange.location += visibleRange.length;
+        
+        y += CGRectGetHeight(pageRect);
+    }
+    
+    return frames;
 }
+
+@interface BPMarkdownView () <BPMarkdownViewLinkDelegate, BPMarkdownPageViewLinkDelegate>
+@end
 
 @implementation BPMarkdownView
 {
-    CTFrameRef _textFrame;
+    BPParser       *_parser;
+    BPDocument     *_document;
+    NSMutableArray *_pageViews;
+    NSArray        *_previousPageViews;
+    CGRect         _previousFrame;
 }
 
-- (id)initWithFrame:(CGRect)frame textFrame:(CTFrameRef)textFrame
+- (id)initWithFrame:(CGRect)frame
+{
+    return [self initWithFrame:frame markdown:nil];
+}
+
+- (id)initWithFrame:(CGRect)frame markdown:(NSString *)markdown
 {
     self = [super initWithFrame:frame];
     
     if (self != nil) {
-        [self setBackgroundColor:[UIColor whiteColor]];
-        
-        CFRetain(textFrame);
-        _textFrame = textFrame;
+        [self initializeView];
+        [self setMarkdown:markdown];
     }
     
     return self;
 }
 
-- (void)dealloc
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    CFRelease(_textFrame);
-}
-
-- (void)drawRect:(CGRect)rect
-{
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [[self backgroundColor] CGColor]);
-    CGContextFillRect(context, rect);
-
-    CGContextSetStrokeColorWithColor(context, [[UIColor blackColor] CGColor]);    
-    CGContextSetTextMatrix(context, CGAffineTransformIdentity);    
-    BPContextFlipVertical(context, rect);
+    self = [super initWithCoder:aDecoder];
     
-    CTFrameDraw(_textFrame, context);
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    
-    if ([touch tapCount] == 1 && [touch phase] == UITouchPhaseEnded) {
-        CGPoint touchPoint = [touch locationInView:self];
-        
-        // Account for matrix flip
-        
-        touchPoint = CGPointMake(touchPoint.x, CGRectGetHeight([self frame]) - touchPoint.y);
-
-        CFArrayRef lines = CTFrameGetLines(_textFrame);
-        CFIndex lineCount = CFArrayGetCount(lines);
-        CGPoint origins[lineCount];
-        
-        CTFrameGetLineOrigins(_textFrame, CFRangeMake(0, lineCount), origins);
-        
-        CFIndex i;
-        for (i = 0; i < lineCount; i++) {
-            CTLineRef line = CFArrayGetValueAtIndex(lines, i);
-            CGRect lineBounds = CTLineGetBoundsWithOptions(line, kCTLineBoundsUseOpticalBounds);
-            
-            lineBounds.origin.x += origins[i].x;
-            lineBounds.origin.y += origins[i].y;
-            
-            if (CGRectContainsPoint(lineBounds, touchPoint)) {
-                CFIndex stringIndex = CTLineGetStringIndexForPosition(line, touchPoint);
-                
-                if (stringIndex > 0 && touchPoint.x < CTLineGetOffsetForStringIndex(line, stringIndex, NULL)) {
-                    
-                    // Account for caret snapping when a boundary glyph's outer half has been tapped
-                    
-                    --stringIndex;
-                }
-                
-                CFArrayRef glyphRuns = CTLineGetGlyphRuns(line);
-                CFIndex j, glyphRunCount = CFArrayGetCount(glyphRuns);
-                
-                for (j = 0; j < glyphRunCount; j++) {
-                    CTRunRef glyphRun = CFArrayGetValueAtIndex(glyphRuns, j);
-                    CFRange textRange = CTRunGetStringRange(glyphRun);
-                    
-                    if (textRange.location <= stringIndex && stringIndex < textRange.location + textRange.length) {
-                        CFDictionaryRef attributes = CTRunGetAttributes(glyphRun);
-                        
-#ifdef DEBUG
-                        // Shows what attributes are available on the tap point
-                        NSLog(@"%@", (__bridge NSDictionary *) attributes);
-#endif
-                        
-                        NSString *link = (NSString *) CFDictionaryGetValue(attributes, (const void *) BPLinkStyleAttributeName);
-                        [[self linkDelegate] markdownView:self didHaveLinkClicked:link];
-                        return;
-                    }
-                }
-                
-                break;
-            }
-        }
+    if (self != nil) {
+        [self initializeView];
     }
     
-    [super touchesEnded:touches withEvent:event];
+    return self;
+}
+
+- (void)initializeView
+{
+    [self setLinkDelegate:self];
+    
+    _parser = [[BPParser alloc] init];
+    _pageViews = [[NSMutableArray alloc] init];
+    _asynchronous = NO;
+    _asynchronousRevealDuration = 0.25;
+    
+    [self setContentInset:UIEdgeInsetsMake(1.5 * kUIStandardMargin,
+                                           kUIStandardMargin,
+                                           4 * kUIStandardMargin,
+                                           0)];
+    
+    [self setAutoresizesSubviews:YES];
+    [self setAutoresizingMask: UIViewAutoresizingFlexibleTopMargin
+                             | UIViewAutoresizingFlexibleRightMargin
+                             | UIViewAutoresizingFlexibleBottomMargin
+                             | UIViewAutoresizingFlexibleLeftMargin
+                             | UIViewAutoresizingFlexibleWidth
+                             | UIViewAutoresizingFlexibleHeight];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    if (([self markdown] != nil && [_pageViews count] == 0)) {
+        [self renderMarkdownWithDuration:_asynchronous ? _asynchronousRevealDuration : 0
+                              completion:nil];
+    } else if ([self viewHasBeenReoriented]) {
+        _previousPageViews = [NSArray arrayWithArray:_pageViews];
+        
+        [self renderMarkdownWithDuration:kReorientationDuration
+                              completion:^(BOOL finished) {
+                                  for (UIView *pageView in _previousPageViews) {
+                                      [pageView removeFromSuperview];
+                                  }
+                                  
+                                  _previousPageViews = nil;
+                              }];
+    }
+}
+
+/*
+ * Occurs during a device rotation.
+ */
+- (BOOL)viewHasBeenReoriented
+{
+    return !CGRectEqualToRect([self frame], _previousFrame);
+}
+
+- (void)setMarkdown:(NSString *)markdown
+{
+    _markdown = markdown;
+    _document = nil;
+}
+
+/*
+ * Renders markdown text into corresponding CTFrames and arranges for them to be  displayed.
+ */
+- (void)renderMarkdownWithDuration:(NSTimeInterval)duration
+                        completion:(void (^)(BOOL finished))completion
+{
+    /*
+     In order to be flexible in the way that the text is rendered, this method's implementation
+     is a bit wonky. The intent is to support views that render immediately and also to support
+     a two step process where the text is rendered into Core Text frames in the background and 
+     then those frames fill views that are inserted.
+     
+            *** Please ensure that you thoroughly understand what is going ***
+            ***            on before attempting to change this.            ***
+     
+     */
+    
+    _previousFrame = [self frame];
+    
+    void (^createPageFrames)(void) = ^{
+        if (_document == nil) {
+            _document = [_parser parse:_markdown];
+        }
+ 
+        [_parser parse:_markdown];
+        CGSize pageSize = CGSizeMake(CGRectGetWidth([self frame]) - 2 * kUIStandardMargin,
+                                     CGRectGetHeight([self frame]));
+        CGRect pageRect = CGRectZero;
+        pageRect.size = pageSize;
+        
+        CGSize contentSize;
+        CFArrayRef pageFrames = BPCreatePageFrames(_document, pageSize, &contentSize);
+        
+        if ([self isAsynchronous]) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self createAndDisplayViewsFromPageFrames:pageFrames
+                                                 pageSize:pageSize
+                                              contentSize:contentSize
+                                                 duration:duration
+                                               completion:completion];
+            });
+        } else {
+            [self createAndDisplayViewsFromPageFrames:pageFrames
+                                             pageSize:pageSize
+                                          contentSize:contentSize
+                                             duration:duration
+                                           completion:completion];
+        }
+        
+        CFRelease(pageFrames);
+    };
+    
+    if ([self isAsynchronous]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                       createPageFrames);
+    } else {
+        createPageFrames();
+    }
+}
+
+/*
+ * Following from `renderMarkdownWithDuration:completion:`, this method will display the 
+ * populate a view with a frame that it is to display and add it as a subview.
+ *
+ * There are three cases that this must support:
+ * 
+ *   - Rendering text immediately when this view loads for the first time
+ *   - Rendering text that fades in when this view loads text asynchronously
+ *   - Rendering text after a device reorientation which has an animation, but the duration
+ *     is not configurable.
+ */
+- (void)createAndDisplayViewsFromPageFrames:(CFArrayRef)pageFrames
+                                   pageSize:(CGSize)pageSize
+                                contentSize:(CGSize)contentSize
+                                   duration:(NSTimeInterval)duration
+                                 completion:(void (^)(BOOL finished))completion {
+    [self setContentSize:contentSize];
+    
+    CGRect pageRect = CGRectZero;
+    pageRect.size = pageSize;
+    
+    NSUInteger i, count = CFArrayGetCount(pageFrames);
+    
+    for (i = 0; i < count; i++) {
+        CTFrameRef textFrame = CFArrayGetValueAtIndex(pageFrames, i);
+        CGRect textViewFrame = CGRectOffset(pageRect, 0.f, i * CGRectGetHeight(pageRect));
+        BPMarkdownPageView *textView = [[BPMarkdownPageView alloc] initWithFrame:textViewFrame
+                                                                       textFrame:textFrame];
+        
+        [textView setTag:i + 1];
+        [textView setAlpha:0.f];
+        
+        [_pageViews addObject:textView];
+        [self addSubview:textView];
+        
+        [textView setLinkDelegate:self];
+    }
+    
+    // Schedule the fade in and fade out animations to occur at the same time
+    
+    [UIView animateWithDuration:duration animations:^{
+        for (BPMarkdownPageView *pageView in _pageViews) {
+            [pageView setAlpha:1.f];
+        }
+        
+        for (BPMarkdownPageView *previousPageView in _previousPageViews) {
+            [previousPageView setAlpha:0.f];
+        }
+    } completion:completion];
+}
+
+#pragma mark BPMarkdownViewLinkDelegate
+
+- (void)markdownView:(BPMarkdownView *)markdownView didHaveLinkTapped:(NSString *)link
+{
+    // Open URLs by default
+    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:link]];
+}
+
+#pragma mark BPMarkdownPageViewLinkDelegate
+
+- (void)markdownPageView:(BPMarkdownPageView *)markdownView didHaveLinkTapped:(NSString *)link
+{
+    [[self linkDelegate] markdownView:self didHaveLinkTapped:link];
 }
 
 @end

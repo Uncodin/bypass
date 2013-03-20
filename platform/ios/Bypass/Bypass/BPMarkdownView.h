@@ -2,7 +2,7 @@
 //  BPMarkdownView.h
 //  Bypass
 //
-//  Created by Damian Carrillo on 3/13/13.
+//  Created by Damian Carrillo on 3/20/13.
 //  Copyright 2013 Uncodin, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,23 +18,45 @@
 //  limitations under the License.
 //
 
-#import <CoreText/CoreText.h>
 #import <UIKit/UIKit.h>
 
-@class BPDocument;
+@protocol BPMarkdownViewLinkDelegate;
 
-@protocol BPMarkdownViewLinkHandler;
+@interface BPMarkdownView : UIScrollView
 
-@interface BPMarkdownView : UIView
-@property (weak, nonatomic) id<BPMarkdownViewLinkHandler> linkDelegate;
+/*!
+ * The markdown that this view will show.
+ */
+@property (strong, nonatomic) NSString *markdown;
 
-- (id)initWithFrame:(CGRect)frame textFrame:(CTFrameRef)textFrame;
+/*!
+ * Whether or not to render the markdown asynchronously. If you are concerned with loading long
+ * bodies of text, this may be of use to you. You can schedule the view to immediately load,
+ * render markdown to Core Text frames in the background, and then show the results when it 
+ * has finished.
+ *
+ * The default is to load synchronously.
+ */
+@property (assign, nonatomic, getter = isAsynchronous) BOOL asynchronous;
+
+/*!
+ * The duration at which an asynchronous load operation will fade the text in at. This property
+ * only has an effect when this view loads asynchronously.
+ */
+@property (assign, nonatomic) NSTimeInterval asynchronousRevealDuration;
+
+/*!
+ * The delegate that should handle link taps. By default this view will use the system to open
+ * links based on whatever handler is most appropriate.
+ */
+@property (weak, nonatomic) id<BPMarkdownViewLinkDelegate> linkDelegate;
+
+- (id)initWithFrame:(CGRect)frame markdown:(NSString *)markdown;
 
 @end
 
-@protocol BPMarkdownViewLinkHandler <NSObject>
-@required
+@protocol BPMarkdownViewLinkDelegate <NSObject>
 
-- (void)markdownView:(BPMarkdownView *)markdownView didHaveLinkClicked:(NSString *)link;
+- (void)markdownView:(BPMarkdownView *)markdownView didHaveLinkTapped:(NSString *)link;
 
 @end
