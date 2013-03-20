@@ -132,9 +132,6 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
 
 - (void)layoutSubviews
 {
-    NSLog(@"string length: %d", [[self markdown] length]);
-    
-    
     [super layoutSubviews];
     
     if (([self markdown] != nil && [_pageViews count] == 0)) {
