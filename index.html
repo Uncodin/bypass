@@ -45,6 +45,7 @@ str = env->GetStringUTFChars(markdown, NULL);</code>
 			<p>We wanted to be able to take advantage of Markdown on mobile devices but all of the implementations that we found were either slow, feature incomplete or both.</p>
 			<p>Bypass uses <a href="http://fossil.instinctive.eu/libsoldout/index">libsoldout</a> to parse the Markdown and build a data structure. This data gets passed through the respective binding layer on each platform and is used to build the formatted text (Spanned strings on Android and Attributed Strings on iOS).</p>
 			<p>On Android we were able to get more than a 4x speed increase by bypassing Html.fromHtml(), hence the name Bypass.</p>
+			<hr/>
 			<a name="Android"></a>
 			<h2>Android</h2>
 			<a name="AndroidSetup"></a>
@@ -85,6 +86,7 @@ CharSequence string = bypass.markdownToSpannable(markdownString);
 text.setText(string);
 text.setMovementMethod(LinkMovementMethod.getInstance());</code>
 			</pre>
+			<hr/>
 			<a name="iOS"></a>
 			<h2>iOS</h2>
 			<a name="iOSSetup"></a>
