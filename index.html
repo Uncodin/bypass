@@ -47,7 +47,7 @@ str = env->GetStringUTFChars(markdown, NULL);</code>
 			<a name="AndroidSetup"></a>
 			<h3>Setup</h3>
 			There are a few different ways to use Bypass with your project.
-			<ol>
+			<ul>
 				<li>
 					<p>If you just want to include Bypass in your Maven project, add the following dependency block to your pom.xml:</p>
 					<pre>
@@ -59,13 +59,19 @@ str = env->GetStringUTFChars(markdown, NULL);</code>
 &lt;/dependency&gt;</code>
 					</pre>
 				</li>
+				<li><ul>
+					<p>For the two following methods you will also need to install the <a href="http://developer.android.com/tools/sdk/ndk/index.html">Android NDK</a> and have the <a href="http://www.boost.org/">Boost libraries installed.</a></p>
 				<li>
 					<p>If you're using the <a href="http://www.eclipse.org/">Eclipse Development Environment</a> with the <a href="http://developer.android.com/sdk/eclipse-adt.html">ADT plugin</a> version 0.9.7 or greater you can include Bypass as a library project. Create a new Android project in Eclipse using the <code>library/</code> folder as the existing source. Then, in your project properties, add the created project under the 'Libraries' section of the 'Android' category.</p>
+					You will also needthe <a href="http://tools.android.com/recent/usingthendkplugin">Eclipse NDK Plugin</a>. Then you can right click on the bypass project and select "convert project to native code".</p>
 				</li>
 				<li>
 					<p>If you use <code>ant</code> to compile from the command line you will need to run <code>android update project -p .</code> inside the <code>library/</code> folder of the project. Once completed, you can reference the <code>library/</code> folder of Bypass from your application's <code>project.properties</code> file. For more information please see the <a href="http://developer.android.com/guide/developing/projects/projects-cmdline.html#ReferencingLibraryProject">Android developer guide</a> for referencing library projects.</p>
+					<p>You will also need to run ndk-build inside the library folder to build the required native platfom libs.</p>
 				</li>
-			</ol>
+				</ul>
+				</li>
+			</ul>
 			<a name="AndroidUsage"></a>
 			<h3>Usage</h3>
 			<pre>
