@@ -153,7 +153,7 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
 {
     if (_h1Font == NULL) {
         _h1Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"),
-                                       CTFontGetSize([self defaultFont]) * 1.5, NULL);
+                                       CTFontGetSize([self defaultFont]) * 2, NULL);
     }
     
     return _h1Font;
@@ -163,7 +163,7 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
 {
     if (_h2Font == NULL) {
         _h2Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"),
-                                       CTFontGetSize([self defaultFont]) * 1.4, NULL);
+                                       CTFontGetSize([self defaultFont]) * 1.8, NULL);
     }
     
     return _h2Font;
@@ -173,7 +173,7 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
 {
     if (_h3Font == NULL) {
         _h3Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"),
-                                       CTFontGetSize([self defaultFont]) * 1.3, NULL);
+                                       CTFontGetSize([self defaultFont]) * 1.6, NULL);
     }
     
     return _h3Font;
@@ -183,7 +183,7 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
 {
     if (_h4Font == NULL) {
         _h4Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"),
-                                       CTFontGetSize([self defaultFont]) * 1.2, NULL);
+                                       CTFontGetSize([self defaultFont]) * 1.4, NULL);
     }
     
     return _h4Font;
@@ -193,7 +193,7 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
 {
     if (_h5Font == NULL) {
         _h5Font = CTFontCreateWithName(CFSTR("HelveticaNeue-CondensedBold"),
-                                       CTFontGetSize([self defaultFont]) * 1.1, NULL);
+                                       CTFontGetSize([self defaultFont]) * 1.2, NULL);
     }
     
     return _h5Font;
