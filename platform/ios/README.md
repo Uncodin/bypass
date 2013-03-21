@@ -65,22 +65,24 @@ Bypass is very easy to use in terms of displaying markdown. Essentially, you
 directly instantiate a `BPMarkdownView` and supply it with markdown to render.
 It handles the rest. An example would be:
 
-    // Initialize the markdown view
-    CGRect markdownRect = CGRectMake(0.f, 0.f, 100.f, 100.f);
-    BPMarkdownView *markdownView = [[BPMarkdownView alloc] initWithFrame:markdownRect];
+```objc
+// Initialize the markdown view
+CGRect markdownRect = CGRectMake(0.f, 0.f, 100.f, 100.f);
+BPMarkdownView *markdownView = [[BPMarkdownView alloc] initWithFrame:markdownRect];
 
-    // Obtain some markdown
-    NSString *markdown = @""
-    	"# Hello, world!"
-    	""
-        "This is my text body. There are many more like it, "
-        "but this one is mine.";
+// Obtain some markdown
+NSString *markdown = @""
+	"# Hello, world!"
+	""
+    "This is my text body. There are many more like it, "
+    "but this one is mine.";
 
-    // Supply the markdown view with markdown to render
-    [markdownView setMarkdown:markdown];
+// Supply the markdown view with markdown to render
+[markdownView setMarkdown:markdown];
 
-    // Add the markdown view to a superview
-    [[self view] addSubview:markdownView];
+// Add the markdown view to a superview
+[[self view] addSubview:markdownView];
+```
 
 Feel free to directly embed a `BPMarkdownView` in a Nib or Storyboard, but
 ensure that you have configured your **Other Linker Flags** to contain `-ObjC`
@@ -90,14 +92,13 @@ of this use case.
 ## Performance
 
 It's a bit challenging to compare Bypass to, say a `UITextView` representing an
-attributed string, because the
-interesting work happens in different places. Essentially, what I deemed most
-appropriate to compare were a `UIViewController` that populates a `UITextView`
-with an `NSAttributedString`, and `BPMarkdownView`'s `layoutSubviews` method.
-These are the two places where layout is done respectively. A `UITextView` uses
-a conversion process that leverages HTML to display the text in a stylized
-manner. A `BPMarkdownView` drops down to the Core Text layer and renders the
-attributed string directly.
+attributed string, because the interesting work happens in different places. 
+Essentially, what I deemed most appropriate to compare were a `UIViewController` 
+that populates a `UITextView` with an `NSAttributedString`, and 
+`BPMarkdownView`'s `layoutSubviews` method. A `UITextView` uses a conversion 
+process that leverages HTML to display the text in a stylized manner. A 
+`BPMarkdownView` drops down to the Core Text layer and renders the attributed 
+string directly.
 
 The results are as follows (I included `drawRect:` for an additional degree
 of transparency):
