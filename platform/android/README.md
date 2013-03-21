@@ -1,3 +1,12 @@
+### Usage
+
+	TextView text = (TextView) findViewById(R.id.demoText);
+	Bypass bypass = new Bypass();
+	String markdownString = "#Markdown!";
+	CharSequence string = bypass.markdownToSpannable(markdownString);
+	text.setText(string);
+	text.setMovementMethod(LinkMovementMethod.getInstance());
+
 ### Maven Dependency
 If you just want to include Bypass in your Maven project, add the following
 dependency block to your `pom.xml`:
