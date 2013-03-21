@@ -9,8 +9,7 @@ similar to the HTML DOM. This code is shared between both platforms.
 Bypass is very easy to use. Ultimately, you will end up creating a
 `BPMarkdownView`, supplying that view with markdown as an `NSString`, and then
 displaying it like you would any other view in your heirarchy. `BPMarkdownView`
-descends from `UIScrollView`, so you can supply large bodies of markdown, and it
-will display it for you.
+descends from `UIScrollView`, so you can supply large bodies of markdown.
 
 It features nicely stylized text for typical usage, tappable links, and a smooth
 crossfade between represantations for different device orientations.
