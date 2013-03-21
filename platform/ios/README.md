@@ -12,7 +12,7 @@ displaying it like you would any other view in your heirarchy. `BPMarkdownView`
 descends from `UIScrollView`, so you can supply large bodies of markdown.
 
 It features nicely stylized text for typical usage, tappable links, and a smooth
-crossfade between represantations for different device orientations.
+crossfade between representations for different device orientations.
 
 ## Requirements
 
