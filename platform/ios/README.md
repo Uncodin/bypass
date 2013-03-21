@@ -91,7 +91,7 @@ of this use case.
 ## Performance
 
 It's a bit challenging to compare Bypass to, say a `UITextView` representing an
-attributed string because the `BPMarkdownView` renders text, because the
+attributed string, because the
 interesting work happens in different places. Essentially, what I deemed most
 appropriate to compare were a `UIViewController` that populates a `UITextView`
 with an `NSAttributedString`, and `BPMarkdownView`'s `layoutSubviews` method.
