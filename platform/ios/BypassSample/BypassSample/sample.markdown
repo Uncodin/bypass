@@ -1,6 +1,6 @@
 #Header sizes
 ##Smaller header
-##Even smaller header
+###Even smaller header
 
 Paragraphs are obviously supported along with all the fancy text styling you could want.
 There is *italic*, **bold** and ***bold italic***. Even links are supported, visit the
