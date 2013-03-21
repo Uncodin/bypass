@@ -46,10 +46,30 @@ str = env->GetStringUTFChars(markdown, NULL);</code>
 			<p>Bypass uses <a href="http://fossil.instinctive.eu/libsoldout/index">libsoldout</a> to parse the Markdown and build a data structure. This data gets passed through the respective binding layer on each platform and is used to build the formatted text (Spanned strings on Android and Attributed Strings on iOS).</p>
 			<p>On Android we were able to get more than a 4x speed increase by bypassing Html.fromHtml(), hence the name Bypass.</p>
 			<hr/>
-			<a name="Android"></a>
-			<h2>Android</h2>
-			<a name="AndroidSetup"></a>
-			<h3>Setup</h3>
+			<h2>Usage</h2>
+			<h3>Android</h3>
+			<pre>
+<code>TextView text = (TextView) findViewById(R.id.demoText);
+Bypass bypass = new Bypass();
+String markdownString = "#Markdown!";
+CharSequence string = bypass.markdownToSpannable(markdownString);
+text.setText(string);
+text.setMovementMethod(LinkMovementMethod.getInstance());</code>
+			</pre>
+			<h3>iOS</h3>
+			<pre><code>NSString *markdownString = @"#Markdown!";
+BPParser *parser = [[BPParser alloc] init];
+BPDocument *document = [parser parse:markdownString];
+
+BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
+NSAttributedString *attributedText = [converter convertDocument:document];
+
+[[self markdownView] setAttributedText:attributedText];</pre></code>
+
+			<hr/>
+
+			<h2>Setup</h2>
+			<h3>Android</h3>
 			There are a few different ways to use Bypass with your project.
 			<ul>
 				<li>
@@ -63,8 +83,8 @@ str = env->GetStringUTFChars(markdown, NULL);</code>
 &lt;/dependency&gt;</code>
 					</pre>
 				</li>
-				<li><ul>
-					<p>For the two following methods you will also need to install the <a href="http://developer.android.com/tools/sdk/ndk/index.html">Android NDK</a> and have the <a href="http://www.boost.org/">Boost libraries installed.</a></p>
+				<li><p>For the two following methods you will also need to install the <a href="http://developer.android.com/tools/sdk/ndk/index.html">Android NDK</a> and have the <a href="http://www.boost.org/">Boost libraries installed.</a></p>
+				<ul>
 				<li>
 					<p>If you're using the <a href="http://www.eclipse.org/">Eclipse Development Environment</a> with the <a href="http://developer.android.com/sdk/eclipse-adt.html">ADT plugin</a> version 0.9.7 or greater you can include Bypass as a library project. Create a new Android project in Eclipse using the <code>library/</code> folder as the existing source. Then, in your project properties, add the created project under the 'Libraries' section of the 'Android' category.</p>
 					You will also needthe <a href="http://tools.android.com/recent/usingthendkplugin">Eclipse NDK Plugin</a>. Then you can right click on the bypass project and select "convert project to native code".</p>
@@ -76,21 +96,7 @@ str = env->GetStringUTFChars(markdown, NULL);</code>
 				</ul>
 				</li>
 			</ul>
-			<a name="AndroidUsage"></a>
-			<h3>Usage</h3>
-			<pre>
-<code>TextView text = (TextView) findViewById(R.id.demoText);
-Bypass bypass = new Bypass();
-String markdownString = "#Markdown!";
-CharSequence string = bypass.markdownToSpannable(markdownString);
-text.setText(string);
-text.setMovementMethod(LinkMovementMethod.getInstance());</code>
-			</pre>
-			<hr/>
-			<a name="iOS"></a>
-			<h2>iOS</h2>
-			<a name="iOSSetup"></a>
-			<h3>Setup</h3>
+			<h3>iOS</h3>
 			<ol>
 				<li>Clone Bypass from <a href="https://github.com/Uncodin/bypass">Github</a></li>
 				<li>Drag <em>.../bypass/platform/ios/Bypass/Bypass.xcodeproj</em> into your project from the Finder</li>
@@ -100,21 +106,6 @@ text.setMovementMethod(LinkMovementMethod.getInstance());</code>
 				<li>Add libBypass.a to the list of libraries to link against</li>
 			</ol>
 
-			<a name="iOSUsage"></a>
-
-			<h3>Usage</h3>
-
-			<p>The following example shows the simplest usage of Bypass. You
-			can see more in the README.md file on Github.</p>
-
-<pre><code>NSString *markdownString = @"#Markdown!";
-BPParser *parser = [[BPParser alloc] init];
-BPDocument *document = [parser parse:markdownString];
-
-BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
-NSAttributedString *attributedText = [converter convertDocument:document];
-
-[[self markdownView] setAttributedText:attributedText];</pre></code>
 		</div>
 	</body>
 </html>
