@@ -35,8 +35,8 @@ github page for Bypass [here](https://github.com/Uncodin/bypass).
 
 ## Code Block Support
 
-const char* str;
-str = env->GetStringUTFChars(markdown, NULL);</code>
+    const char* str;
+    str = env->GetStringUTFChars(markdown, NULL);</code>
 			</pre>
 			</div>
 			<img class="sample" src="android_device_screen.png"/>
@@ -98,14 +98,36 @@ NSAttributedString *attributedText = [converter convertDocument:document];
 			</ul>
 			<h3>iOS</h3>
 			<ol>
-				<li>Clone Bypass from <a href="https://github.com/Uncodin/bypass">Github</a></li>
-				<li>Drag <em>.../bypass/platform/ios/Bypass/Bypass.xcodeproj</em> into your project from the Finder</li>
-				<li>In Xcode, open the target settings
-				<li>Select the <em>Build Phases</em> tab</li>
-				<li>Add Bypass as a target dependency</li>
-				<li>Add libBypass.a to the list of libraries to link against</li>
+				<li>Clone bypass from Github.</li>
+				<li>Drag <code>bypass/platform/ios/Bypass/Bypass.xcodeproj</code> into your project from the Finder.</li>
+				<li>Open your target settings.</li>
+				<li>Select the Build Phases tab.</li>
+				<li>Add Bypass as a target dependency.</li>
+				<li>Add <code>libBypass.a</code>, <code>CoreGraphics.framework</code>, <code>CoreText.framework</code>,
+				<code>Foundation.framework</code>, and <code>QuartzCore.framework</code>, and <code>UIKit.framework</code> to the
+				list of required libraries to link against, if they aren't already included.</li>
+				<li>Modify your build settings so they have the following values:
+				<ul>
+				<li>Linking
+				<ul>
+				  <li><strong>Other Linker Flags</strong>: <code>-ObjC</code></li>
+				</li></ul>
+				<li>Search Paths
+				<ul>
+				  <li><strong>Header Search Paths</strong>: <code>$(SRCROOT)/&lt;relative path to bypass home&gt;/Bypass/Bypass</code></li></ul></li>
+				<li>Apple LLVM Compile 4.2 - Language
+				<ul>
+				  <li><strong>C++ Standard Library</strong>: <code>libc++ (LLVM C++ standard library with C++11 support)</code></li></ul></li>
 			</ol>
 
+			See the <a href="https://github.com/Uncodin/bypass/tree/master/platform/ios">iOS README.md</a> for more details setup instructions.
+
+			<a name="iOSUsage"></a>
+
+			<h3>Usage</h3>
+
+<pre><code>BPMarkdownView *markdownView = [[BPMarkdownView alloc] initWithFrame:someRect];
+[markdownView setMarkdown:@"#Markdown!"];</pre></code>
 		</div>
 	</body>
 </html>
