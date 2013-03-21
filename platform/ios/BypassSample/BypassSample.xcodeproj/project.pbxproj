@@ -137,7 +137,6 @@
 		5E5BC78B16E0049800165503 = {
 			isa = PBXGroup;
 			children = (
-				5E007AF116FA325100F8CFFD /* QuartzCore.framework */,
 				6BE4F70116EFCF8E00670C16 /* iPhone.png */,
 				6BE4F6FF16EFCD8C00670C16 /* iPhone Retina.png */,
 				5E5BC79D16E0049800165503 /* BypassSample */,
@@ -164,6 +163,7 @@
 				5E5BC8A216E7C25700165503 /* CoreText.framework */,
 				5E5BC79916E0049800165503 /* Foundation.framework */,
 				5E5BC7BB16E0049900165503 /* SenTestingKit.framework */,
+				5E007AF116FA325100F8CFFD /* QuartzCore.framework */,
 				5E5BC79716E0049800165503 /* UIKit.framework */,
 			);
 			name = Frameworks;
