@@ -47,7 +47,8 @@ public class Bypass {
 		SpannableStringBuilder builder = new SpannableStringBuilder();
 		String text = element.getText();
 		if (element.size() == 0
-				&& element.getParent().getType() != Type.BLOCK_CODE) {
+				&& element.getParent() != null
+                && element.getParent().getType() != Type.BLOCK_CODE) {
 			text = text.replace('\n', ' ');
 		}
 		if (element.getParent() != null
