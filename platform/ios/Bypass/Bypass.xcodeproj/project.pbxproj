@@ -447,7 +447,7 @@
 		5E5BC83E16E004FA00165503 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BOOST_HOME = /opt/local/include;
+				BOOST_HOME = /usr/local/include;
 				DSTROOT = /tmp/Bypass.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Bypass/Bypass-Prefix.pch";
@@ -462,7 +462,7 @@
 		5E5BC83F16E004FA00165503 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BOOST_HOME = /opt/local/include;
+				BOOST_HOME = /usr/local/include;
 				DSTROOT = /tmp/Bypass.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Bypass/Bypass-Prefix.pch";
