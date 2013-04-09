@@ -84,8 +84,8 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
         
         _defaultFont = CTFontCreateWithName(systemFontName, systemFontSize, NULL);
     }
-    
-    return _defaultFont;
+  assert(_defaultFont != NULL);
+  return _defaultFont;
 }
 
 - (CTFontRef)boldFont
@@ -97,8 +97,8 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
                                                        kCTFontBoldTrait,
                                                        kCTFontBoldTrait);
     }
-    
-    return _boldFont;
+  assert(_boldFont != NULL);
+  return _boldFont;
 }
 
 - (CTFontRef)italicFont
@@ -109,9 +109,25 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
                                                          NULL,
                                                          kCTFontItalicTrait,
                                                          kCTFontItalicTrait);
+      if (_italicFont == NULL) {
+        CGFloat systemFontSize = [UIFont systemFontSize];
+        UIFont *systemFont = [UIFont italicSystemFontOfSize:systemFontSize];
+        CFStringRef systemFontName = (__bridge CFStringRef) [systemFont fontName];
+
+        _italicFont = CTFontCreateWithName(systemFontName, systemFontSize, NULL);
+      }
+      if (_italicFont == NULL) {
+        CGAffineTransform matrix = {1, 0, 0.11/* skew angle */, 1, 0, 0};
+        _italicFont = CTFontCreateCopyWithAttributes([self defaultFont], 0.0, &matrix, NULL);
+        CFStringRef fontName = CTFontCopyFullName([self defaultFont]);
+        NSLog(@"Warning: can't find an italic font variant for font %@. Fallback to matrix/skew used.",
+              (__bridge NSString *) fontName);
+        CFRelease(fontName);
+      }
     }
-    
-    return _italicFont;
+
+  assert(_italicFont != NULL);
+  return _italicFont;
 }
 
 - (CTFontRef)boldItalicFont
@@ -125,8 +141,8 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
                                                              traits,
                                                              mask);
     }
-    
-    return _boldItalicFont;
+  assert(_boldItalicFont != NULL);
+  return _boldItalicFont;
 }
 
 - (CTFontRef)monospaceFont
@@ -135,8 +151,8 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
         _monospaceFont = CTFontCreateWithName(CFSTR("Courier"),
                                               CTFontGetSize([self defaultFont]) - 2, NULL);
     }
-    
-    return _monospaceFont;
+  assert(_monospaceFont != NULL);
+  return _monospaceFont;
 }
 
 - (CTFontRef)quoteFont
@@ -316,6 +332,13 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
                attributes:(NSMutableDictionary *)attributes
                  toTarget:(NSMutableAttributedString *)target
 {
+  
+  if([self UIFontFromCTFont:font] == nil)
+  {
+    NSLog([element debugDescription]);
+    return;
+  }
+  
     attributes[NSFontAttributeName] = [self UIFontFromCTFont:font];
     
     NSString *text;
