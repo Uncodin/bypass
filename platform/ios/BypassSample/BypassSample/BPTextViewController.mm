@@ -47,12 +47,15 @@
     // Seek out a bypass link attribute. The attributed string renderer will embed the URL
     // as a string into the attributes dictionary of a link.
     
-    NSDictionary *attributes = [[self  attributedText] attributesAtIndex:characterIndex effectiveRange:&effectiveRange];
-    NSString *linkHREF = attributes[BPLinkStyleAttributeName];
-    
-    if (linkHREF != nil) {
-        NSURL *linkURL = [NSURL URLWithString:linkHREF];
-        [[UIApplication sharedApplication] openURL:linkURL];
+    if ([self attributedText].length != 0 ) {
+        
+        NSDictionary *attributes = [[self  attributedText] attributesAtIndex:characterIndex effectiveRange:&effectiveRange];
+        NSString *linkHREF = attributes[BPLinkStyleAttributeName];
+        
+        if (linkHREF != nil) {
+            NSURL *linkURL = [NSURL URLWithString:linkHREF];
+            [[UIApplication sharedApplication] openURL:linkURL];
+        }
     }
 }
 
