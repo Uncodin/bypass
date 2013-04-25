@@ -284,7 +284,17 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
     
     for (i = 0; i < count; i++) {
         CTFrameRef textFrame = CFArrayGetValueAtIndex(pageFrames, i);
-        CGRect textViewFrame = CGRectOffset(pageRect, 0.f, i * CGRectGetHeight(pageRect));
+        CGRect textViewFrame;
+        
+        if (contentSize.height < CGRectGetHeight([self bounds])) {
+            textViewFrame = CGRectMake(0.f,
+                                       0.f,
+                                       CGRectGetWidth(pageRect),
+                                       contentSize.height);
+        } else {
+            textViewFrame = CGRectOffset(pageRect, 0.f, i * CGRectGetHeight(pageRect));
+        }
+        
         BPMarkdownPageView *textView = [[BPMarkdownPageView alloc] initWithFrame:textViewFrame
                                                                        textFrame:textFrame];
         
