@@ -335,7 +335,7 @@ static const CGFloat kParagraphSpacingNone  =  0.0f;
   
   if([self UIFontFromCTFont:font] == nil)
   {
-    NSLog([element debugDescription]);
+    NSLog(@"%@", [element debugDescription]);
     return;
   }
   
