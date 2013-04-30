@@ -21,12 +21,16 @@
 #import <UIKit/UIKit.h>
 #import "BPDocument.h"
 
+@class BPDisplaySettings;
+
 OBJC_EXPORT NSString *const BPLinkStyleAttributeName;
 
 /*!
  \brief Renders a Bypass Document to an `NSAttributedString`.
  */
 @interface BPAttributedStringConverter : NSObject
+
+@property(nonatomic, strong) BPDisplaySettings *displaySettings;
 
 - (NSAttributedString *)convertDocument:(BPDocument *)document;
 
