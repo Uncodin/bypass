@@ -11,18 +11,18 @@
 
 @interface BPDisplaySettings : NSObject
 
-- (CTFontRef)defaultFont;
-- (CTFontRef)boldFont;
-- (CTFontRef)italicFont;
-- (CTFontRef)boldItalicFont;
-- (CTFontRef)monospaceFont;
-- (CTFontRef)quoteFont;
-- (CTFontRef)h1Font;
-- (CTFontRef)h2Font;
-- (CTFontRef)h3Font;
-- (CTFontRef)h4Font;
-- (CTFontRef)h5Font;
-- (CTFontRef)h6Font;
+@property(nonatomic) CTFontRef defaultFont;
+@property(nonatomic) CTFontRef boldFont;
+@property(nonatomic) CTFontRef italicFont;
+@property(nonatomic) CTFontRef boldItalicFont;
+@property(nonatomic) CTFontRef monospaceFont;
+@property(nonatomic) CTFontRef quoteFont;
+@property(nonatomic) CTFontRef h1Font;
+@property(nonatomic) CTFontRef h2Font;
+@property(nonatomic) CTFontRef h3Font;
+@property(nonatomic) CTFontRef h4Font;
+@property(nonatomic) CTFontRef h5Font;
+@property(nonatomic) CTFontRef h6Font;
 
 @property(nonatomic) CGFloat bulletIndentation;
 @property(nonatomic) CGFloat codeIndentation;

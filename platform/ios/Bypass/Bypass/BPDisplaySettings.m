@@ -13,7 +13,6 @@
 
 @implementation BPDisplaySettings
 {
-
   CTFontRef _defaultFont;
   CTFontRef _boldFont;
   CTFontRef _italicFont;
@@ -58,6 +57,66 @@
     if (_h4Font != NULL)         CFRelease(_h4Font);
     if (_h5Font != NULL)         CFRelease(_h5Font);
     if (_h6Font != NULL)         CFRelease(_h6Font);
+}
+
+- (void)setDefaultFont:(CTFontRef)defaultFont
+{
+  _defaultFont = defaultFont;
+}
+
+- (void)setBoldFont:(CTFontRef)boldFont
+{
+  _boldFont = boldFont;
+}
+
+- (void)setItalicFont:(CTFontRef)italicFont
+{
+  _italicFont = italicFont;
+}
+
+- (void)setBoldItalicFont:(CTFontRef)boldItalicFont
+{
+  _boldItalicFont = boldItalicFont;
+}
+
+- (void)setMonospaceFont:(CTFontRef)monospaceFont
+{
+  _monospaceFont = monospaceFont;
+}
+
+- (void)setQuoteFont:(CTFontRef)quoteFont
+{
+  _quoteFont = quoteFont;
+}
+
+- (void)setH1Font:(CTFontRef)h1Font
+{
+  _h1Font = h1Font;
+}
+
+- (void)setH2Font:(CTFontRef)h2Font
+{
+  _h2Font = h2Font;
+}
+
+- (void)setH3Font:(CTFontRef)h3Font
+{
+  _h3Font = h3Font;
+}
+
+- (void)setH4Font:(CTFontRef)h4Font
+{
+  _h4Font = h4Font;
+}
+
+- (void)setH5Font:(CTFontRef)h5Font
+{
+  _h5Font = h5Font;
+}
+
+- (void)setH6Font:(CTFontRef)h6Font
+{
+  _h6Font = h6Font;
 }
 
 - (CTFontRef)defaultFont
