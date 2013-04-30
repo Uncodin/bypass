@@ -23,6 +23,7 @@
 #import "BPMarkdownView.h"
 #import "BPMarkdownPageView.h"
 #import "BPParser.h"
+#import "BPDisplaySettings.h"
 
 /*
  * The standard margin of the UIKit views. This value was based on human inspection.
@@ -50,9 +51,11 @@ static const NSTimeInterval kReorientationDuration = 0.3;
  *
  */
 static CFArrayRef
-BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedContentSizeOut) {
+BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedContentSizeOut, BPDisplaySettings *settings)
+{
     BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
-    
+    converter.displaySettings = settings;
+
     CFAttributedStringRef attributedText;
     attributedText = (__bridge CFAttributedStringRef) [converter convertDocument:document];
     
@@ -197,6 +200,10 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
 {
     _markdown = markdown;
     _document = nil;
+  for (BPMarkdownPageView *view in _pageViews) {
+    [view removeFromSuperview];
+  }
+  [_pageViews removeAllObjects];
 }
 
 /*
@@ -230,7 +237,7 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
         pageRect.size = pageSize;
         
         CGSize contentSize;
-        CFArrayRef pageFrames = BPCreatePageFrames(_document, pageSize, &contentSize);
+        CFArrayRef pageFrames = BPCreatePageFrames(_document, pageSize, &contentSize, self.displaySettings);
         
         if ([self isAsynchronous]) {
             dispatch_sync(dispatch_get_main_queue(), ^{

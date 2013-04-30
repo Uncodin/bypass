@@ -43,8 +43,6 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 
 - (NSAttributedString *)convertDocument:(BPDocument *)document
 {
-   _displaySettings = [[BPDisplaySettings alloc] init];
-
     NSMutableAttributedString *target = [[NSMutableAttributedString alloc] init];
 
     for (BPElement *element in [document elements]) {
