@@ -100,7 +100,7 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
         
         y += CGRectGetHeight(pageRect);
     }
-    
+    CFRelease(framesetter);
     return frames;
 }
 
@@ -176,7 +176,7 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
                               completion:nil];
     } else if ([self viewHasBeenReoriented]) {
         _previousPageViews = [NSArray arrayWithArray:_pageViews];
-        
+        [_pageViews removeAllObjects];
         [self renderMarkdownWithDuration:kReorientationDuration
                               completion:^(BOOL finished) {
                                   for (UIView *pageView in _previousPageViews) {
@@ -233,9 +233,7 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
         [_parser parse:_markdown];
         CGSize pageSize = CGSizeMake(CGRectGetWidth([self frame]) - 2 * kUIStandardMargin,
                                      CGRectGetHeight([self frame]));
-        CGRect pageRect = CGRectZero;
-        pageRect.size = pageSize;
-        
+
         CGSize contentSize;
         CFArrayRef pageFrames = BPCreatePageFrames(_document, pageSize, &contentSize, self.displaySettings);
         
@@ -304,7 +302,9 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
         
         BPMarkdownPageView *textView = [[BPMarkdownPageView alloc] initWithFrame:textViewFrame
                                                                        textFrame:textFrame];
-        
+
+        CFRelease(textFrame); // the textView took ownership, and the retain would be 2 at this point
+
         [textView setTag:i + 1];
         [textView setAlpha:0.f];
         
