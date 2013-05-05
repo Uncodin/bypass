@@ -68,7 +68,7 @@ BPCreatePageFrames(CGSize pageSize, CGSize *suggestedContentSizeOut, CFAttribute
                                                                         NULL,
                                                                         constraints,
                                                                         &fitRange);
-    *suggestedContentSizeOut = suggestedSize;
+    *suggestedContentSizeOut = suggestedSize; // TODO:ContentSize is too small
     
     pageRect.size.height = MIN(pageSize.height, suggestedSize.height);
     
@@ -221,15 +221,14 @@ BPCreatePageFrames(CGSize pageSize, CGSize *suggestedContentSizeOut, CFAttribute
            _attributedText = [converter convertDocument:_document];
         }
 
-        CGSize pageSize = CGSizeMake(CGRectGetWidth([self frame]) - 2 * kUIStandardMargin,
+        CGSize pageSize = CGSizeMake(CGRectGetWidth([self frame]) - (self.contentInset.left + self.contentInset.right),
                                      CGRectGetHeight([self frame]));
 
         CGSize contentSize;
-
-
         CFArrayRef pageFrames = BPCreatePageFrames(pageSize, &contentSize, (__bridge CFAttributedStringRef) _attributedText);
-        
-        if ([self isAsynchronous]) {
+        contentSize.width = MIN(contentSize.width, pageSize.width);
+
+      if ([self isAsynchronous]) {
             dispatch_sync(dispatch_get_main_queue(), ^{
                 [self createAndDisplayViewsFromPageFrames:pageFrames
                                                  pageSize:pageSize
