@@ -35,9 +35,9 @@
     self.codeIndentation = 10.0f;
     self.quoteIndentation = 23.0f;
     self.lineSpacingSmall = 1.2f;
-    self.paragraphSpacingLarge = 20.0f;
-    self.paragraphSpacingSmall = 10.0f;
-    self.paragraphSpacingNone = 0.0f;
+    self.paragraphSpacing = 20.0f;
+    self.paragraphSpacingHeading = 10.0f;
+    self.paragraphSpacingCode = 0.0f;
   }
   return self;
 }

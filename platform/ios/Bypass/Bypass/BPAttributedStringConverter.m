@@ -228,7 +228,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings quoteFont]];
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacingSmall]];
+    [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacingHeading]];
     [paragraphStyle setFirstLineHeadIndent:[_displaySettings quoteIndentation]];
     [paragraphStyle setHeadIndent:[_displaySettings quoteIndentation]];
     [paragraphStyle setTailIndent:-[_displaySettings quoteIndentation]];
@@ -246,7 +246,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     attributes[NSForegroundColorAttributeName] = [UIColor grayColor];
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacingNone]];
+    [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacingCode]];
     [paragraphStyle setFirstLineHeadIndent:[_displaySettings codeIndentation]];
     [paragraphStyle setHeadIndent:[_displaySettings codeIndentation]];
     [paragraphStyle setTailIndent:-[_displaySettings codeIndentation]];
@@ -261,7 +261,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
                       toTarget:(NSMutableAttributedString *)target
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacingLarge]];
+    [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacing]];
     [paragraphStyle setLineSpacing:1.1f];
     
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle};
@@ -336,7 +336,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 {
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacingSmall]];
+    [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacingHeading]];
     
     attributes[NSParagraphStyleAttributeName] = paragraphStyle;
     
