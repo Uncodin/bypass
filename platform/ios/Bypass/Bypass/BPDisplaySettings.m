@@ -34,10 +34,13 @@
     self.bulletIndentation = 13.0f;
     self.codeIndentation = 10.0f;
     self.quoteIndentation = 23.0f;
-    self.lineSpacingSmall = 1.2f;
     self.paragraphSpacing = 20.0f;
     self.paragraphSpacingHeading = 10.0f;
     self.paragraphSpacingCode = 0.0f;
+
+    self.paragraphLineSpacing = 1.2f;
+    self.paragraphLineSpacingHeading = 1.2f;
+
   }
   return self;
 }

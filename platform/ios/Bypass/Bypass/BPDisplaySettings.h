@@ -28,8 +28,12 @@
 @property(nonatomic) CGFloat codeIndentation;
 @property(nonatomic) CGFloat quoteIndentation;
 @property(nonatomic) CGFloat lineSpacingSmall;
+
 @property(nonatomic) CGFloat paragraphSpacing;
 @property(nonatomic) CGFloat paragraphSpacingHeading;
 @property(nonatomic) CGFloat paragraphSpacingCode;
+
+@property(nonatomic) CGFloat paragraphLineSpacing;
+@property(nonatomic) CGFloat paragraphLineSpacingHeading;
 
 @end
