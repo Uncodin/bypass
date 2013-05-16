@@ -36,6 +36,8 @@
 @property(nonatomic) CGFloat paragraphLineSpacing;
 @property(nonatomic) CGFloat paragraphLineSpacingHeading;
 
+@property(nonatomic) CGFloat firstParagraphFirstLineHeadIndent;
+
 @property(nonatomic) CGFloat paragraphFirstLineHeadIndent;
 @property(nonatomic) CGFloat paragraphHeadIndent;
 

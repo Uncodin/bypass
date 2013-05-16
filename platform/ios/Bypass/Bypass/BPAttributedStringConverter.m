@@ -24,6 +24,10 @@
 
 NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 
+@interface BPAttributedStringConverter ()
+@property(nonatomic) BOOL renderedFirstParagraph;
+@end
+
 @implementation BPAttributedStringConverter
 
 
@@ -264,6 +268,11 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacing]];
     [paragraphStyle setLineSpacing:[_displaySettings paragraphLineSpacing]];
     [paragraphStyle setFirstLineHeadIndent:[_displaySettings paragraphFirstLineHeadIndent]];
+
+    if(!self.renderedFirstParagraph) {
+        [paragraphStyle setFirstLineHeadIndent:[_displaySettings firstParagraphFirstLineHeadIndent]];
+        self.renderedFirstParagraph = true;
+    }
     [paragraphStyle setHeadIndent:[_displaySettings paragraphHeadIndent]];
 
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle};
