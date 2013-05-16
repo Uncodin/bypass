@@ -263,7 +263,9 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacing]];
     [paragraphStyle setLineSpacing:[_displaySettings paragraphLineSpacing]];
-    
+    [paragraphStyle setFirstLineHeadIndent:[_displaySettings paragraphFirstLineHeadIndent]];
+    [paragraphStyle setHeadIndent:[_displaySettings paragraphHeadIndent]];
+
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle};
     [target addAttributes:attributes range:effectiveRange];
 }
@@ -338,7 +340,8 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacingHeading]];
     [paragraphStyle setLineSpacing:[_displaySettings paragraphLineSpacingHeading]];
-
+    [paragraphStyle setFirstLineHeadIndent:[_displaySettings headerFirstLineHeadIndent]];
+    [paragraphStyle setHeadIndent:[_displaySettings headerHeadIndent]];
     attributes[NSParagraphStyleAttributeName] = paragraphStyle;
     
     // Override font weight and size attributes (but preserve all other attributes)
