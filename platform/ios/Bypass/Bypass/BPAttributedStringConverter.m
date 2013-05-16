@@ -360,6 +360,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
             attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings h1Font]];
             break;
         case 2:
+            [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacingH2]];
             attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings h2Font]];
             break;
         case 3:

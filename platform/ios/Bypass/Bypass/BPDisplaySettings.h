@@ -31,6 +31,8 @@
 
 @property(nonatomic) CGFloat paragraphSpacing;
 @property(nonatomic) CGFloat paragraphSpacingHeading;
+@property(nonatomic) CGFloat paragraphSpacingH2;
+
 @property(nonatomic) CGFloat paragraphSpacingCode;
 
 @property(nonatomic) CGFloat paragraphLineSpacing;
