@@ -30,6 +30,15 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 
 @implementation BPAttributedStringConverter
 
+#pragma mark Lifecycle
+
+- (id)init {
+    if ((self = [super init])) {
+        _displaySettings = [[BPDisplaySettings alloc] init];
+    }
+
+    return self;
+}
 
 #pragma mark Fonts
 
@@ -52,6 +61,8 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     for (BPElement *element in [document elements]) {
         [self convertElement:element toTarget:target];
     }
+
+    [target addAttribute:NSForegroundColorAttributeName value:[_displaySettings defaultColor] range:NSMakeRange(0, target.length)];
     
     return target;
 }

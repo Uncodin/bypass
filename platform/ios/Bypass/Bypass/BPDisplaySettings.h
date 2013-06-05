@@ -11,6 +11,8 @@
 
 @interface BPDisplaySettings : NSObject
 
+@property(nonatomic) UIColor *defaultColor;
+
 @property(nonatomic) CTFontRef defaultFont;
 @property(nonatomic) CTFontRef boldFont;
 @property(nonatomic) CTFontRef italicFont;

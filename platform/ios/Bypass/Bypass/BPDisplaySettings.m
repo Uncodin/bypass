@@ -31,6 +31,7 @@
 {
   self = [super init];
   if (self) {
+    self.defaultColor = [UIColor blackColor];
     self.bulletIndentation = 13.0f;
     self.codeIndentation = 10.0f;
     self.quoteIndentation = 23.0f;
@@ -65,73 +66,73 @@
 - (void)setDefaultFont:(CTFontRef)defaultFont
 {
   if (_defaultFont) {CFRelease(_defaultFont);}
-  _defaultFont = defaultFont;
+  _defaultFont = CFRetain(defaultFont);
 }
 
 - (void)setBoldFont:(CTFontRef)boldFont
 {
   if (_boldFont) {CFRelease(_boldFont);}
-  _boldFont = boldFont;
+  _boldFont = CFRetain(boldFont);
 }
 
 - (void)setItalicFont:(CTFontRef)italicFont
 {
   if (_italicFont) {CFRelease(_italicFont);}
-  _italicFont = italicFont;
+  _italicFont = CFRetain(italicFont);
 }
 
 - (void)setBoldItalicFont:(CTFontRef)boldItalicFont
 {
   if (_boldItalicFont) {CFRelease(_boldItalicFont);}
-  _boldItalicFont = boldItalicFont;
+  _boldItalicFont = CFRetain(boldItalicFont);
 }
 
 - (void)setMonospaceFont:(CTFontRef)monospaceFont
 {
   if (_monospaceFont) {CFRelease(_monospaceFont);}
-  _monospaceFont = monospaceFont;
+  _monospaceFont = CFRetain(monospaceFont);
 }
 
 - (void)setQuoteFont:(CTFontRef)quoteFont
 {
   if (_quoteFont) {CFRelease(_quoteFont);}
-  _quoteFont = quoteFont;
+  _quoteFont = CFRetain(quoteFont);
 }
 
 - (void)setH1Font:(CTFontRef)h1Font
 {
   if (_h1Font) {CFRelease(_h1Font);}
-  _h1Font = h1Font;
+  _h1Font = CFRetain(h1Font);
 }
 
 - (void)setH2Font:(CTFontRef)h2Font
 {
   if (_h2Font) {CFRelease(_h2Font);}
-  _h2Font = h2Font;
+  _h2Font = CFRetain(h2Font);
 }
 
 - (void)setH3Font:(CTFontRef)h3Font
 {
   if (_h3Font) {CFRelease(_h3Font);}
-  _h3Font = h3Font;
+  _h3Font = CFRetain(h3Font);
 }
 
 - (void)setH4Font:(CTFontRef)h4Font
 {
   if (_h4Font) {CFRelease(_h4Font);}
-  _h4Font = h4Font;
+  _h4Font = CFRetain(h4Font);
 }
 
 - (void)setH5Font:(CTFontRef)h5Font
 {
   if (_h5Font) {CFRelease(_h5Font);}
-  _h5Font = h5Font;
+  _h5Font = CFRetain(h5Font);
 }
 
 - (void)setH6Font:(CTFontRef)h6Font
 {
   if (_h6Font) {CFRelease(_h6Font);}
-  _h6Font = h6Font;
+  _h6Font = CFRetain(h6Font);
 }
 
 - (CTFontRef)defaultFont
