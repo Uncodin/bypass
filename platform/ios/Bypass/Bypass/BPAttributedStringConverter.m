@@ -52,6 +52,8 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     for (BPElement *element in [document elements]) {
         [self convertElement:element toTarget:target];
     }
+
+    [target addAttribute:NSForegroundColorAttributeName value:_displaySettings.defaultColor range:NSMakeRange(0, target.length)];
     
     return target;
 }
