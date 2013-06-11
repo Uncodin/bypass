@@ -32,6 +32,8 @@
   self = [super init];
   if (self) {
     self.defaultColor = [UIColor blackColor];
+    self.quoteColor = [UIColor darkGrayColor];
+    self.linkColor = [UIColor blueColor];
     self.bulletIndentation = 13.0f;
     self.codeIndentation = 10.0f;
     self.quoteIndentation = 23.0f;

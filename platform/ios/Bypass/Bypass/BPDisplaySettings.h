@@ -12,6 +12,8 @@
 @interface BPDisplaySettings : NSObject
 
 @property(nonatomic) UIColor *defaultColor;
+@property(nonatomic) UIColor *quoteColor;
+@property(nonatomic) UIColor *linkColor;
 
 @property(nonatomic) CTFontRef defaultFont;
 @property(nonatomic) CTFontRef boldFont;

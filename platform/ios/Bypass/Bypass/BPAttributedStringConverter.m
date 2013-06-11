@@ -220,7 +220,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 {
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
     attributes[NSUnderlineStyleAttributeName] = @(NSUnderlineStyleSingle);
-    attributes[NSForegroundColorAttributeName] = [UIColor blueColor];
+    attributes[NSForegroundColorAttributeName] = [_displaySettings linkColor];
     attributes[BPLinkStyleAttributeName] = element[@"link"];
     [self renderSpanElement:element
                    withFont:[_displaySettings defaultFont]
@@ -241,6 +241,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 {
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
     attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings quoteFont]];
+    attributes[NSForegroundColorAttributeName] = [_displaySettings quoteColor];
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacingHeading]];
