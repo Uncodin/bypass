@@ -40,18 +40,6 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     return self;
 }
 
-#pragma mark Fonts
-
-- (UIFont *)UIFontFromCTFont:(CTFontRef)ctFont
-{
-    NSString *fontName;
-    fontName = (__bridge_transfer NSString *) CTFontCopyName(ctFont, kCTFontPostScriptNameKey);
-    
-    CGFloat fontSize = CTFontGetSize(ctFont);
-    UIFont *font = [UIFont fontWithName:fontName size:fontSize];
-    return font;
-}
-
 #pragma mark Rendering
 
 - (NSAttributedString *)convertDocument:(BPDocument *)document
@@ -147,7 +135,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 #pragma mark Span Element Rendering
 
 - (void)renderSpanElement:(BPElement *)element
-                 withFont:(CTFontRef)font
+                 withFont:(UIFont *)font
                  toTarget:(NSMutableAttributedString *)target
 {
     [self renderSpanElement:element
@@ -157,18 +145,18 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 }
 
 - (void)renderSpanElement:(BPElement *)element
-                 withFont:(CTFontRef)font
+                 withFont:(UIFont *)font
                attributes:(NSMutableDictionary *)attributes
                  toTarget:(NSMutableAttributedString *)target
 {
   
-  if([self UIFontFromCTFont:font] == nil)
+  if(font == nil)
   {
     NSLog(@"%@", [element debugDescription]);
     return;
   }
   
-    attributes[NSFontAttributeName] = [self UIFontFromCTFont:font];
+    attributes[NSFontAttributeName] = font;
     
     NSString *text;
     
@@ -240,7 +228,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
                        toTarget:(NSMutableAttributedString *)target
 {
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings quoteFont]];
+    attributes[NSFontAttributeName] = [_displaySettings quoteFont];
     attributes[NSForegroundColorAttributeName] = [_displaySettings quoteColor];
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -258,7 +246,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
                       toTarget:(NSMutableAttributedString *)target
 {
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings monospaceFont]];
+    attributes[NSFontAttributeName] = [_displaySettings monospaceFont];
     attributes[NSForegroundColorAttributeName] = [_displaySettings codeColor];
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -324,7 +312,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     }
     
     NSDictionary *bulletAttributes = @{
-        NSFontAttributeName            : [self UIFontFromCTFont:[_displaySettings monospaceFont]],
+        NSFontAttributeName            : [_displaySettings monospaceFont],
         NSForegroundColorAttributeName : bulletColor
     };
     
@@ -369,26 +357,26 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     
     switch ([element[@"level"] integerValue]) {
         case 1:
-            attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings h1Font]];
+            attributes[NSFontAttributeName] = [_displaySettings h1Font];
             break;
         case 2:
             [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacingH2]];
-            attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings h2Font]];
+            attributes[NSFontAttributeName] = [_displaySettings h2Font];
             break;
         case 3:
-            attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings h3Font]];
+            attributes[NSFontAttributeName] = [_displaySettings h3Font];
             break;
         case 4:
-            attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings h4Font]];
+            attributes[NSFontAttributeName] = [_displaySettings h4Font];
             break;
         case 5:
-            attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings h5Font]];
+            attributes[NSFontAttributeName] = [_displaySettings h5Font];
             break;
         case 6:
-            attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings h6Font]];
+            attributes[NSFontAttributeName] = [_displaySettings h6Font];
             break;
         default:
-            attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings defaultFont]];
+            attributes[NSFontAttributeName] = [_displaySettings defaultFont];
             break;
     }
     

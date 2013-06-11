@@ -16,18 +16,18 @@
 @property(nonatomic) UIColor *codeColor;
 @property(nonatomic) UIColor *linkColor;
 
-@property(nonatomic) CTFontRef defaultFont;
-@property(nonatomic) CTFontRef boldFont;
-@property(nonatomic) CTFontRef italicFont;
-@property(nonatomic) CTFontRef boldItalicFont;
-@property(nonatomic) CTFontRef monospaceFont;
-@property(nonatomic) CTFontRef quoteFont;
-@property(nonatomic) CTFontRef h1Font;
-@property(nonatomic) CTFontRef h2Font;
-@property(nonatomic) CTFontRef h3Font;
-@property(nonatomic) CTFontRef h4Font;
-@property(nonatomic) CTFontRef h5Font;
-@property(nonatomic) CTFontRef h6Font;
+@property(nonatomic) UIFont *defaultFont;
+@property(nonatomic) UIFont *boldFont;
+@property(nonatomic) UIFont *italicFont;
+@property(nonatomic) UIFont *boldItalicFont;
+@property(nonatomic) UIFont *monospaceFont;
+@property(nonatomic) UIFont *quoteFont;
+@property(nonatomic) UIFont *h1Font;
+@property(nonatomic) UIFont *h2Font;
+@property(nonatomic) UIFont *h3Font;
+@property(nonatomic) UIFont *h4Font;
+@property(nonatomic) UIFont *h5Font;
+@property(nonatomic) UIFont *h6Font;
 
 @property(nonatomic) CGFloat bulletIndentation;
 @property(nonatomic) CGFloat codeIndentation;
