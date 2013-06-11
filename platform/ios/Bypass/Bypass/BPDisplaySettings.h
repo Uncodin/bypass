@@ -13,6 +13,7 @@
 
 @property(nonatomic) UIColor *defaultColor;
 @property(nonatomic) UIColor *quoteColor;
+@property(nonatomic) UIColor *codeColor;
 @property(nonatomic) UIColor *linkColor;
 
 @property(nonatomic) CTFontRef defaultFont;

@@ -259,7 +259,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 {
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
     attributes[NSFontAttributeName] = [self UIFontFromCTFont:[_displaySettings monospaceFont]];
-    attributes[NSForegroundColorAttributeName] = [UIColor grayColor];
+    attributes[NSForegroundColorAttributeName] = [_displaySettings codeColor];
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setParagraphSpacing:[_displaySettings paragraphSpacingCode]];
