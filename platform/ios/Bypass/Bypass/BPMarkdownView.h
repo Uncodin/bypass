@@ -21,6 +21,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol BPMarkdownViewLinkDelegate;
+@class BPDisplaySettings;
 
 @interface BPMarkdownView : UIScrollView
 
@@ -28,6 +29,8 @@
  * The markdown that this view will show.
  */
 @property (strong, nonatomic) NSString *markdown;
+
+@property (strong, nonatomic) BPDisplaySettings *displaySettings;
 
 /*!
  * Whether or not to render the markdown asynchronously. If you are concerned with loading long

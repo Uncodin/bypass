@@ -23,6 +23,7 @@
 #import "BPMarkdownView.h"
 #import "BPMarkdownPageView.h"
 #import "BPParser.h"
+#import "BPDisplaySettings.h"
 
 /*
  * The standard margin of the UIKit views. This value was based on human inspection.
@@ -50,25 +51,14 @@ static const NSTimeInterval kReorientationDuration = 0.3;
  *
  */
 static CFArrayRef
-BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedContentSizeOut) {
-    BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
-    
-    CFAttributedStringRef attributedText;
-    attributedText = (__bridge CFAttributedStringRef) [converter convertDocument:document];
-    
-    CFIndex len = CFAttributedStringGetLength(attributedText);
-    CFMutableAttributedStringRef mutableAttributedText;
-    mutableAttributedText = CFAttributedStringCreateMutableCopy(kCFAllocatorDefault,
-                                                                len,
-                                                                attributedText);
-    
+BPCreatePageFrames(CGSize pageSize, CGSize *suggestedContentSizeOut, CFAttributedStringRef attributedText)
+{
     CFMutableArrayRef frames = CFArrayCreateMutable(kCFAllocatorDefault,
                                                     0,
                                                     &kCFTypeArrayCallBacks);
     CTFramesetterRef framesetter;
-    framesetter = CTFramesetterCreateWithAttributedString(mutableAttributedText);
-    CFRelease(mutableAttributedText);
-    
+    framesetter = CTFramesetterCreateWithAttributedString(attributedText);
+
     CGRect pageRect = CGRectMake(0.f, 0.f, pageSize.width, pageSize.height);
     CGSize constraints = CGSizeMake(CGRectGetWidth(pageRect), CGFLOAT_MAX);
     
@@ -78,7 +68,7 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
                                                                         NULL,
                                                                         constraints,
                                                                         &fitRange);
-    *suggestedContentSizeOut = suggestedSize;
+    *suggestedContentSizeOut = suggestedSize; // TODO:ContentSize is too small
     
     pageRect.size.height = MIN(pageSize.height, suggestedSize.height);
     
@@ -97,7 +87,7 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
         
         y += CGRectGetHeight(pageRect);
     }
-    
+    CFRelease(framesetter);
     return frames;
 }
 
@@ -111,6 +101,7 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
     NSMutableArray *_pageViews;
     NSArray        *_previousPageViews;
     CGRect         _previousFrame;
+    NSAttributedString *_attributedText;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -173,7 +164,7 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
                               completion:nil];
     } else if ([self viewHasBeenReoriented]) {
         _previousPageViews = [NSArray arrayWithArray:_pageViews];
-        
+        [_pageViews removeAllObjects];
         [self renderMarkdownWithDuration:kReorientationDuration
                               completion:^(BOOL finished) {
                                   for (UIView *pageView in _previousPageViews) {
@@ -197,6 +188,10 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
 {
     _markdown = markdown;
     _document = nil;
+    for (BPMarkdownPageView *view in _pageViews) {
+      [view removeFromSuperview];
+    }
+    [_pageViews removeAllObjects];
 }
 
 /*
@@ -217,22 +212,29 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
      */
     
     _previousFrame = [self frame];
-    
+
     void (^createPageFrames)(void) = ^{
         if (_document == nil) {
             _document = [_parser parse:_markdown];
+            BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
+            
+            // Push display settings into the converter
+            
+            if (_displaySettings != nil) {
+                converter.displaySettings = _displaySettings;
+            }
+            
+           _attributedText = [converter convertDocument:_document];
         }
- 
-        [_parser parse:_markdown];
-        CGSize pageSize = CGSizeMake(CGRectGetWidth([self frame]) - 2 * kUIStandardMargin,
+
+        CGSize pageSize = CGSizeMake(CGRectGetWidth([self frame]) - (self.contentInset.left + self.contentInset.right),
                                      CGRectGetHeight([self frame]));
-        CGRect pageRect = CGRectZero;
-        pageRect.size = pageSize;
-        
+
         CGSize contentSize;
-        CFArrayRef pageFrames = BPCreatePageFrames(_document, pageSize, &contentSize);
-        
-        if ([self isAsynchronous]) {
+        CFArrayRef pageFrames = BPCreatePageFrames(pageSize, &contentSize, (__bridge CFAttributedStringRef) _attributedText);
+        contentSize.width = MIN(contentSize.width, pageSize.width);
+
+      if ([self isAsynchronous]) {
             dispatch_sync(dispatch_get_main_queue(), ^{
                 [self createAndDisplayViewsFromPageFrames:pageFrames
                                                  pageSize:pageSize
@@ -297,7 +299,9 @@ BPCreatePageFrames(BPDocument *document, CGSize pageSize, CGSize *suggestedConte
         
         BPMarkdownPageView *textView = [[BPMarkdownPageView alloc] initWithFrame:textViewFrame
                                                                        textFrame:textFrame];
-        
+
+        CFRelease(textFrame); // the textView took ownership, and the retain would be 2 at this point
+
         [textView setTag:i + 1];
         [textView setAlpha:0.f];
         

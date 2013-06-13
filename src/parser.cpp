@@ -165,6 +165,7 @@ namespace Bypass {
 	}
 
 	void Parser::parsedBlockCode(struct buf *ob, struct buf *text) {
+		if(!text) return; // Analyze seems to believe that text can be null here
 		parsedNormalText(ob, text);
 		eraseTrailingControlCharacters(NEWLINE);
 
