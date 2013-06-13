@@ -168,10 +168,12 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     } else {
         text = [[element text] stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
     }
-    
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text
-                                                                         attributes:attributes];
-    [target appendAttributedString:attributedText];
+
+    if (text != nil) {
+        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text
+                                                                             attributes:attributes];
+        [target appendAttributedString:attributedText];
+    }
 }
 
 - (void)renderTextElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
