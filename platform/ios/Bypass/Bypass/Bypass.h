@@ -23,3 +23,4 @@
 #import "BPDocument.h"
 #import "BPMarkdownView.h"
 #import "BPParser.h"
+#import "BPDisplaySettings.h"
