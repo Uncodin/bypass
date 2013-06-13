@@ -25,9 +25,20 @@ dependency block to your `pom.xml`:
 
 [Building And Using](platform/android/README.md)
 
+### Contributors
+
+* Colin Edwards @DDRBoxman
+
 ## iOS
 
 [Building And Using](platform/ios/README.md)
+
+### Contributors
+
+* Damian Carrillo @damiancarrillo
+* Audun Holm Ellertsen @audun
+* Matthias Tretter @myell0w
+* Vinh Nguyen @vinhnx
 
 ## 3rd Party Libraries
 
