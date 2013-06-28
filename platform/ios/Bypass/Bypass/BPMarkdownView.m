@@ -217,7 +217,13 @@ BPCreatePageFrames(CGSize pageSize, CGSize *suggestedContentSizeOut, CFAttribute
         if (_document == nil) {
             _document = [_parser parse:_markdown];
             BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
-            converter.displaySettings = _displaySettings;
+            
+            // Push display settings into the converter
+            
+            if (_displaySettings != nil) {
+                converter.displaySettings = _displaySettings;
+            }
+            
            _attributedText = [converter convertDocument:_document];
         }
 
