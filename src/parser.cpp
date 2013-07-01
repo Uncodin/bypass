@@ -207,26 +207,30 @@ namespace Bypass {
 			boost::split(strs, textString, boost::is_any_of("|"));
 		}
 		if (strs.size() > 0) {
-			int pos = atoi(strs[0].c_str());
-			std::map<int, Element>::iterator elit = elementSoup.find(pos);
+            std::string str0 = strs[0];
 
-			Element element = elit->second;
-			element.setType(type);
+            if (str0.length() > 0) {
+                int pos = atoi(str0.c_str());
+                std::map<int, Element>::iterator elit = elementSoup.find(pos);
 
-			if (extra != NULL && extra->size) {
-				if (element.getType() == LINK) {
-					element.addAttribute("link", std::string(extra->data, extra->data + extra->size));
-				}
-			}
+                Element element = elit->second;
+                element.setType(type);
 
-			if (extra2 != NULL && extra2->size) {
-				if (element.getType() == LINK) {
-					element.addAttribute("title", std::string(extra2->data, extra2->data + extra2->size));
-				}
-			}
+                if (extra != NULL && extra->size) {
+                    if (element.getType() == LINK) {
+                        element.addAttribute("link", std::string(extra->data, extra->data + extra->size));
+                    }
+                }
 
-			elementSoup.erase(pos);
-			elementSoup[pos] = element;
+                if (extra2 != NULL && extra2->size) {
+                    if (element.getType() == LINK) {
+                        element.addAttribute("title", std::string(extra2->data, extra2->data + extra2->size));
+                    }
+                }
+                
+                elementSoup.erase(pos);
+                elementSoup[pos] = element;
+            }
 
 			bufputs(ob, textString.c_str());
 		}
