@@ -77,7 +77,7 @@ namespace Bypass {
 		std::map<int, Element> elementSoup;
 		int elementCount;
 		void handleBlock(Type, struct buf *ob, struct buf *text, int extra = -1);
-		void handleSpan(Type, struct buf *ob, struct buf *text, struct buf *extra = NULL, struct buf *extra2 = NULL);
+		void handleSpan(Type, struct buf *ob, struct buf *text, struct buf *extra = NULL, struct buf *extra2 = NULL, bool output = true);
 		void createSpan(const Element&, struct buf *ob);
 		void eraseTrailingControlCharacters(const std::string& controlCharacters);
 	};

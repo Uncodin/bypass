@@ -198,7 +198,7 @@ namespace Bypass {
 
 	// Span Element Callbacks
 
-	void Parser::handleSpan(Type type, struct buf *ob, struct buf *text, struct buf *extra, struct buf *extra2) {
+	void Parser::handleSpan(Type type, struct buf *ob, struct buf *text, struct buf *extra, struct buf *extra2, bool output) {
 
 		std::vector<std::string> strs;
 		std::string textString;
@@ -229,10 +229,14 @@ namespace Bypass {
                 }
                 
                 elementSoup.erase(pos);
-                elementSoup[pos] = element;
+                if (output) {
+                    elementSoup[pos] = element;
+                }
             }
 
-			bufputs(ob, textString.c_str());
+            if (output) {
+                bufputs(ob, textString.c_str());
+            }
 		}
 		else {
 			Element element;
@@ -262,20 +266,22 @@ namespace Bypass {
 
 	int Parser::parsedEmphasis(struct buf *ob, struct buf *text, char c) {
         if (c == '~') {
-            handleSpan(STRIKETHROUGH, ob, text);
+            handleSpan(STRIKETHROUGH, ob, text, NULL, NULL, false);
+            return 0;
         } else {
             handleSpan(EMPHASIS, ob, text);
+            return 1;
         }
-		return 1;
 	}
 
 	int Parser::parsedTripleEmphasis(struct buf *ob, struct buf *text, char c) {
 		if (c == '~') {
-            handleSpan(STRIKETHROUGH, ob, text);
+            handleSpan(STRIKETHROUGH, ob, text, NULL, NULL, false);
+            return 0;
         } else {
             handleSpan(TRIPLE_EMPHASIS, ob, text);
+            return 1;
         }
-		return 1;
 	}
 
 	int Parser::parsedLink(struct buf *ob, struct buf *link, struct buf *title, struct buf *content) {
