@@ -48,6 +48,7 @@ FOUNDATION_EXPORT const BPElementType BPLink;
 FOUNDATION_EXPORT const BPElementType BPRawHTMLTag;
 FOUNDATION_EXPORT const BPElementType BPTripleEmphasis;
 FOUNDATION_EXPORT const BPElementType BPText;
+FOUNDATION_EXPORT const BPElementType BPStrikethrough;
 
 @interface BPElement : NSObject
 @property (assign, nonatomic, readonly) BPElementType elementType;

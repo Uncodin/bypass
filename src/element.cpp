@@ -152,6 +152,9 @@ namespace Bypass {
 				break;
 			case TEXT:
 				type = "TEXT";
+                break;
+            case STRIKETHROUGH:
+                type = "STRIKETHROUGH";
 				break;
 		}
 

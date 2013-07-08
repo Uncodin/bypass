@@ -67,7 +67,7 @@ struct mkd_renderer mkd_callbacks = {
 
 	/* renderer data */
 	64, // max stack
-	"*_",
+	"*_~",
 	NULL // opaque
 };
 
@@ -252,17 +252,29 @@ namespace Bypass {
 	}
 
 	int Parser::parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c) {
-		handleSpan(DOUBLE_EMPHASIS, ob, text);
+        if (c == '~') {
+            handleSpan(STRIKETHROUGH, ob, text);
+        } else {
+            handleSpan(DOUBLE_EMPHASIS, ob, text);
+        }
 		return 1;
 	}
 
 	int Parser::parsedEmphasis(struct buf *ob, struct buf *text, char c) {
-		handleSpan(EMPHASIS, ob, text);
+        if (c == '~') {
+            handleSpan(STRIKETHROUGH, ob, text);
+        } else {
+            handleSpan(EMPHASIS, ob, text);
+        }
 		return 1;
 	}
 
 	int Parser::parsedTripleEmphasis(struct buf *ob, struct buf *text, char c) {
-		handleSpan(TRIPLE_EMPHASIS, ob, text);
+		if (c == '~') {
+            handleSpan(STRIKETHROUGH, ob, text);
+        } else {
+            handleSpan(TRIPLE_EMPHASIS, ob, text);
+        }
 		return 1;
 	}
 
