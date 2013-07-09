@@ -54,7 +54,7 @@ namespace Bypass {
 		RAW_HTML_TAG    = 0x112,
 		TRIPLE_EMPHASIS = 0x113,
 		TEXT            = 0x114,
-        STRIKETHROUGH   = 0x115
+		STRIKETHROUGH   = 0x115
 	};
 
 	class Element {
