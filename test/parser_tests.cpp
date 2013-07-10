@@ -212,6 +212,55 @@ BOOST_FIXTURE_TEST_CASE(parse_multiple_interspersed_triple_emphasis, F) {
 	BOOST_REQUIRE(document[0][2].size() == 0);
 }
 
+// Strikethrough ---------------------------------------------------------------
+
+BOOST_FIXTURE_TEST_CASE(parse_strikethrough_with_simple_example, F) {
+	Document document = parser.parse("~~hello world~~");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 1);
+	BOOST_REQUIRE(document[0][0].getType() == STRIKETHROUGH);
+	BOOST_REQUIRE(document[0][0].getText() == "hello world");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_single_interspersed_strikethrough, F) {
+	Document document = parser.parse("one ~~two~~ three");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getType() == PARAGRAPH);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == TEXT);
+	BOOST_REQUIRE(document[0][0].getText() == "one ");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == STRIKETHROUGH);
+	BOOST_REQUIRE(document[0][1].getText() == "two");
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == TEXT);
+	BOOST_REQUIRE(document[0][2].getText() == " three");
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(parse_multiple_interspersed_strikethrough, F) {
+	Document document = parser.parse("~~one~~ two ~~three~~");
+
+	BOOST_REQUIRE(document.size() == 1);
+	BOOST_REQUIRE(document[0].getText().length() == 0);
+	BOOST_REQUIRE(document[0].size() == 3);
+	BOOST_REQUIRE(document[0][0].getType() == STRIKETHROUGH);
+	BOOST_REQUIRE(document[0][0].getText() == "one");
+	BOOST_REQUIRE(document[0][0].size() == 0);
+	BOOST_REQUIRE(document[0][1].getType() == TEXT);
+	BOOST_REQUIRE(document[0][1].getText() == " two ");
+	BOOST_REQUIRE(document[0][1].size() == 0);
+	BOOST_REQUIRE(document[0][2].getType() == STRIKETHROUGH);
+	BOOST_REQUIRE(document[0][2].getText() == "three");
+	BOOST_REQUIRE(document[0][2].size() == 0);
+}
+
 // Link ------------------------------------------------------------------------
 
 BOOST_FIXTURE_TEST_CASE(parse_link_with_simple_example, F) {
