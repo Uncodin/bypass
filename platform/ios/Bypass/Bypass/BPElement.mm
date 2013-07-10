@@ -46,6 +46,7 @@ const BPElementType BPLink           = Bypass::LINK;
 const BPElementType BPRawHTMLTag     = Bypass::RAW_HTML_TAG;
 const BPElementType BPTripleEmphasis = Bypass::TRIPLE_EMPHASIS;
 const BPElementType BPText           = Bypass::TEXT;
+const BPElementType BPStrikethrough  = Bypass::STRIKETHROUGH;
 
 @interface BPElement ()
 
@@ -213,6 +214,8 @@ const BPElementType BPText           = Bypass::TEXT;
         elementType = @"BPTripleEmphasis";
     } else if ([self elementType] == BPText) {
         elementType = @"BPText";
+    } else if ([self elementType] == BPStrikethrough) {
+        elementType = @"BPStrikethrough";
     }
     
     NSMutableString *desc = [NSMutableString stringWithString:NSStringFromClass([self class])];
