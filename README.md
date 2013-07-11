@@ -27,7 +27,10 @@ dependency block to your `pom.xml`:
 
 ### Contributors
 
-* Colin Edwards @DDRBoxman
+* [Colin Edwards](https://github.com/DDRBoxman)
+* [Cameron Currie](https://github.com/cwc)
+* [Albert Wang](https://github.com/albert-wang)
+* [Jimi Smith](https://github.com/JimiSmith)
 
 ## iOS
 
@@ -35,10 +38,12 @@ dependency block to your `pom.xml`:
 
 ### Contributors
 
-* Damian Carrillo @damiancarrillo
-* Audun Holm Ellertsen @audun
-* Matthias Tretter @myell0w
-* Vinh Nguyen @vinhnx
+* [Damian Carrillo] (https://github.com/damiancarrillo)
+* [Cameron Currie](https://github.com/cwc)
+* [Albert Wang](https://github.com/albert-wang)
+* [Matthias Tretter] (https://github.com/myell0w)
+* [Audun Holm Ellertsen] (https://github.com/audun)
+* [Vinh Nguyen] (https://github.com/vinhnx)
 
 ## 3rd Party Libraries
 
