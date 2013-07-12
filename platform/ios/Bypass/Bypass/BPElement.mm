@@ -54,7 +54,7 @@ const BPElementType BPStrikethrough  = Bypass::STRIKETHROUGH;
 
 @implementation BPElement
 {
-           Bypass::Element _element;
+           Bypass::Element  _element;
            NSString        *_text;
            NSDictionary    *_attributes;
     __weak BPElement       *_parentElement;

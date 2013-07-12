@@ -1,8 +1,8 @@
 //
-//  BPAttributedStringRenderer.h
+//  BPAccessibilityVisitor.h
 //  Bypass
 //
-//  Created by Damian Carrillo on 3/1/13.
+//  Created by Damian Carrillo on 3/22/13.
 //  Copyright 2013 Uncodin, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,20 +18,17 @@
 //  limitations under the License.
 //
 
-#import <UIKit/UIKit.h>
-#import "BPDocument.h"
+#import <Foundation/Foundation.h>
+#import "BPElementWalker.h"
 
-@class BPDisplaySettings;
-
-OBJC_EXPORT NSString *const BPLinkStyleAttributeName;
+@interface BPAccessibilityVisitor : NSObject<BPElementVisitor>
 
 /*!
- \brief Renders a Bypass Document to an `NSAttributedString`.
+ * \brief Creates and initializes an accessibility visitor to represent an item in the specified container.
  */
-@interface BPAttributedStringConverter : NSObject
+- (id)initWithAccessibilityContainer:(id)container;
 
-@property(nonatomic, strong) BPDisplaySettings *displaySettings;
-
-- (NSAttributedString *)convertDocument:(BPDocument *)document;
+- (NSArray *)accessibleElements;
+- (NSArray *)linkIndices;
 
 @end

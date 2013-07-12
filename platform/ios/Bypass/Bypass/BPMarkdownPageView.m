@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-#import "BPAttributedStringConverter.h"
+#import "BPAttributedTextVisitor.h"
 #import "BPDocument.h"
 #import "BPMarkdownPageView.h"
 

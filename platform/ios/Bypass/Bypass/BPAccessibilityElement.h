@@ -1,8 +1,8 @@
 //
-//  Bypass.h
+//  BPAccessibilityElement.h
 //  Bypass
 //
-//  Created by Damian Carrillo on 2/28/13.
+//  Created by Damian Carrillo on 3/22/13.
 //  Copyright 2013 Uncodin, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,8 @@
 //  limitations under the License.
 //
 
-#import "BPElement.h"
-#import "BPDocument.h"
-#import "BPMarkdownView.h"
-#import "BPParser.h"
-#import "BPDisplaySettings.h"
-#import "BPAttributedTextVisitor.h"
+#import <UIKit/UIKit.h>
+
+@interface BPAccessibilityElement : UIAccessibilityElement
+@property (assign, nonatomic) NSRange textRange;
+@end

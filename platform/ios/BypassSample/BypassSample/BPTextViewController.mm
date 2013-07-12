@@ -66,8 +66,13 @@
     BPParser *parser = [[BPParser alloc] init];
     BPDocument *document = [parser parse:sample];
     
-    BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
-    NSAttributedString *attributedText = [converter convertDocument:document];
+    BPAttributedTextVisitor* textVisitor = [BPAttributedTextVisitor new];
+
+    BPElementWalker* walker = [BPElementWalker new];
+    [walker addElementVisitor:textVisitor];
+    [walker walkDocument:document];
+    
+    NSAttributedString *attributedText = textVisitor.attributedText;
     
     // Warning: The attributed text is being set on a simple UITextView out of convenience. After this has been done,
     //          Bypass' custom text attributes have been stripped. We save a copy to use as a point of reference for

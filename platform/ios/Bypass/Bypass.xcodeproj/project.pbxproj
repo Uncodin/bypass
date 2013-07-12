@@ -7,8 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		58D9DFA414A385A9337D153E /* BPDisplaySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D9DE2F0735C1CEB3500EFF /* BPDisplaySettings.m */; };
 		5E007AEB16FA17D200F8CFFD /* BPMarkdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E007AEA16FA17D100F8CFFD /* BPMarkdownView.m */; };
+		5E58C58817908CE800BACAC0 /* BPAccessibilityElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E58C58517908CE800BACAC0 /* BPAccessibilityElement.m */; };
+		5E58C58917908CE800BACAC0 /* BPAccessibilityVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E58C58717908CE800BACAC0 /* BPAccessibilityVisitor.m */; };
+		5E58C58C17908CFC00BACAC0 /* BPAttributedTextVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E58C58B17908CFC00BACAC0 /* BPAttributedTextVisitor.m */; };
+		5E58C58F17908D2000BACAC0 /* BPElementWalker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E58C58E17908D2000BACAC0 /* BPElementWalker.m */; };
+		5E58C59217908D3300BACAC0 /* BPTextVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E58C59117908D3200BACAC0 /* BPTextVisitor.m */; };
+		5E58C59617908E9900BACAC0 /* BPDisplaySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E58C59517908E9900BACAC0 /* BPDisplaySettings.m */; };
 		5E5BC81C16E004FA00165503 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC81B16E004FA00165503 /* Foundation.framework */; };
 		5E5BC82116E004FA00165503 /* Bypass.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5E5BC82016E004FA00165503 /* Bypass.h */; };
 		5E5BC82B16E004FA00165503 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC82A16E004FA00165503 /* SenTestingKit.framework */; };
@@ -22,7 +27,6 @@
 		5E5BC87B16E11F7300165503 /* BPElementTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC87A16E11F7300165503 /* BPElementTests.mm */; };
 		5E5BC87F16E134C200165503 /* BPDocumentTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC87E16E134C200165503 /* BPDocumentTests.mm */; };
 		5E5BC88216E1448C00165503 /* BPParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC88116E1448C00165503 /* BPParserTests.m */; };
-		5E5BC88716E15C5800165503 /* BPAttributedStringConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC88616E15C5800165503 /* BPAttributedStringConverter.m */; };
 		5E5BC89116E79B2E00165503 /* array.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC88B16E79B2E00165503 /* array.c */; };
 		5E5BC89216E79B2E00165503 /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC88D16E79B2E00165503 /* buffer.c */; };
 		5E5BC89316E79B2E00165503 /* markdown.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E5BC88F16E79B2E00165503 /* markdown.c */; };
@@ -57,10 +61,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		58D9D454C9F2BD2E7F81B4B8 /* BPDisplaySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPDisplaySettings.h; sourceTree = "<group>"; };
-		58D9DE2F0735C1CEB3500EFF /* BPDisplaySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPDisplaySettings.m; sourceTree = "<group>"; };
 		5E007AE916FA17D100F8CFFD /* BPMarkdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPMarkdownView.h; sourceTree = "<group>"; };
 		5E007AEA16FA17D100F8CFFD /* BPMarkdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPMarkdownView.m; sourceTree = "<group>"; };
+		5E58C58417908CE800BACAC0 /* BPAccessibilityElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPAccessibilityElement.h; sourceTree = "<group>"; };
+		5E58C58517908CE800BACAC0 /* BPAccessibilityElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPAccessibilityElement.m; sourceTree = "<group>"; };
+		5E58C58617908CE800BACAC0 /* BPAccessibilityVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPAccessibilityVisitor.h; sourceTree = "<group>"; };
+		5E58C58717908CE800BACAC0 /* BPAccessibilityVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPAccessibilityVisitor.m; sourceTree = "<group>"; };
+		5E58C58A17908CFC00BACAC0 /* BPAttributedTextVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPAttributedTextVisitor.h; sourceTree = "<group>"; };
+		5E58C58B17908CFC00BACAC0 /* BPAttributedTextVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPAttributedTextVisitor.m; sourceTree = "<group>"; };
+		5E58C58D17908D2000BACAC0 /* BPElementWalker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPElementWalker.h; sourceTree = "<group>"; };
+		5E58C58E17908D2000BACAC0 /* BPElementWalker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPElementWalker.m; sourceTree = "<group>"; };
+		5E58C59017908D3200BACAC0 /* BPTextVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPTextVisitor.h; sourceTree = "<group>"; };
+		5E58C59117908D3200BACAC0 /* BPTextVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPTextVisitor.m; sourceTree = "<group>"; };
+		5E58C59417908E9900BACAC0 /* BPDisplaySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPDisplaySettings.h; sourceTree = "<group>"; };
+		5E58C59517908E9900BACAC0 /* BPDisplaySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPDisplaySettings.m; sourceTree = "<group>"; };
 		5E5BC81816E004FA00165503 /* libBypass.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBypass.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5BC81B16E004FA00165503 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5E5BC81F16E004FA00165503 /* Bypass-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bypass-Prefix.pch"; sourceTree = "<group>"; };
@@ -81,8 +95,6 @@
 		5E5BC87D16E12E3100165503 /* BPDocumentPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPDocumentPrivate.h; sourceTree = "<group>"; };
 		5E5BC87E16E134C200165503 /* BPDocumentTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BPDocumentTests.mm; sourceTree = "<group>"; };
 		5E5BC88116E1448C00165503 /* BPParserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPParserTests.m; sourceTree = "<group>"; };
-		5E5BC88516E15C5800165503 /* BPAttributedStringConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPAttributedStringConverter.h; sourceTree = "<group>"; };
-		5E5BC88616E15C5800165503 /* BPAttributedStringConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPAttributedStringConverter.m; sourceTree = "<group>"; };
 		5E5BC88B16E79B2E00165503 /* array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = array.c; path = ../../../../dep/libsoldout/array.c; sourceTree = "<group>"; };
 		5E5BC88C16E79B2E00165503 /* array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = array.h; path = ../../../../dep/libsoldout/array.h; sourceTree = "<group>"; };
 		5E5BC88D16E79B2E00165503 /* buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = buffer.c; path = ../../../../dep/libsoldout/buffer.c; sourceTree = "<group>"; };
@@ -124,6 +136,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5E58C58317908CA300BACAC0 /* Accessibility */ = {
+			isa = PBXGroup;
+			children = (
+				5E58C58417908CE800BACAC0 /* BPAccessibilityElement.h */,
+				5E58C58517908CE800BACAC0 /* BPAccessibilityElement.m */,
+				5E58C58617908CE800BACAC0 /* BPAccessibilityVisitor.h */,
+				5E58C58717908CE800BACAC0 /* BPAccessibilityVisitor.m */,
+			);
+			name = Accessibility;
+			sourceTree = "<group>";
+		};
 		5E5BC80F16E004FA00165503 = {
 			isa = PBXGroup;
 			children = (
@@ -160,6 +183,7 @@
 				5E5BC82016E004FA00165503 /* Bypass.h */,
 				5E5BC85116E0066E00165503 /* BPParser.h */,
 				5E5BC85216E0066E00165503 /* BPParser.mm */,
+				5E58C58317908CA300BACAC0 /* Accessibility */,
 				6BE4F72216F0E90500670C16 /* Model */,
 				6BE4F72416F0E99000670C16 /* View */,
 				5E5BC86716E007AC00165503 /* Soldout */,
@@ -226,16 +250,20 @@
 		6BE4F72216F0E90500670C16 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5E5BC88516E15C5800165503 /* BPAttributedStringConverter.h */,
-				5E5BC88616E15C5800165503 /* BPAttributedStringConverter.m */,
+				5E58C58A17908CFC00BACAC0 /* BPAttributedTextVisitor.h */,
+				5E58C58B17908CFC00BACAC0 /* BPAttributedTextVisitor.m */,
+				5E58C59417908E9900BACAC0 /* BPDisplaySettings.h */,
+				5E58C59517908E9900BACAC0 /* BPDisplaySettings.m */,
 				5E5BC87116E0083D00165503 /* BPDocument.h */,
 				5E5BC87216E0083D00165503 /* BPDocument.mm */,
 				5E5BC87D16E12E3100165503 /* BPDocumentPrivate.h */,
 				5E5BC87416E0085000165503 /* BPElement.h */,
 				5E5BC87516E0085000165503 /* BPElement.mm */,
 				5E5BC87C16E1222A00165503 /* BPElementPrivate.h */,
-				58D9DE2F0735C1CEB3500EFF /* BPDisplaySettings.m */,
-				58D9D454C9F2BD2E7F81B4B8 /* BPDisplaySettings.h */,
+				5E58C58D17908D2000BACAC0 /* BPElementWalker.h */,
+				5E58C58E17908D2000BACAC0 /* BPElementWalker.m */,
+				5E58C59017908D3200BACAC0 /* BPTextVisitor.h */,
+				5E58C59117908D3200BACAC0 /* BPTextVisitor.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -350,18 +378,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E5BC85316E0066E00165503 /* BPParser.mm in Sources */,
+				5E58C58817908CE800BACAC0 /* BPAccessibilityElement.m in Sources */,
 				5E5BC87316E0083D00165503 /* BPDocument.mm in Sources */,
+				5E58C58C17908CFC00BACAC0 /* BPAttributedTextVisitor.m in Sources */,
 				5E5BC87616E0085000165503 /* BPElement.mm in Sources */,
-				5E5BC88716E15C5800165503 /* BPAttributedStringConverter.m in Sources */,
 				5E5BC89116E79B2E00165503 /* array.c in Sources */,
+				5E58C59617908E9900BACAC0 /* BPDisplaySettings.m in Sources */,
 				5E5BC89216E79B2E00165503 /* buffer.c in Sources */,
+				5E58C58F17908D2000BACAC0 /* BPElementWalker.m in Sources */,
 				5E5BC89316E79B2E00165503 /* markdown.c in Sources */,
 				5E5BC89A16E79B6200165503 /* document.cpp in Sources */,
+				5E58C59217908D3300BACAC0 /* BPTextVisitor.m in Sources */,
 				5E5BC89B16E79B6200165503 /* element.cpp in Sources */,
 				5E5BC89C16E79B6200165503 /* parser.cpp in Sources */,
 				6BE4F72716F0E9D100670C16 /* BPMarkdownPageView.m in Sources */,
 				5E007AEB16FA17D200F8CFFD /* BPMarkdownView.m in Sources */,
-				58D9DFA414A385A9337D153E /* BPDisplaySettings.m in Sources */,
+				5E58C58917908CE800BACAC0 /* BPAccessibilityVisitor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
