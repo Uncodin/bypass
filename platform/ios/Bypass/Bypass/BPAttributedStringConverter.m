@@ -92,6 +92,8 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
         [self renderBoldItalicElement:element toTarget:target];
     } else if (elementType == BPText) {
         [self renderTextElement:element toTarget:target];
+    } else if (elementType == BPStrikethrough) {
+        [self renderStruckthroughElement:element toTarget:target];
     }
     
     // Render children of this particular element recursively
@@ -199,6 +201,17 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     [self renderSpanElement:element withFont:[_displaySettings italicFont] toTarget:target];
 }
 
+- (void)renderStruckthroughElement:(BPElement *)element
+                          toTarget:(NSMutableAttributedString *)target
+{
+    NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+    attributes[NSStrikethroughStyleAttributeName] = @(1);
+    [self renderSpanElement:element
+                   withFont:[_displaySettings defaultFont]
+                 attributes:attributes
+                   toTarget:target];
+}
+
 - (void)renderCodeSpanElement:(BPElement *)element
                      toTarget:(NSMutableAttributedString *)target
 {
@@ -214,7 +227,8 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     attributes[BPLinkStyleAttributeName] = element[@"link"];
     [self renderSpanElement:element
                    withFont:[_displaySettings defaultFont]
-                 attributes:attributes toTarget:target];
+                 attributes:attributes
+                   toTarget:target];
 }
 
 - (void)renderLineBreak:(BPElement *)element
