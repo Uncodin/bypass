@@ -10,6 +10,7 @@ import android.text.style.BulletSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.QuoteSpan;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
@@ -113,6 +114,10 @@ public class Bypass {
 			StyleSpan italicSpan = new StyleSpan(Typeface.ITALIC);
 			builder.setSpan(italicSpan, 0, builder.length(),
 					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		} else if (element.getType() == Type.STRIKETHROUGH) {
+			StrikethroughSpan strikethroughSpan = new StrikethroughSpan();
+			builder.setSpan(strikethroughSpan, 0, builder.length(),
+			Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 
 		return builder;
