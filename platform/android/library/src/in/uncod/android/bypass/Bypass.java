@@ -50,13 +50,19 @@ public class Bypass {
 				&& element.getParent().getType() != Type.BLOCK_CODE) {
 			text = text.replace('\n', ' ');
 		}
-		if (element.getParent() != null
-				&& element.getParent().getType() == Type.LIST_ITEM
-				&& element.getType() == Type.LIST) {
-			builder.append("\n");
-		}
-		if (element.getType() == Type.LIST_ITEM) {
-			builder.append("\u2022");
+		switch (element.getType()) {
+			case LIST:
+				if (element.getParent() != null
+					&& element.getParent().getType() == Type.LIST_ITEM) {
+					builder.append("\n");
+				}
+				break;
+			case LINEBREAK:
+				builder.append("\n");
+				break;
+			case LIST_ITEM:
+				builder.append("\u2022");
+				break;
 		}
 		builder.append(text);
 		builder.append(concat);
