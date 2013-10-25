@@ -14,8 +14,8 @@
 //  limitations under the License.
 //
 
-#ifndef _BYPASS_ELEMENT_H_
-#define _BYPASS_ELEMENT_H_
+#ifndef BYPASS_ELEMENT_H
+#define BYPASS_ELEMENT_H
 
 #include <string>
 #include <vector>
@@ -93,4 +93,4 @@ namespace Bypass {
 
 }
 
-#endif // _BYPASS_ELEMENT_H_
+#endif // BYPASS_ELEMENT_H

@@ -14,8 +14,8 @@
 //  limitations under the License.
 //
 
-#ifndef _BYPASS_PARSER_H_
-#define _BYPASS_PARSER_H_
+#ifndef BYPASS_PARSER_H
+#define BYPASS_PARSER_H
 
 #include <iostream>
 #include <string>
@@ -84,4 +84,4 @@ namespace Bypass {
 
 }
 
-#endif // _BYPASS_PARSER_H_
+#endif // BYPASS_PARSER_H
