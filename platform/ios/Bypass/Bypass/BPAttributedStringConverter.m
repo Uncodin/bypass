@@ -134,6 +134,11 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     [target appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"\n"]];
 }
 
+- (void)insertLineSeparatorIntoTarget:(NSMutableAttributedString *)target
+{
+    [target appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"\u2028"]];
+}
+
 #pragma mark Span Element Rendering
 
 - (void)renderSpanElement:(BPElement *)element
@@ -234,7 +239,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 - (void)renderLineBreak:(BPElement *)element
                toTarget:(NSMutableAttributedString *)target
 {
-    [self insertNewlineIntoTarget:target];
+    [self insertLineSeparatorIntoTarget:target];
 }
 
 #pragma mark Block Element Rendering
