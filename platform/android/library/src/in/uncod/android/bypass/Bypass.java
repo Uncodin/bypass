@@ -32,6 +32,7 @@ public class Bypass {
 	private final Options mOptions;
 
 	private final int mListItemIndent;
+	private final int mBlockQuoteIndent;
 
 	/**
 	 * @deprecated Use {@link #Bypass(android.content.Context)} instead.
@@ -41,6 +42,7 @@ public class Bypass {
 		// Default constructor for backwards-compatibility
 		mOptions = new Options();
 		mListItemIndent = 20;
+		mBlockQuoteIndent = 10;
 	}
 
 	public Bypass(Context context) {
@@ -52,6 +54,10 @@ public class Bypass {
 
 		mListItemIndent = (int) TypedValue.applyDimension(mOptions.mListItemIndentUnit,
 			mOptions.mListItemIndentSize,
+			context.getResources().getDisplayMetrics());
+
+		mBlockQuoteIndent = (int) TypedValue.applyDimension(mOptions.mBlockQuoteIndentUnit,
+			mOptions.mBlockQuoteIndentSize,
 			context.getResources().getDisplayMetrics());
 	}
 
@@ -125,6 +131,7 @@ public class Bypass {
 			setSpan(builder, new URLSpan(element.getAttribute("link")));
 		} else if (element.getType() == Type.BLOCK_QUOTE) {
 			setSpan(builder, new QuoteSpan());
+			setSpan(builder, new LeadingMarginSpan.Standard(mBlockQuoteIndent));
 			setSpan(builder, new StyleSpan(Typeface.ITALIC));
 		} else if (element.getType() == Type.STRIKETHROUGH) {
 			setSpan(builder, new StrikethroughSpan());
@@ -145,10 +152,15 @@ public class Bypass {
 		private int mListItemIndentUnit;
 		private float mListItemIndentSize;
 
+		private int mBlockQuoteIndentUnit;
+		private float mBlockQuoteIndentSize;
+
 		public Options() {
 			mListItem = "\u2022";
 			mListItemIndentUnit = TypedValue.COMPLEX_UNIT_DIP;
 			mListItemIndentSize = 10;
+			mBlockQuoteIndentUnit = TypedValue.COMPLEX_UNIT_DIP;
+			mBlockQuoteIndentSize = 10;
 		}
 
 		public Options setListItem(String listItem) {
@@ -159,6 +171,12 @@ public class Bypass {
 		public Options setListItemIndentSize(int unit, float size) {
 			mListItemIndentUnit = unit;
 			mListItemIndentSize = size;
+			return this;
+		}
+
+		public Options setBlockQuoteIndentSize(int unit, float size) {
+			mBlockQuoteIndentUnit = unit;
+			mBlockQuoteIndentSize = size;
 			return this;
 		}
 	}
