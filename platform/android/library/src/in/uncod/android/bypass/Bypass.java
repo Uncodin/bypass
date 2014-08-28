@@ -1,6 +1,7 @@
 package in.uncod.android.bypass;
 
 import in.uncod.android.bypass.Element.Type;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -28,6 +29,21 @@ public class Bypass {
 		1.1f, // h5
 		1.0f, // h6
 	};
+
+	private final int mListItemIndent;
+
+	/**
+	 * @deprecated Use {@link #Bypass(android.content.Context)} instead.
+	 */
+	@Deprecated
+	public Bypass() {
+		// Default constructor for backwards-compatibility
+		mListItemIndent = 20;
+	}
+
+	public Bypass(Context context) {
+		mListItemIndent = (int) mContext.getResources().getDisplayMetrics().density * 10;
+	}
 
 	public CharSequence markdownToSpannable(String markdown) {
 		Document document = processMarkdown(markdown);
@@ -94,7 +110,7 @@ public class Bypass {
 			setSpan(builder, new StyleSpan(Typeface.BOLD));
 		} else if (element.getType() == Type.LIST_ITEM
 				&& element.getParent().getParent() != null) {
-			setSpan(builder, new LeadingMarginSpan.Standard(20));
+			setSpan(builder, new LeadingMarginSpan.Standard(mListItemIndent));
 		} else if (element.getType() == Type.EMPHASIS) {
 			setSpan(builder, new StyleSpan(Typeface.ITALIC));
 		} else if (element.getType() == Type.DOUBLE_EMPHASIS) {
