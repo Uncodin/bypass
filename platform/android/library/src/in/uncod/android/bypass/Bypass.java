@@ -100,17 +100,9 @@ public class Bypass {
 		}
 		builder.append(text);
 		builder.append(concat);
-		if (element.getType() == Type.LIST && element.getParent() != null) {
 
-		} else if (element.getType() == Type.LIST_ITEM) {
-			if (element.size() > 0 && element.children[element.size()-1].isBlockElement()) {
-				
-			}
-			else {
-				builder.append("\n");
-			}
-		} else if (element.isBlockElement()) {
-			builder.append("\n\n");
+		if (element.isBlockElement() && element.getType() != Type.LIST_ITEM) {
+			builder.append("\n");
 		}
 
 		if (element.getType() == Type.HEADER) {
