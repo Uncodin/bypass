@@ -20,8 +20,14 @@ public class Bypass {
 		System.loadLibrary("bypass");
 	}
 
-	private static final float[] HEADER_SIZES = { 1.5f, 1.4f, 1.3f, 1.2f, 1.1f,
-			1f, };
+	private static final float[] HEADER_SIZES = { 
+		1.5f, // h1
+		1.4f, // h2
+		1.3f, // h3
+		1.2f, // h4
+		1.1f, // h5
+		1.0f, // h6
+	};
 
 	public CharSequence markdownToSpannable(String markdown) {
 		Document document = processMarkdown(markdown);
@@ -84,7 +90,7 @@ public class Bypass {
 		if (element.getType() == Type.HEADER) {
 			String levelStr = element.getAttribute("level");
 			int level = Integer.parseInt(levelStr);
-			setSpan(builder, new RelativeSizeSpan(HEADER_SIZES[level]));
+			setSpan(builder, new RelativeSizeSpan(HEADER_SIZES[level - 1]));
 			setSpan(builder, new StyleSpan(Typeface.BOLD));
 		} else if (element.getType() == Type.LIST_ITEM
 				&& element.getParent().getParent() != null) {
