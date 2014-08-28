@@ -1,13 +1,12 @@
 package in.uncod.android.bypass;
 
+import android.util.TypedValue;
 import in.uncod.android.bypass.Element.Type;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.BulletSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.QuoteSpan;
 import android.text.style.RelativeSizeSpan;
@@ -30,6 +29,8 @@ public class Bypass {
 		1.0f, // h6
 	};
 
+	private final Options mOptions;
+
 	private final int mListItemIndent;
 
 	/**
@@ -38,11 +39,20 @@ public class Bypass {
 	@Deprecated
 	public Bypass() {
 		// Default constructor for backwards-compatibility
+		mOptions = new Options();
 		mListItemIndent = 20;
 	}
 
 	public Bypass(Context context) {
-		mListItemIndent = (int) mContext.getResources().getDisplayMetrics().density * 10;
+		this(context, new Options());
+	}
+
+	public Bypass(Context context, Options options) {
+		mOptions = options;
+
+		mListItemIndent = (int) TypedValue.applyDimension(mOptions.mListItemIndentUnit,
+			mOptions.mListItemIndentSize,
+			context.getResources().getDisplayMetrics());
 	}
 
 	public CharSequence markdownToSpannable(String markdown) {
@@ -85,7 +95,7 @@ public class Bypass {
 				builder.append("\n");
 				break;
 			case LIST_ITEM:
-				builder.append("\u2022");
+				builder.append(mOptions.mListItem);
 				break;
 		}
 		builder.append(text);
@@ -133,5 +143,31 @@ public class Bypass {
 
 	private static void setSpan(SpannableStringBuilder builder, Object what) {
 		builder.setSpan(what, 0, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	}
+
+	/**
+	 * Configurable options for how Bypass renders certain elements.
+	 */
+	public static final class Options {
+		private String mListItem;
+		private int mListItemIndentUnit;
+		private float mListItemIndentSize;
+
+		public Options() {
+			mListItem = "\u2022";
+			mListItemIndentUnit = TypedValue.COMPLEX_UNIT_DIP;
+			mListItemIndentSize = 10;
+		}
+
+		public Options setListItem(String listItem) {
+			mListItem = listItem;
+			return this;
+		}
+
+		public Options setListItemIndentSize(int unit, float size) {
+			mListItemIndentUnit = unit;
+			mListItemIndentSize = size;
+			return this;
+		}
 	}
 }
