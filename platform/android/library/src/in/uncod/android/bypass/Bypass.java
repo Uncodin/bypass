@@ -84,48 +84,32 @@ public class Bypass {
 		if (element.getType() == Type.HEADER) {
 			String levelStr = element.getAttribute("level");
 			int level = Integer.parseInt(levelStr);
-			builder.setSpan(new RelativeSizeSpan(HEADER_SIZES[level]), 0,
-					builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			builder.setSpan(new StyleSpan(Typeface.BOLD), 0, builder.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new RelativeSizeSpan(HEADER_SIZES[level]));
+			setSpan(builder, new StyleSpan(Typeface.BOLD));
 		} else if (element.getType() == Type.LIST_ITEM
 				&& element.getParent().getParent() != null) {
-			LeadingMarginSpan span = new LeadingMarginSpan.Standard(20);
-			builder.setSpan(span, 0, builder.length(),
-					Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new LeadingMarginSpan.Standard(20));
 		} else if (element.getType() == Type.EMPHASIS) {
-			StyleSpan italicSpan = new StyleSpan(Typeface.ITALIC);
-			builder.setSpan(italicSpan, 0, builder.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new StyleSpan(Typeface.ITALIC));
 		} else if (element.getType() == Type.DOUBLE_EMPHASIS) {
-			StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
-			builder.setSpan(boldSpan, 0, builder.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new StyleSpan(Typeface.BOLD));
 		} else if (element.getType() == Type.TRIPLE_EMPHASIS) {
-			StyleSpan bolditalicSpan = new StyleSpan(Typeface.BOLD_ITALIC);
-			builder.setSpan(bolditalicSpan, 0, builder.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new StyleSpan(Typeface.BOLD_ITALIC));
 		} else if (element.getType() == Type.CODE_SPAN) {
-			TypefaceSpan monoSpan = new TypefaceSpan("monospace");
-			builder.setSpan(monoSpan, 0, builder.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new TypefaceSpan("monospace"));
 		} else if (element.getType() == Type.LINK) {
-			URLSpan urlSpan = new URLSpan(element.getAttribute("link"));
-			builder.setSpan(urlSpan, 0, builder.length(),
-					Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new URLSpan(element.getAttribute("link")));
 		} else if (element.getType() == Type.BLOCK_QUOTE) {
-			QuoteSpan quoteSpan = new QuoteSpan();
-			builder.setSpan(quoteSpan, 0, builder.length(),
-					Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			StyleSpan italicSpan = new StyleSpan(Typeface.ITALIC);
-			builder.setSpan(italicSpan, 0, builder.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new QuoteSpan());
+			setSpan(builder, new StyleSpan(Typeface.ITALIC));
 		} else if (element.getType() == Type.STRIKETHROUGH) {
-			StrikethroughSpan strikethroughSpan = new StrikethroughSpan();
-			builder.setSpan(strikethroughSpan, 0, builder.length(),
-			Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new StrikethroughSpan());
 		}
 
 		return builder;
+	}
+
+	private static void setSpan(SpannableStringBuilder builder, Object what) {
+		builder.setSpan(what, 0, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	}
 }
