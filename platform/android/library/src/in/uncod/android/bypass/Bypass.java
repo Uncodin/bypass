@@ -1,12 +1,12 @@
 package in.uncod.android.bypass;
 
+import android.util.TypedValue;
 import in.uncod.android.bypass.Element.Type;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.BulletSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.QuoteSpan;
 import android.text.style.RelativeSizeSpan;
@@ -20,8 +20,37 @@ public class Bypass {
 		System.loadLibrary("bypass");
 	}
 
-	private static final float[] HEADER_SIZES = { 1.5f, 1.4f, 1.3f, 1.2f, 1.1f,
-			1f, };
+	private final Options mOptions;
+
+	private final int mListItemIndent;
+	private final int mBlockQuoteIndent;
+
+	/**
+	 * @deprecated Use {@link #Bypass(android.content.Context)} instead.
+	 */
+	@Deprecated
+	public Bypass() {
+		// Default constructor for backwards-compatibility
+		mOptions = new Options();
+		mListItemIndent = 20;
+		mBlockQuoteIndent = 10;
+	}
+
+	public Bypass(Context context) {
+		this(context, new Options());
+	}
+
+	public Bypass(Context context, Options options) {
+		mOptions = options;
+
+		mListItemIndent = (int) TypedValue.applyDimension(mOptions.mListItemIndentUnit,
+			mOptions.mListItemIndentSize,
+			context.getResources().getDisplayMetrics());
+
+		mBlockQuoteIndent = (int) TypedValue.applyDimension(mOptions.mBlockQuoteIndentUnit,
+			mOptions.mBlockQuoteIndentSize,
+			context.getResources().getDisplayMetrics());
+	}
 
 	public CharSequence markdownToSpannable(String markdown) {
 		Document document = processMarkdown(markdown);
@@ -63,69 +92,115 @@ public class Bypass {
 				builder.append("\n");
 				break;
 			case LIST_ITEM:
-				builder.append("\u2022");
+				builder.append(mOptions.mListItem);
 				break;
 		}
 		builder.append(text);
 		builder.append(concat);
-		if (element.getType() == Type.LIST && element.getParent() != null) {
 
-		} else if (element.getType() == Type.LIST_ITEM) {
-			if (element.size() > 0 && element.children[element.size()-1].isBlockElement()) {
-				
-			}
-			else {
-				builder.append("\n");
-			}
-		} else if (element.isBlockElement()) {
-			builder.append("\n\n");
+		if (element.isBlockElement() && element.getType() != Type.LIST_ITEM) {
+			builder.append("\n");
 		}
 
 		if (element.getType() == Type.HEADER) {
 			String levelStr = element.getAttribute("level");
 			int level = Integer.parseInt(levelStr);
-			builder.setSpan(new RelativeSizeSpan(HEADER_SIZES[level]), 0,
-					builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			builder.setSpan(new StyleSpan(Typeface.BOLD), 0, builder.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new RelativeSizeSpan(mOptions.mHeaderSizes[level - 1]));
+			setSpan(builder, new StyleSpan(Typeface.BOLD));
 		} else if (element.getType() == Type.LIST_ITEM
 				&& element.getParent().getParent() != null) {
-			LeadingMarginSpan span = new LeadingMarginSpan.Standard(20);
-			builder.setSpan(span, 0, builder.length(),
-					Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new LeadingMarginSpan.Standard(mListItemIndent));
 		} else if (element.getType() == Type.EMPHASIS) {
-			StyleSpan italicSpan = new StyleSpan(Typeface.ITALIC);
-			builder.setSpan(italicSpan, 0, builder.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new StyleSpan(Typeface.ITALIC));
 		} else if (element.getType() == Type.DOUBLE_EMPHASIS) {
-			StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
-			builder.setSpan(boldSpan, 0, builder.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new StyleSpan(Typeface.BOLD));
 		} else if (element.getType() == Type.TRIPLE_EMPHASIS) {
-			StyleSpan bolditalicSpan = new StyleSpan(Typeface.BOLD_ITALIC);
-			builder.setSpan(bolditalicSpan, 0, builder.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new StyleSpan(Typeface.BOLD_ITALIC));
 		} else if (element.getType() == Type.CODE_SPAN) {
-			TypefaceSpan monoSpan = new TypefaceSpan("monospace");
-			builder.setSpan(monoSpan, 0, builder.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new TypefaceSpan("monospace"));
 		} else if (element.getType() == Type.LINK) {
-			URLSpan urlSpan = new URLSpan(element.getAttribute("link"));
-			builder.setSpan(urlSpan, 0, builder.length(),
-					Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new URLSpan(element.getAttribute("link")));
 		} else if (element.getType() == Type.BLOCK_QUOTE) {
-			QuoteSpan quoteSpan = new QuoteSpan();
-			builder.setSpan(quoteSpan, 0, builder.length(),
-					Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			StyleSpan italicSpan = new StyleSpan(Typeface.ITALIC);
-			builder.setSpan(italicSpan, 0, builder.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new QuoteSpan(mOptions.mBlockQuoteColor));
+			setSpan(builder, new LeadingMarginSpan.Standard(mBlockQuoteIndent));
+			setSpan(builder, new StyleSpan(Typeface.ITALIC));
 		} else if (element.getType() == Type.STRIKETHROUGH) {
-			StrikethroughSpan strikethroughSpan = new StrikethroughSpan();
-			builder.setSpan(strikethroughSpan, 0, builder.length(),
-			Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			setSpan(builder, new StrikethroughSpan());
 		}
 
 		return builder;
+	}
+
+	private static void setSpan(SpannableStringBuilder builder, Object what) {
+		builder.setSpan(what, 0, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	}
+
+	/**
+	 * Configurable options for how Bypass renders certain elements.
+	 */
+	public static final class Options {
+		private float[] mHeaderSizes;
+
+		private String mListItem;
+		private int mListItemIndentUnit;
+		private float mListItemIndentSize;
+
+		private int mBlockQuoteColor;
+		private int mBlockQuoteIndentUnit;
+		private float mBlockQuoteIndentSize;
+
+		public Options() {
+			mHeaderSizes = new float[] {
+				1.5f, // h1
+				1.4f, // h2
+				1.3f, // h3
+				1.2f, // h4
+				1.1f, // h5
+				1.0f, // h6
+			};
+
+			mListItem = "\u2022";
+			mListItemIndentUnit = TypedValue.COMPLEX_UNIT_DIP;
+			mListItemIndentSize = 10;
+
+			mBlockQuoteColor = 0xff0000ff;
+			mBlockQuoteIndentUnit = TypedValue.COMPLEX_UNIT_DIP;
+			mBlockQuoteIndentSize = 10;
+		}
+
+		public Options setHeaderSizes(float[] headerSizes) {
+			if (headerSizes == null) {
+				throw new IllegalArgumentException("headerSizes must not be null");
+			}
+			else if (headerSizes.length != 6) {
+				throw new IllegalArgumentException("headerSizes must have 6 elements (h1 through h6)");
+			}
+
+			mHeaderSizes = headerSizes;
+
+			return this;
+		}
+
+		public Options setListItem(String listItem) {
+			mListItem = listItem;
+			return this;
+		}
+
+		public Options setListItemIndentSize(int unit, float size) {
+			mListItemIndentUnit = unit;
+			mListItemIndentSize = size;
+			return this;
+		}
+
+		public Options setBlockQuoteColor(int color) {
+			mBlockQuoteColor = color;
+			return this;
+		}
+
+		public Options setBlockQuoteIndentSize(int unit, float size) {
+			mBlockQuoteIndentUnit = unit;
+			mBlockQuoteIndentSize = size;
+			return this;
+		}
 	}
 }
