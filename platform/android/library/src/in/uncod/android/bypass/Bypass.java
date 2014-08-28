@@ -20,15 +20,6 @@ public class Bypass {
 		System.loadLibrary("bypass");
 	}
 
-	private static final float[] HEADER_SIZES = { 
-		1.5f, // h1
-		1.4f, // h2
-		1.3f, // h3
-		1.2f, // h4
-		1.1f, // h5
-		1.0f, // h6
-	};
-
 	private final Options mOptions;
 
 	private final int mListItemIndent;
@@ -114,7 +105,7 @@ public class Bypass {
 		if (element.getType() == Type.HEADER) {
 			String levelStr = element.getAttribute("level");
 			int level = Integer.parseInt(levelStr);
-			setSpan(builder, new RelativeSizeSpan(HEADER_SIZES[level - 1]));
+			setSpan(builder, new RelativeSizeSpan(mOptions.mHeaderSizes[level - 1]));
 			setSpan(builder, new StyleSpan(Typeface.BOLD));
 		} else if (element.getType() == Type.LIST_ITEM
 				&& element.getParent().getParent() != null) {
@@ -148,6 +139,8 @@ public class Bypass {
 	 * Configurable options for how Bypass renders certain elements.
 	 */
 	public static final class Options {
+		private float[] mHeaderSizes;
+
 		private String mListItem;
 		private int mListItemIndentUnit;
 		private float mListItemIndentSize;
@@ -157,6 +150,15 @@ public class Bypass {
 		private float mBlockQuoteIndentSize;
 
 		public Options() {
+			mHeaderSizes = new float[] {
+				1.5f, // h1
+				1.4f, // h2
+				1.3f, // h3
+				1.2f, // h4
+				1.1f, // h5
+				1.0f, // h6
+			};
+
 			mListItem = "\u2022";
 			mListItemIndentUnit = TypedValue.COMPLEX_UNIT_DIP;
 			mListItemIndentSize = 10;
@@ -164,6 +166,19 @@ public class Bypass {
 			mBlockQuoteColor = 0xff0000ff;
 			mBlockQuoteIndentUnit = TypedValue.COMPLEX_UNIT_DIP;
 			mBlockQuoteIndentSize = 10;
+		}
+
+		public Options setHeaderSizes(float[] headerSizes) {
+			if (headerSizes == null) {
+				throw new IllegalArgumentException("headerSizes must not be null");
+			}
+			else if (headerSizes.length != 6) {
+				throw new IllegalArgumentException("headerSizes must have 6 elements (h1 through h6)");
+			}
+
+			mHeaderSizes = headerSizes;
+
+			return this;
 		}
 
 		public Options setListItem(String listItem) {
