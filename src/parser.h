@@ -58,6 +58,7 @@ namespace Bypass {
 
 		// Span Element Callbacks
 
+		int parsedAutolink(struct buf *ob, struct buf *link, enum mkd_autolink type);
 		int parsedCodeSpan(struct buf *ob, struct buf *text);
 		int parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c);
 		int parsedEmphasis(struct buf *ob, struct buf *text, char c);

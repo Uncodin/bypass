@@ -25,6 +25,7 @@ static void rndr_hrule(struct buf *ob, void *opaque);
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque);
 static void rndr_listitem(struct buf *ob, struct buf *text, int flags, void *opaque);
 static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque);
+static int rndr_autolink(struct buf *ob, struct buf *link, enum mkd_autolink type, void *opaque);
 static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque);
 static int rndr_double_emphasis(struct buf *ob, struct buf *text, char c, void *opaque);
 static int rndr_emphasis(struct buf *ob, struct buf *text, char c, void *opaque);
@@ -53,7 +54,7 @@ struct mkd_renderer mkd_callbacks = {
 	NULL,                 // table row
 
 	/* span-level callbacks */
-	NULL,                 // autolink
+	rndr_autolink,        // autolink
 	rndr_codespan,        // codespan
 	rndr_double_emphasis, // double emphasis
 	rndr_emphasis,        // emphasis
@@ -330,6 +331,11 @@ namespace Bypass {
 		return 1;
 	}
 
+	int Parser::parsedAutolink(struct buf *ob, struct buf *link, enum mkd_autolink type) {
+		handleNontextSpan(AUTOLINK, ob, link);
+		return 1;
+	}
+
 	int Parser::parsedCodeSpan(struct buf *ob, struct buf *text) {
 		if (text && text->size > 0) {
 			Element codeSpan;
@@ -393,6 +399,10 @@ static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque) {
 }
 
 // Span Element callbacks
+
+static int rndr_autolink(struct buf *ob, struct buf *link, enum mkd_autolink type, void *opaque) {
+	return ((Bypass::Parser*) opaque)->parsedAutolink(ob, link, type);
+}
 
 static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque) {
 	return ((Bypass::Parser*) opaque)->parsedCodeSpan(ob, text);
