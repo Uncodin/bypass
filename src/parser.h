@@ -61,6 +61,7 @@ namespace Bypass {
 		int parsedCodeSpan(struct buf *ob, struct buf *text);
 		int parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c);
 		int parsedEmphasis(struct buf *ob, struct buf *text, char c);
+		int parsedImage(struct buf *ob, struct buf *link, struct buf *title, struct buf *alt);
 		int parsedTripleEmphasis(struct buf *ob, struct buf *text, char c);
 		int parsedLinebreak(struct buf *ob);
 		int parsedLink(struct buf *ob, struct buf *link, struct buf *title, struct buf *content);
@@ -79,6 +80,7 @@ namespace Bypass {
 		int elementCount;
 		void handleBlock(Type, struct buf *ob, struct buf *text = NULL, int extra = -1);
 		void handleSpan(Type, struct buf *ob, struct buf *text, struct buf *extra = NULL, struct buf *extra2 = NULL, bool output = true);
+		void handleNontextSpan(Type, struct buf *ob, struct buf *link, struct buf *title = NULL, struct buf *alt = NULL);
 		void createSpan(const Element&, struct buf *ob);
 		void appendElementMarker(struct buf *ob);
 		void eraseTrailingControlCharacters(const std::string& controlCharacters);

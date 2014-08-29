@@ -28,6 +28,7 @@ static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque);
 static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque);
 static int rndr_double_emphasis(struct buf *ob, struct buf *text, char c, void *opaque);
 static int rndr_emphasis(struct buf *ob, struct buf *text, char c, void *opaque);
+static int rndr_image(struct buf *ob, struct buf *link, struct buf *title, struct buf *alt, void *opaque);
 static int rndr_triple_emphasis(struct buf *ob, struct buf *text, char c, void *opaque);
 static int rndr_linebreak(struct buf *ob, void *opaque);
 static int rndr_link(struct buf *ob, struct buf *link, struct buf *title, struct buf *content, void *opaque);
@@ -56,7 +57,7 @@ struct mkd_renderer mkd_callbacks = {
 	rndr_codespan,        // codespan
 	rndr_double_emphasis, // double emphasis
 	rndr_emphasis,        // emphasis
-	NULL,                 // image
+	rndr_image,           // image
 	rndr_linebreak,       // line break
 	rndr_link,            // link
 	NULL,                 // raw html tag
@@ -255,6 +256,35 @@ namespace Bypass {
 		}
 	}
 
+	void Parser::handleNontextSpan(Type type, struct buf *ob, struct buf *link, struct buf *title, struct buf *alt) {
+		Element element;
+		element.setType(type);
+
+		if (link) {
+			element.addAttribute("link", std::string(link->data, link->data + link->size));
+		}
+		if (title) {
+			element.addAttribute("title", std::string(title->data, title->data + title->size));
+		}
+		if (alt) {
+			element.addAttribute("alt", std::string(alt->data, alt->data + alt->size));
+		}
+
+		// libsoldout does this neat trick with the output buffer during image
+		// processing; it outputs the '!' as normal text, but then undoes the
+		// buffer position when it finds out it was actually part of an image.
+		//
+		// Unfortunately, we are not using text as our output buffer, so we
+		// have to get rid of that bang ourselves.
+		if (type == IMAGE) {
+			elementSoup[elementCount].text.erase(elementSoup[elementCount].text.size() - 1);
+		}
+
+		elementCount++;
+		elementSoup[elementCount] = element;
+		appendElementMarker(ob);
+	}
+
 	void Parser::createSpan(const Element& element, struct buf *ob) {
 		elementCount++;
 		elementSoup[elementCount] = element;
@@ -278,6 +308,11 @@ namespace Bypass {
             handleSpan(EMPHASIS, ob, text);
             return 1;
         }
+	}
+
+	int Parser::parsedImage(struct buf *ob, struct buf *link, struct buf *title, struct buf *alt) {
+		handleNontextSpan(IMAGE, ob, link, title, alt);
+		return 1;
 	}
 
 	int Parser::parsedTripleEmphasis(struct buf *ob, struct buf *text, char c) {
@@ -369,6 +404,10 @@ static int rndr_double_emphasis(struct buf *ob, struct buf *text, char c, void *
 
 static int rndr_emphasis(struct buf *ob, struct buf *text, char c, void *opaque) {
 	return ((Bypass::Parser*) opaque)->parsedEmphasis(ob, text, c);
+}
+
+static int rndr_image(struct buf *ob, struct buf *link, struct buf *title, struct buf *alt, void *opaque) {
+	return ((Bypass::Parser*) opaque)->parsedImage(ob, link, title, alt);
 }
 
 static int rndr_triple_emphasis(struct buf *ob, struct buf *text, char c, void *opaque) {
