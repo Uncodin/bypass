@@ -51,6 +51,7 @@ namespace Bypass {
 		void parsedBlockCode(struct buf *ob, struct buf *text);
 		void parsedBlockQuote(struct buf *ob, struct buf *text);
 		void parsedHeader(struct buf *ob, struct buf *text, int level);
+		void parsedHrule(struct buf *ob);
 		void parsedList(struct buf *ob, struct buf *text, int flags);
 		void parsedListItem(struct buf *ob, struct buf *text, int flags);
 		void parsedParagraph(struct buf *ob, struct buf *text);
@@ -76,7 +77,7 @@ namespace Bypass {
 		Document document;
 		std::map<int, Element> elementSoup;
 		int elementCount;
-		void handleBlock(Type, struct buf *ob, struct buf *text, int extra = -1);
+		void handleBlock(Type, struct buf *ob, struct buf *text = NULL, int extra = -1);
 		void handleSpan(Type, struct buf *ob, struct buf *text, struct buf *extra = NULL, struct buf *extra2 = NULL, bool output = true);
 		void createSpan(const Element&, struct buf *ob);
 		void eraseTrailingControlCharacters(const std::string& controlCharacters);

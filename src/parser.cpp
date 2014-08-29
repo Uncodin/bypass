@@ -21,6 +21,7 @@ using namespace std;
 static void rndr_blockcode(struct buf *ob, struct buf *text, void *opaque);
 static void rndr_blockquote(struct buf *ob, struct buf *text, void *opaque);
 static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaque);
+static void rndr_hrule(struct buf *ob, void *opaque);
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque);
 static void rndr_listitem(struct buf *ob, struct buf *text, int flags, void *opaque);
 static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque);
@@ -42,7 +43,7 @@ struct mkd_renderer mkd_callbacks = {
 	rndr_blockquote,      // block quote
 	NULL,                 // block html
 	rndr_header,          // header
-	NULL,                 // hrule
+	rndr_hrule,           // hrule
 	rndr_list,            // list
 	rndr_listitem,        // listitem
 	rndr_paragraph,       // paragraph
@@ -141,17 +142,19 @@ namespace Bypass {
 			block.addAttribute("level", levelStr);
 		}
 
-		std::string textString(text->data, text->data + text->size);
-		std::vector<std::string> strs;
-		boost::split(strs, textString, boost::is_any_of("|"));
+		if (text) {
+			std::string textString(text->data, text->data + text->size);
+			std::vector<std::string> strs;
+			boost::split(strs, textString, boost::is_any_of("|"));
 
-		for(vector<std::string>::iterator it = strs.begin(); it != strs.end(); it++) {
-			int pos = atoi((*it).c_str());
-			std::map<int, Element>::iterator elit = elementSoup.find(pos);
+			for(vector<std::string>::iterator it = strs.begin(); it != strs.end(); it++) {
+				int pos = atoi((*it).c_str());
+				std::map<int, Element>::iterator elit = elementSoup.find(pos);
 
-			if ( elit != elementSoup.end() ) {
-				block.append((*elit).second);
-				elementSoup.erase(pos);
+				if ( elit != elementSoup.end() ) {
+					block.append((*elit).second);
+					elementSoup.erase(pos);
+				}
 			}
 		}
 
@@ -182,6 +185,10 @@ namespace Bypass {
 
 	void Parser::parsedHeader(struct buf *ob, struct buf *text, int level) {
 		handleBlock(HEADER, ob, text, level);
+	}
+
+	void Parser::parsedHrule(struct buf *ob) {
+		handleBlock(HRULE, ob);
 	}
 
 	void Parser::parsedList(struct buf *ob, struct buf *text, int flags) {
@@ -333,6 +340,10 @@ static void rndr_blockquote(struct buf *ob, struct buf *text, void *opaque) {
 
 static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaque) {
 	((Bypass::Parser*) opaque)->parsedHeader(ob, text, level);
+}
+
+static void rndr_hrule(struct buf *ob, void *opaque) {
+	((Bypass::Parser*) opaque)->parsedHrule(ob);
 }
 
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque) {
