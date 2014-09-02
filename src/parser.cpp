@@ -151,6 +151,11 @@ namespace Bypass {
 			snprintf(levelStr, 2, "%d", extra);
 			block.addAttribute("level", levelStr);
 		}
+		else if (type == LIST) {
+			char flagsStr[2];
+			snprintf(flagsStr, 2, "%d", extra);
+			block.addAttribute("flags", flagsStr);
+		}
 
 		if (text) {
 			std::string textString(text->data, text->data + text->size);
@@ -196,7 +201,7 @@ namespace Bypass {
 	}
 
 	void Parser::parsedList(struct buf *ob, struct buf *text, int flags) {
-		handleBlock(LIST, ob, text);
+		handleBlock(LIST, ob, text, flags);
 	}
 
 	void Parser::parsedListItem(struct buf *ob, struct buf *text, int flags) {
