@@ -97,6 +97,9 @@ public class Bypass {
 			case LIST_ITEM:
 				builder.append(mOptions.mListItem);
 				break;
+			case AUTOLINK:
+				builder.append(element.getAttribute("link"));
+				break;
 		}
 
 		builder.append(text);
@@ -131,6 +134,7 @@ public class Bypass {
 				setSpan(builder, new TypefaceSpan("monospace"));
 				break;
 			case LINK:
+			case AUTOLINK:
 				setSpan(builder, new URLSpan(element.getAttribute("link")));
 				break;
 			case BLOCK_QUOTE:
