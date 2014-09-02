@@ -24,6 +24,7 @@ public class Bypass {
 
 	private final int mListItemIndent;
 	private final int mBlockQuoteIndent;
+	private final int mCodeBlockIndent;
 
 	/**
 	 * @deprecated Use {@link #Bypass(android.content.Context)} instead.
@@ -34,6 +35,7 @@ public class Bypass {
 		mOptions = new Options();
 		mListItemIndent = 20;
 		mBlockQuoteIndent = 10;
+		mCodeBlockIndent = 10;
 	}
 
 	public Bypass(Context context) {
@@ -49,6 +51,10 @@ public class Bypass {
 
 		mBlockQuoteIndent = (int) TypedValue.applyDimension(mOptions.mBlockQuoteIndentUnit,
 			mOptions.mBlockQuoteIndentSize,
+			context.getResources().getDisplayMetrics());
+
+		mCodeBlockIndent = (int) TypedValue.applyDimension(mOptions.mCodeBlockIndentUnit,
+			mOptions.mCodeBlockIndentSize,
 			context.getResources().getDisplayMetrics());
 	}
 
@@ -130,6 +136,10 @@ public class Bypass {
 			case TRIPLE_EMPHASIS:
 				setSpan(builder, new StyleSpan(Typeface.BOLD_ITALIC));
 				break;
+			case BLOCK_CODE:
+				setSpan(builder, new LeadingMarginSpan.Standard(mCodeBlockIndent));
+				setSpan(builder, new TypefaceSpan("monospace"));
+				break;
 			case CODE_SPAN:
 				setSpan(builder, new TypefaceSpan("monospace"));
 				break;
@@ -168,6 +178,9 @@ public class Bypass {
 		private int mBlockQuoteIndentUnit;
 		private float mBlockQuoteIndentSize;
 
+		private int mCodeBlockIndentUnit;
+		private float mCodeBlockIndentSize;
+
 		public Options() {
 			mHeaderSizes = new float[] {
 				1.5f, // h1
@@ -185,6 +198,9 @@ public class Bypass {
 			mBlockQuoteColor = 0xff0000ff;
 			mBlockQuoteIndentUnit = TypedValue.COMPLEX_UNIT_DIP;
 			mBlockQuoteIndentSize = 10;
+
+			mCodeBlockIndentUnit = TypedValue.COMPLEX_UNIT_DIP;
+			mCodeBlockIndentSize = 10;
 		}
 
 		public Options setHeaderSizes(float[] headerSizes) {
@@ -219,6 +235,12 @@ public class Bypass {
 		public Options setBlockQuoteIndentSize(int unit, float size) {
 			mBlockQuoteIndentUnit = unit;
 			mBlockQuoteIndentSize = size;
+			return this;
+		}
+
+		public Options setCodeBlockIndentSize(int unit, float size) {
+			mCodeBlockIndentUnit = unit;
+			mCodeBlockIndentSize = size;
 			return this;
 		}
 	}
