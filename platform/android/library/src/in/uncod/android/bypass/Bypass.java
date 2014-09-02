@@ -15,6 +15,9 @@ import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class Bypass {
 	static {
 		System.loadLibrary("bypass");
@@ -25,6 +28,10 @@ public class Bypass {
 	private final int mListItemIndent;
 	private final int mBlockQuoteIndent;
 	private final int mCodeBlockIndent;
+
+	// Keeps track of the ordered list number for each LIST element.
+	// We need to track multiple ordered lists at once because of nesting.
+	private final Map<Element, Integer> mOrderedListNumber = new ConcurrentHashMap<Element, Integer>();
 
 	/**
 	 * @deprecated Use {@link #Bypass(android.content.Context)} instead.
@@ -74,9 +81,24 @@ public class Bypass {
 	private CharSequence recurseElement(Element element) {
 		Type type = element.getType();
 
+		boolean isOrderedList = false;
+		if (type == Type.LIST) {
+			String flagsStr = element.getAttribute("flags");
+			int flags = Integer.parseInt(flagsStr);
+			isOrderedList = (flags & Element.F_LIST_ORDERED) != 0;
+			if (isOrderedList) {
+				mOrderedListNumber.put(element, 1);
+			}
+		}
+
 		CharSequence[] spans = new CharSequence[element.size()];
 		for (int i = 0; i < element.size(); i++) {
 			spans[i] = recurseElement(element.children[i]);
+		}
+
+		// Clean up after we're done
+		if (isOrderedList) {
+			mOrderedListNumber.remove(this);
 		}
 
 		CharSequence concat = TextUtils.concat(spans);
@@ -101,7 +123,16 @@ public class Bypass {
 				builder.append("\n");
 				break;
 			case LIST_ITEM:
-				builder.append(mOptions.mListItem);
+				builder.append(" ");
+				if (mOrderedListNumber.containsKey(element.getParent())) {
+					int number = mOrderedListNumber.get(element.getParent());
+					builder.append(Integer.toString(number) + ".");
+					mOrderedListNumber.put(element.getParent(), number + 1);
+				}
+				else {
+					builder.append(mOptions.mUnorderedListItem);
+				}
+				builder.append("  ");
 				break;
 			case AUTOLINK:
 				builder.append(element.getAttribute("link"));
@@ -170,7 +201,7 @@ public class Bypass {
 	public static final class Options {
 		private float[] mHeaderSizes;
 
-		private String mListItem;
+		private String mUnorderedListItem;
 		private int mListItemIndentUnit;
 		private float mListItemIndentSize;
 
@@ -191,7 +222,7 @@ public class Bypass {
 				1.0f, // h6
 			};
 
-			mListItem = "\u2022";
+			mUnorderedListItem = "\u2022";
 			mListItemIndentUnit = TypedValue.COMPLEX_UNIT_DIP;
 			mListItemIndentSize = 10;
 
@@ -216,8 +247,8 @@ public class Bypass {
 			return this;
 		}
 
-		public Options setListItem(String listItem) {
-			mListItem = listItem;
+		public Options setUnorderedListItem(String unorderedListItem) {
+			mUnorderedListItem = unorderedListItem;
 			return this;
 		}
 

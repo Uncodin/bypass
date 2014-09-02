@@ -4,7 +4,9 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Element {
-	
+
+	public static final int F_LIST_ORDERED = 1;
+
 	public enum Type {
 		
 		// Block Element Types
