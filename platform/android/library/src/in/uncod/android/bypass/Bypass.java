@@ -1,5 +1,7 @@
 package in.uncod.android.bypass;
 
+import android.graphics.Color;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import in.uncod.android.bypass.Element.Type;
 import android.content.Context;
@@ -14,6 +16,7 @@ import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
+import in.uncod.android.bypass.style.HorizontalLineSpan;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,6 +31,9 @@ public class Bypass {
 	private final int mListItemIndent;
 	private final int mBlockQuoteIndent;
 	private final int mCodeBlockIndent;
+	private final int mHruleSize;
+
+	private final int mHruleTopBottomPadding;
 
 	// Keeps track of the ordered list number for each LIST element.
 	// We need to track multiple ordered lists at once because of nesting.
@@ -43,6 +49,8 @@ public class Bypass {
 		mListItemIndent = 20;
 		mBlockQuoteIndent = 10;
 		mCodeBlockIndent = 10;
+		mHruleSize = 2;
+		mHruleTopBottomPadding = 20;
 	}
 
 	public Bypass(Context context) {
@@ -52,17 +60,21 @@ public class Bypass {
 	public Bypass(Context context, Options options) {
 		mOptions = options;
 
+		DisplayMetrics dm = context.getResources().getDisplayMetrics();
+
 		mListItemIndent = (int) TypedValue.applyDimension(mOptions.mListItemIndentUnit,
-			mOptions.mListItemIndentSize,
-			context.getResources().getDisplayMetrics());
+			mOptions.mListItemIndentSize, dm);
 
 		mBlockQuoteIndent = (int) TypedValue.applyDimension(mOptions.mBlockQuoteIndentUnit,
-			mOptions.mBlockQuoteIndentSize,
-			context.getResources().getDisplayMetrics());
+			mOptions.mBlockQuoteIndentSize, dm);
 
 		mCodeBlockIndent = (int) TypedValue.applyDimension(mOptions.mCodeBlockIndentUnit,
-			mOptions.mCodeBlockIndentSize,
-			context.getResources().getDisplayMetrics());
+			mOptions.mCodeBlockIndentSize, dm);
+
+		mHruleSize = (int) TypedValue.applyDimension(mOptions.mHruleUnit,
+			mOptions.mHruleSize, dm);
+
+		mHruleTopBottomPadding = (int) dm.density * 10;
 	}
 
 	public CharSequence markdownToSpannable(String markdown) {
@@ -137,6 +149,11 @@ public class Bypass {
 			case AUTOLINK:
 				builder.append(element.getAttribute("link"));
 				break;
+			case HRULE:
+				// This ultimately gets drawn over by the line span, but
+				// we need something here or the span isn't even drawn.
+				builder.append("-");
+				break;
 		}
 
 		builder.append(text);
@@ -186,6 +203,9 @@ public class Bypass {
 			case STRIKETHROUGH:
 				setSpan(builder, new StrikethroughSpan());
 				break;
+			case HRULE:
+				setSpan(builder, new HorizontalLineSpan(mOptions.mHruleColor, mHruleSize, mHruleTopBottomPadding));
+				break;
 		}
 
 		return builder;
@@ -212,6 +232,10 @@ public class Bypass {
 		private int mCodeBlockIndentUnit;
 		private float mCodeBlockIndentSize;
 
+		private int mHruleColor;
+		private int mHruleUnit;
+		private float mHruleSize;
+
 		public Options() {
 			mHeaderSizes = new float[] {
 				1.5f, // h1
@@ -232,6 +256,10 @@ public class Bypass {
 
 			mCodeBlockIndentUnit = TypedValue.COMPLEX_UNIT_DIP;
 			mCodeBlockIndentSize = 10;
+
+			mHruleColor = Color.GRAY;
+			mHruleUnit = TypedValue.COMPLEX_UNIT_DIP;
+			mHruleSize = 1;
 		}
 
 		public Options setHeaderSizes(float[] headerSizes) {
@@ -272,6 +300,17 @@ public class Bypass {
 		public Options setCodeBlockIndentSize(int unit, float size) {
 			mCodeBlockIndentUnit = unit;
 			mCodeBlockIndentSize = size;
+			return this;
+		}
+
+		public Options setHruleColor(int color) {
+			mHruleColor = color;
+			return this;
+		}
+
+		public Options setHruleSize(int unit, float size) {
+			mHruleUnit = unit;
+			mHruleSize = size;
 			return this;
 		}
 	}
