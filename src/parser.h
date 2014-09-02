@@ -80,6 +80,7 @@ namespace Bypass {
 		void handleBlock(Type, struct buf *ob, struct buf *text = NULL, int extra = -1);
 		void handleSpan(Type, struct buf *ob, struct buf *text, struct buf *extra = NULL, struct buf *extra2 = NULL, bool output = true);
 		void createSpan(const Element&, struct buf *ob);
+		void appendElementMarker(struct buf *ob);
 		void eraseTrailingControlCharacters(const std::string& controlCharacters);
 	};
 

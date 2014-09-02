@@ -130,6 +130,14 @@ namespace Bypass {
 		}
 	}
 
+	// Appends the marker "<elementcount>|", so we can later reference the
+	// element by position
+	void Parser::appendElementMarker(struct buf *ob) {
+		std::ostringstream oss;
+		oss << elementCount << '|';
+		bufputs(ob, oss.str().c_str());
+	}
+
 	// Block Element Callbacks
 
 	void Parser::handleBlock(Type type, struct buf *ob, struct buf *text, int extra) {
@@ -159,12 +167,8 @@ namespace Bypass {
 		}
 
 		elementCount++;
-
-		std::ostringstream oss;
-		oss << elementCount;
 		elementSoup[elementCount] = block;
-		oss << '|';
-		bufputs(ob, oss.str().c_str());
+		appendElementMarker(ob);
 	}
 
 	void Parser::parsedBlockCode(struct buf *ob, struct buf *text) {
@@ -172,10 +176,8 @@ namespace Bypass {
 		parsedNormalText(ob, text);
 		eraseTrailingControlCharacters(NEWLINE);
 
-		std::ostringstream oss;
-		oss << elementCount << '|';
 		bufreset(text);
-		bufputs(text, oss.str().c_str());
+		appendElementMarker(text);
 		handleBlock(BLOCK_CODE, ob, text);
 	}
 
@@ -255,11 +257,8 @@ namespace Bypass {
 
 	void Parser::createSpan(const Element& element, struct buf *ob) {
 		elementCount++;
-		std::ostringstream oss;
-		oss << elementCount;
 		elementSoup[elementCount] = element;
-		oss << '|';
-		bufputs(ob, oss.str().c_str());
+		appendElementMarker(ob);
 	}
 
 	int Parser::parsedDoubleEmphasis(struct buf *ob, struct buf *text, char c) {
