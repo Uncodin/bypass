@@ -66,6 +66,7 @@ public class Bypass {
 	private native Document processMarkdown(String markdown);
 
 	private CharSequence recurseElement(Element element) {
+		Type type = element.getType();
 
 		CharSequence[] spans = new CharSequence[element.size()];
 		for (int i = 0; i < element.size(); i++) {
@@ -75,13 +76,15 @@ public class Bypass {
 		CharSequence concat = TextUtils.concat(spans);
 
 		SpannableStringBuilder builder = new SpannableStringBuilder();
+
 		String text = element.getText();
 		if (element.size() == 0
 				&& element.getParent() != null
                 && element.getParent().getType() != Type.BLOCK_CODE) {
 			text = text.replace('\n', ' ');
 		}
-		switch (element.getType()) {
+
+		switch (type) {
 			case LIST:
 				if (element.getParent() != null
 					&& element.getParent().getType() == Type.LIST_ITEM) {
@@ -95,37 +98,49 @@ public class Bypass {
 				builder.append(mOptions.mListItem);
 				break;
 		}
+
 		builder.append(text);
 		builder.append(concat);
 
-		if (element.isBlockElement() && element.getType() != Type.LIST_ITEM) {
+		if (element.isBlockElement() && type != Type.LIST_ITEM) {
 			builder.append("\n");
 		}
 
-		if (element.getType() == Type.HEADER) {
-			String levelStr = element.getAttribute("level");
-			int level = Integer.parseInt(levelStr);
-			setSpan(builder, new RelativeSizeSpan(mOptions.mHeaderSizes[level - 1]));
-			setSpan(builder, new StyleSpan(Typeface.BOLD));
-		} else if (element.getType() == Type.LIST_ITEM
-				&& element.getParent().getParent() != null) {
-			setSpan(builder, new LeadingMarginSpan.Standard(mListItemIndent));
-		} else if (element.getType() == Type.EMPHASIS) {
-			setSpan(builder, new StyleSpan(Typeface.ITALIC));
-		} else if (element.getType() == Type.DOUBLE_EMPHASIS) {
-			setSpan(builder, new StyleSpan(Typeface.BOLD));
-		} else if (element.getType() == Type.TRIPLE_EMPHASIS) {
-			setSpan(builder, new StyleSpan(Typeface.BOLD_ITALIC));
-		} else if (element.getType() == Type.CODE_SPAN) {
-			setSpan(builder, new TypefaceSpan("monospace"));
-		} else if (element.getType() == Type.LINK) {
-			setSpan(builder, new URLSpan(element.getAttribute("link")));
-		} else if (element.getType() == Type.BLOCK_QUOTE) {
-			setSpan(builder, new QuoteSpan(mOptions.mBlockQuoteColor));
-			setSpan(builder, new LeadingMarginSpan.Standard(mBlockQuoteIndent));
-			setSpan(builder, new StyleSpan(Typeface.ITALIC));
-		} else if (element.getType() == Type.STRIKETHROUGH) {
-			setSpan(builder, new StrikethroughSpan());
+		switch(type) {
+			case HEADER:
+				String levelStr = element.getAttribute("level");
+				int level = Integer.parseInt(levelStr);
+				setSpan(builder, new RelativeSizeSpan(mOptions.mHeaderSizes[level - 1]));
+				setSpan(builder, new StyleSpan(Typeface.BOLD));
+				break;
+			case LIST_ITEM:
+				if (element.getParent().getParent() != null) {
+					setSpan(builder, new LeadingMarginSpan.Standard(mListItemIndent));
+				}
+				break;
+			case EMPHASIS:
+				setSpan(builder, new StyleSpan(Typeface.ITALIC));
+				break;
+			case DOUBLE_EMPHASIS:
+				setSpan(builder, new StyleSpan(Typeface.BOLD));
+				break;
+			case TRIPLE_EMPHASIS:
+				setSpan(builder, new StyleSpan(Typeface.BOLD_ITALIC));
+				break;
+			case CODE_SPAN:
+				setSpan(builder, new TypefaceSpan("monospace"));
+				break;
+			case LINK:
+				setSpan(builder, new URLSpan(element.getAttribute("link")));
+				break;
+			case BLOCK_QUOTE:
+				setSpan(builder, new QuoteSpan(mOptions.mBlockQuoteColor));
+				setSpan(builder, new LeadingMarginSpan.Standard(mBlockQuoteIndent));
+				setSpan(builder, new StyleSpan(Typeface.ITALIC));
+				break;
+			case STRIKETHROUGH:
+				setSpan(builder, new StrikethroughSpan());
+				break;
 		}
 
 		return builder;
