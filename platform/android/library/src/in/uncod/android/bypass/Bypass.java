@@ -159,8 +159,26 @@ public class Bypass {
 		builder.append(text);
 		builder.append(concat);
 
-		if (element.isBlockElement() && type != Type.LIST_ITEM) {
-			builder.append("\n");
+		if (type == Type.LIST_ITEM) {
+			if (element.size() == 0 || !element.children[element.size()-1].isBlockElement()) {
+				builder.append("\n");
+			}
+		}
+		else if (element.isBlockElement() && type != Type.BLOCK_QUOTE) {
+			if (type == Type.LIST) {
+				// If this is a nested list, don't include newlines
+				if (element.getParent() == null || element.getParent().getType() != Type.LIST_ITEM) {
+					builder.append("\n");
+				}
+			}
+			else if (element.getParent() != null
+				&& element.getParent().getType() == Type.LIST_ITEM) {
+				// List items should never double-space their entries
+				builder.append("\n");
+			}
+			else {
+				builder.append("\n\n");
+			}
 		}
 
 		switch(type) {
@@ -170,10 +188,8 @@ public class Bypass {
 				setSpan(builder, new RelativeSizeSpan(mOptions.mHeaderSizes[level - 1]));
 				setSpan(builder, new StyleSpan(Typeface.BOLD));
 				break;
-			case LIST_ITEM:
-				if (element.getParent().getParent() != null) {
-					setSpan(builder, new LeadingMarginSpan.Standard(mListItemIndent));
-				}
+			case LIST:
+				setBlockSpan(builder, new LeadingMarginSpan.Standard(mListItemIndent));
 				break;
 			case EMPHASIS:
 				setSpan(builder, new StyleSpan(Typeface.ITALIC));
@@ -196,9 +212,9 @@ public class Bypass {
 				setSpan(builder, new URLSpan(element.getAttribute("link")));
 				break;
 			case BLOCK_QUOTE:
-				setSpan(builder, new QuoteSpan(mOptions.mBlockQuoteColor));
-				setSpan(builder, new LeadingMarginSpan.Standard(mBlockQuoteIndent));
-				setSpan(builder, new StyleSpan(Typeface.ITALIC));
+				setBlockSpan(builder, new QuoteSpan(mOptions.mBlockQuoteColor));
+				setBlockSpan(builder, new LeadingMarginSpan.Standard(mBlockQuoteIndent));
+				setBlockSpan(builder, new StyleSpan(Typeface.ITALIC));
 				break;
 			case STRIKETHROUGH:
 				setSpan(builder, new StrikethroughSpan());
@@ -213,6 +229,11 @@ public class Bypass {
 
 	private static void setSpan(SpannableStringBuilder builder, Object what) {
 		builder.setSpan(what, 0, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	}
+
+	// These have trailing newlines that we want to avoid spanning
+	private static void setBlockSpan(SpannableStringBuilder builder, Object what) {
+		builder.setSpan(what, 0, builder.length() - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	}
 
 	/**
