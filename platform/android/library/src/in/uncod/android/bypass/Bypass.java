@@ -1,14 +1,13 @@
 package in.uncod.android.bypass;
 
-import android.graphics.Color;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import in.uncod.android.bypass.Element.Type;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.QuoteSpan;
 import android.text.style.RelativeSizeSpan;
@@ -16,6 +15,9 @@ import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import in.uncod.android.bypass.Element.Type;
 import in.uncod.android.bypass.style.HorizontalLineSpan;
 
 import java.util.Map;
@@ -78,11 +80,15 @@ public class Bypass {
 	}
 
 	public CharSequence markdownToSpannable(String markdown) {
+		return markdownToSpannable(markdown, null);
+	}
+
+	public CharSequence markdownToSpannable(String markdown, ImageGetter imageGetter) {
 		Document document = processMarkdown(markdown);
 
 		CharSequence[] spans = new CharSequence[document.getElementCount()];
 		for (int i = 0; i < document.getElementCount(); i++) {
-			spans[i] = recurseElement(document.getElement(i));
+			spans[i] = recurseElement(document.getElement(i), imageGetter);
 		}
 
 		return TextUtils.concat(spans);
@@ -90,7 +96,7 @@ public class Bypass {
 
 	private native Document processMarkdown(String markdown);
 
-	private CharSequence recurseElement(Element element) {
+	private CharSequence recurseElement(Element element, ImageGetter imageGetter) {
 		Type type = element.getType();
 
 		boolean isOrderedList = false;
@@ -105,7 +111,7 @@ public class Bypass {
 
 		CharSequence[] spans = new CharSequence[element.size()];
 		for (int i = 0; i < element.size(); i++) {
-			spans[i] = recurseElement(element.children[i]);
+			spans[i] = recurseElement(element.children[i], imageGetter);
 		}
 
 		// Clean up after we're done
@@ -119,9 +125,16 @@ public class Bypass {
 
 		String text = element.getText();
 		if (element.size() == 0
-				&& element.getParent() != null
-                && element.getParent().getType() != Type.BLOCK_CODE) {
+			&& element.getParent() != null
+			&& element.getParent().getType() != Type.BLOCK_CODE) {
 			text = text.replace('\n', ' ');
+		}
+
+		// Retrieve the image now so we know whether we're going to have something to display later
+		// If we don't, then show the alt text instead (if available).
+		Drawable imageDrawable = null;
+		if (type == Type.IMAGE && imageGetter != null && !TextUtils.isEmpty(element.getAttribute("link"))) {
+			imageDrawable = imageGetter.getDrawable(element.getAttribute("link"));
 		}
 
 		switch (type) {
@@ -154,13 +167,30 @@ public class Bypass {
 				// we need something here or the span isn't even drawn.
 				builder.append("-");
 				break;
+			case IMAGE:
+				// Display alt text (or title text) if there is no image
+				if (imageDrawable == null) {
+					String show = element.getAttribute("alt");
+					if (TextUtils.isEmpty(show)) {
+						show = element.getAttribute("title");
+					}
+					if (!TextUtils.isEmpty(show)) {
+						show = "[" + show + "]";
+						builder.append(show);
+					}
+				}
+				else {
+					// Character to be replaced
+					builder.append("\uFFFC");
+				}
+				break;
 		}
 
 		builder.append(text);
 		builder.append(concat);
 
 		if (type == Type.LIST_ITEM) {
-			if (element.size() == 0 || !element.children[element.size()-1].isBlockElement()) {
+			if (element.size() == 0 || !element.children[element.size() - 1].isBlockElement()) {
 				builder.append("\n");
 			}
 		}
@@ -181,7 +211,7 @@ public class Bypass {
 			}
 		}
 
-		switch(type) {
+		switch (type) {
 			case HEADER:
 				String levelStr = element.getAttribute("level");
 				int level = Integer.parseInt(levelStr);
@@ -224,6 +254,11 @@ public class Bypass {
 				break;
 			case HRULE:
 				setSpan(builder, new HorizontalLineSpan(mOptions.mHruleColor, mHruleSize, mHruleTopBottomPadding));
+				break;
+			case IMAGE:
+				if (imageDrawable != null) {
+					setSpan(builder, new ImageSpan(imageDrawable));
+				}
 				break;
 		}
 
@@ -337,5 +372,17 @@ public class Bypass {
 			mHruleSize = size;
 			return this;
 		}
+	}
+
+	/**
+	 * Retrieves images for markdown images.
+	 */
+	public static interface ImageGetter {
+
+		/**
+		 * This method is called when the parser encounters an image tag.
+		 */
+		public Drawable getDrawable(String source);
+
 	}
 }
