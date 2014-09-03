@@ -115,7 +115,7 @@ public class Bypass {
 
 		CharSequence concat = TextUtils.concat(spans);
 
-		SpannableStringBuilder builder = new SpannableStringBuilder();
+		SpannableStringBuilder builder = new ReverseSpannableStringBuilder();
 
 		String text = element.getText();
 		if (element.size() == 0
@@ -212,6 +212,9 @@ public class Bypass {
 				setSpan(builder, new URLSpan(element.getAttribute("link")));
 				break;
 			case BLOCK_QUOTE:
+				// We add two leading margin spans so that when the order is reversed,
+				// the QuoteSpan will always be in the same spot.
+				setBlockSpan(builder, new LeadingMarginSpan.Standard(mBlockQuoteIndent));
 				setBlockSpan(builder, new QuoteSpan(mOptions.mBlockQuoteColor));
 				setBlockSpan(builder, new LeadingMarginSpan.Standard(mBlockQuoteIndent));
 				setBlockSpan(builder, new StyleSpan(Typeface.ITALIC));
