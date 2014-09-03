@@ -31,6 +31,7 @@ dependency block to your `pom.xml`:
 * [Cameron Currie](https://github.com/cwc)
 * [Albert Wang](https://github.com/albert-wang)
 * [Jimi Smith](https://github.com/JimiSmith)
+* [Dan Lew](https://github.com/dlew)
 
 ## iOS
 
