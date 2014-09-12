@@ -152,8 +152,8 @@ namespace Bypass {
 			block.addAttribute("level", levelStr);
 		}
 		else if (type == LIST) {
-			char flagsStr[2];
-			snprintf(flagsStr, 2, "%d", extra);
+			char flagsStr[3];
+			snprintf(flagsStr, 3, "%d", extra);
 			block.addAttribute("flags", flagsStr);
 		}
 
