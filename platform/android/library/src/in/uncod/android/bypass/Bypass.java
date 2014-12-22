@@ -239,7 +239,11 @@ public class Bypass {
 				break;
 			case LINK:
 			case AUTOLINK:
-				setSpan(builder, new URLSpan(element.getAttribute("link")));
+				String link = element.getAttribute("link");
+				if (Patterns.EMAIL_ADDRESS.matcher(link).matches()) {
+					link = "mailto:" + link;
+				}
+				setSpan(builder, new URLSpan(link));
 				break;
 			case BLOCK_QUOTE:
 				// We add two leading margin spans so that when the order is reversed,
