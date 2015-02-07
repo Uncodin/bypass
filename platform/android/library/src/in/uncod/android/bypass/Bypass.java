@@ -102,10 +102,12 @@ public class Bypass {
 		boolean isOrderedList = false;
 		if (type == Type.LIST) {
 			String flagsStr = element.getAttribute("flags");
-			int flags = Integer.parseInt(flagsStr);
-			isOrderedList = (flags & Element.F_LIST_ORDERED) != 0;
-			if (isOrderedList) {
-				mOrderedListNumber.put(element, 1);
+			if (flagsStr != null) {
+				int flags = Integer.parseInt(flagsStr);
+				isOrderedList = (flags & Element.F_LIST_ORDERED) != 0;
+				if (isOrderedList) {
+					mOrderedListNumber.put(element, 1);
+				}
 			}
 		}
 
