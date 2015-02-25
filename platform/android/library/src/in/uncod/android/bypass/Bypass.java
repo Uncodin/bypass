@@ -16,6 +16,7 @@ import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
 import android.util.DisplayMetrics;
+import android.util.Patterns;
 import android.util.TypedValue;
 import in.uncod.android.bypass.Element.Type;
 import in.uncod.android.bypass.style.HorizontalLineSpan;
