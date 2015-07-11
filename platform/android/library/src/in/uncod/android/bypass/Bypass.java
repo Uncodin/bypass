@@ -293,7 +293,8 @@ public class Bypass {
 
 	// These have trailing newlines that we want to avoid spanning
 	private static void setBlockSpan(SpannableStringBuilder builder, Object what) {
-		builder.setSpan(what, 0, builder.length() - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		int length = Math.max(0, builder.length() - 1);
+		builder.setSpan(what, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	}
 
 	/**
