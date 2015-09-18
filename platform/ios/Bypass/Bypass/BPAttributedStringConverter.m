@@ -136,7 +136,11 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 
 - (void)insertLineSeparatorIntoTarget:(NSMutableAttributedString *)target
 {
-    [target appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"\u2028"]];
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_8_3) {
+        [target appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"\r"]];
+    } else {
+        [target appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"\u2028"]];
+    }
 }
 
 #pragma mark Span Element Rendering
