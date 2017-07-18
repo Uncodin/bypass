@@ -57,6 +57,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2305B2491F1D5146000A40D6 /* BPImageGetter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPImageGetter.h; sourceTree = "<group>"; };
 		58D9D454C9F2BD2E7F81B4B8 /* BPDisplaySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPDisplaySettings.h; sourceTree = "<group>"; };
 		58D9DE2F0735C1CEB3500EFF /* BPDisplaySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPDisplaySettings.m; sourceTree = "<group>"; };
 		5E007AE916FA17D100F8CFFD /* BPMarkdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPMarkdownView.h; sourceTree = "<group>"; };
@@ -236,6 +237,7 @@
 				5E5BC87C16E1222A00165503 /* BPElementPrivate.h */,
 				58D9DE2F0735C1CEB3500EFF /* BPDisplaySettings.m */,
 				58D9D454C9F2BD2E7F81B4B8 /* BPDisplaySettings.h */,
+				2305B2491F1D5146000A40D6 /* BPImageGetter.h */,
 			);
 			name = Model;
 			sourceTree = "<group>";
