@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		23054FAE1F1D66C900B97F07 /* BPImageGetterSample.m in Sources */ = {isa = PBXBuildFile; fileRef = 23054FAD1F1D66C900B97F07 /* BPImageGetterSample.m */; };
+		2305B24D1F1D6157000A40D6 /* markdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 2305B24C1F1D6157000A40D6 /* markdown.png */; };
 		5E007AF316FA327200F8CFFD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC79B16E0049800165503 /* CoreGraphics.framework */; };
 		5E007AF416FA329800F8CFFD /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E007AF116FA325100F8CFFD /* QuartzCore.framework */; };
 		5E5BC79816E0049800165503 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E5BC79716E0049800165503 /* UIKit.framework */; };
@@ -69,6 +71,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		23054FAC1F1D66C900B97F07 /* BPImageGetterSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPImageGetterSample.h; sourceTree = "<group>"; };
+		23054FAD1F1D66C900B97F07 /* BPImageGetterSample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPImageGetterSample.m; sourceTree = "<group>"; };
+		2305B24C1F1D6157000A40D6 /* markdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = markdown.png; sourceTree = "<group>"; };
 		5E007AF116FA325100F8CFFD /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5E5BC79416E0049800165503 /* BypassSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BypassSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5BC79716E0049800165503 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -236,6 +241,7 @@
 		6BAA147E16EF8A01002C2C30 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				2305B24C1F1D6157000A40D6 /* markdown.png */,
 				6BE4F75416F2892400670C16 /* BPMarkdownView.png */,
 				6BE4F75516F2892400670C16 /* BPMarkdownView@2x.png */,
 				6BAA147F16EF8A12002C2C30 /* UITextView.png */,
@@ -261,6 +267,8 @@
 				5E5BC7B316E0049800165503 /* BPTextViewController.mm */,
 				6BE4F73116F107A400670C16 /* BPMarkdownViewController.h */,
 				6BE4F73216F107A400670C16 /* BPMarkdownViewController.m */,
+				23054FAC1F1D66C900B97F07 /* BPImageGetterSample.h */,
+				23054FAD1F1D66C900B97F07 /* BPImageGetterSample.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -314,6 +322,11 @@
 				CLASSPREFIX = BP;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Uncodin;
+				TargetAttributes = {
+					5E5BC79316E0049800165503 = {
+						LastSwiftMigration = 0830;
+					};
+				};
 			};
 			buildConfigurationList = 5E5BC78F16E0049800165503 /* Build configuration list for PBXProject "BypassSample" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -370,6 +383,7 @@
 				6BAA148116EF8A12002C2C30 /* UITextView.png in Resources */,
 				6BAA148216EF8A12002C2C30 /* UITextView@2x.png in Resources */,
 				6BE4F70016EFCD8C00670C16 /* iPhone Retina.png in Resources */,
+				2305B24D1F1D6157000A40D6 /* markdown.png in Resources */,
 				6BE4F70216EFCF8E00670C16 /* iPhone.png in Resources */,
 				6BE4F75616F2892400670C16 /* BPMarkdownView.png in Resources */,
 				6BE4F75716F2892400670C16 /* BPMarkdownView@2x.png in Resources */,
@@ -412,6 +426,7 @@
 				5E5BC7B416E0049800165503 /* BPTextViewController.mm in Sources */,
 				6BE4F73316F107A400670C16 /* BPMarkdownViewController.m in Sources */,
 				6BE4F73616F107DC00670C16 /* BPAbstractViewController.m in Sources */,
+				23054FAE1F1D66C900B97F07 /* BPImageGetterSample.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,13 +541,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BypassSample/BypassSample-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Bypass/Bypass";
 				INFOPLIST_FILE = "BypassSample/BypassSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BypassSample/BypassSample-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -541,13 +561,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BypassSample/BypassSample-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Bypass/Bypass";
 				INFOPLIST_FILE = "BypassSample/BypassSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BypassSample/BypassSample-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
