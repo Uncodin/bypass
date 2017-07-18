@@ -39,12 +39,13 @@ dependency block to your `pom.xml`:
 
 ### Contributors
 
-* [Damian Carrillo] (https://github.com/damiancarrillo)
+* [Damian Carrillo](https://github.com/damiancarrillo)
 * [Cameron Currie](https://github.com/cwc)
 * [Albert Wang](https://github.com/albert-wang)
-* [Matthias Tretter] (https://github.com/myell0w)
-* [Audun Holm Ellertsen] (https://github.com/audun)
-* [Vinh Nguyen] (https://github.com/vinhnx)
+* [Matthias Tretter](https://github.com/myell0w)
+* [Audun Holm Ellertsen](https://github.com/audun)
+* [Vinh Nguyen](https://github.com/vinhnx)
+* [Victor L. Oliveira](https://github.com/victorlaerte)
 
 ## 3rd Party Libraries
 

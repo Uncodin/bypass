@@ -19,6 +19,7 @@
 //
 
 #import "BPTextViewController.h"
+#import "BPImageGetterSample.h"
 #import <Bypass.h>
 
 @interface BPTextViewController ()
@@ -66,8 +67,9 @@
     BPParser *parser = [[BPParser alloc] init];
     BPDocument *document = [parser parse:sample];
     
+	BPImageGetterSample *bpImageGetter = [[BPImageGetterSample alloc] init];
     BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
-    NSAttributedString *attributedText = [converter convertDocument:document];
+    NSAttributedString *attributedText = [converter convertDocument:document WithImageGetter:bpImageGetter];
     
     // Warning: The attributed text is being set on a simple UITextView out of convenience. After this has been done,
     //          Bypass' custom text attributes have been stripped. We save a copy to use as a point of reference for

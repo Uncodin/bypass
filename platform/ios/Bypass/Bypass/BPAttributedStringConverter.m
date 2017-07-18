@@ -21,6 +21,7 @@
 #import <CoreText/CoreText.h>
 #import "BPAttributedStringConverter.h"
 #import "BPDisplaySettings.h"
+#import "BPImageGetter.h"
 
 NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 
@@ -44,19 +45,25 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
 
 - (NSAttributedString *)convertDocument:(BPDocument *)document
 {
-    NSMutableAttributedString *target = [[NSMutableAttributedString alloc] init];
-
-    for (BPElement *element in [document elements]) {
-        [self convertElement:element toTarget:target];
-    }
-
-    [target addAttribute:NSForegroundColorAttributeName value:[_displaySettings defaultColor] range:NSMakeRange(0, target.length)];
-    
-    return target;
+    return [self convertDocument:document WithImageGetter:nil];
 }
 
+- (NSAttributedString *)convertDocument:(BPDocument *)document
+						WithImageGetter:(id<BPImageGetter>)imageGetter
+{
+	NSMutableAttributedString *target = [[NSMutableAttributedString alloc] init];
+	
+	for (BPElement *element in [document elements]) {
+		[self convertElement:element WithImageGetter:imageGetter toTarget:target];
+	}
+	
+	[target addAttribute:NSForegroundColorAttributeName value:[_displaySettings defaultColor] range:NSMakeRange(0, target.length)];
+	
+	return target;
+}
 
-- (void)convertElement:(BPElement *)element toTarget:(NSMutableAttributedString *)target
+- (void)convertElement:(BPElement *)element WithImageGetter:(id<BPImageGetter>)imageGetter
+			  toTarget:(NSMutableAttributedString *)target
 {
     // Capture the starting point of the effective range to apply attributes to
     
@@ -81,7 +88,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     } else if (elementType == BPEmphasis) {
         [self renderItalicElement:element toTarget:target];
     } else if (elementType == BPImage) {
-        // Currently not supported
+        [self renderImageElement:element WithImageGetter:imageGetter toTarget:target];
     } else if (elementType == BPLineBreak) {
         [self renderLineBreak:element toTarget:target];
     } else if (elementType == BPLink) {
@@ -99,7 +106,7 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
     // Render children of this particular element recursively
     
     for (BPElement *childElement in [element childElements]) {
-        [self convertElement:childElement toTarget:target];
+        [self convertElement:childElement WithImageGetter:imageGetter toTarget:target];
     }
     
     // Capture the end of the range
@@ -238,6 +245,34 @@ NSString *const BPLinkStyleAttributeName = @"NSLinkAttributeName";
                    withFont:[_displaySettings defaultFont]
                  attributes:attributes
                    toTarget:target];
+}
+
+- (void)renderImageElement:(BPElement *)element
+		   WithImageGetter:(id<BPImageGetter>) imageGetter
+				  toTarget:(NSMutableAttributedString *)target
+{
+	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+	attributes[NSFontAttributeName] = [_displaySettings defaultFont];
+	attributes[NSForegroundColorAttributeName] = [_displaySettings defaultColor];
+	
+	NSString *alt = [[element attributes] objectForKey:@"alt"];
+	alt = (alt == nil) ? @"" : alt;
+	
+	NSString *link = [[element attributes] objectForKey:@"link"];
+	
+	if (imageGetter != nil) {
+		NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
+		textAttachment.image = [imageGetter getUIImageWithSource:link];
+		
+		NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
+		[target appendAttributedString:attrStringWithImage];
+		
+	} else {
+		NSString *text = [[NSString alloc] initWithFormat:@"![%@](%@)", alt, link];
+		NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text
+																			 attributes:attributes];
+		[target appendAttributedString:attributedText];
+	}
 }
 
 - (void)renderLineBreak:(BPElement *)element

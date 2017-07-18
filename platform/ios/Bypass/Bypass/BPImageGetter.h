@@ -1,9 +1,9 @@
 //
-//  BPAttributedStringRenderer.h
+//  BPImageGetter.h
 //  Bypass
 //
-//  Created by Damian Carrillo on 3/1/13.
-//  Copyright 2013 Uncodin, Inc.
+//  Created by Victor Oliveira on 17/07/17.
+//  Copyright © 2017 Uncodin. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,22 +19,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BPDocument.h"
-#import "BPImageGetter.h"
+#ifndef BPImageGetter_h
+#define BPImageGetter_h
 
-@class BPDisplaySettings;
+@protocol BPImageGetter
 
-OBJC_EXPORT NSString *const BPLinkStyleAttributeName;
-
-/*!
- \brief Renders a Bypass Document to an `NSAttributedString`.
- */
-@interface BPAttributedStringConverter : NSObject
-
-@property(nonatomic, strong) BPDisplaySettings *displaySettings;
-
-- (NSAttributedString *)convertDocument:(BPDocument *)document;
-
-- (NSAttributedString *)convertDocument:(BPDocument *)document WithImageGetter: (id<BPImageGetter>)imageGetter;
+@required
+- (UIImage *) getUIImageWithSource:(NSString *)source;
 
 @end
+
+#endif /* BPImageGetter_h */
